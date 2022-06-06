@@ -11,7 +11,3 @@ const slice = createSlice({
 });
 
 export default slice.reducer;
-
-// Actions
-
-export const { setUser, clearUser, setIsLoading, setError } = slice.actions;
