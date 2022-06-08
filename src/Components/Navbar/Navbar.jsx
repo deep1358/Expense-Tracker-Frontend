@@ -6,9 +6,13 @@ import { logoutUser } from "../../store/user/ThunkFunctions/logoutUser";
 const Navbar = () => {
 	const dispatch = useDispatch();
 	const { user } = useSelector((state) => state.user);
+	const { currentMonth, currentYear } = useSelector((state) => state.expense);
 
 	return (
 		<>
+			<p>
+				{currentMonth} {currentYear}
+			</p>
 			{user && (
 				<>
 					<p>{user.userName}</p>

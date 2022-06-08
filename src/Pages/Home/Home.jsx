@@ -11,15 +11,15 @@ const Home = () => {
 
 	useEffect(() => {
 		// dispatch(deleteCategory("Deep1"));
-		axios
-			.patch("http://localhost:5000/expense", {
-				category: "Other1",
-				amount: 1000,
-				note: "",
-				_id: "629e36cf5a01ea16d66d1f42",
-			})
-			.then((res) => console.log(res))
-			.catch((err) => console.log(err));
+		// axios
+		// 	.post("http://localhost:5000/expense", {
+		// 		category: "Food",
+		// 		amount: 1000,
+		// 		note: "",
+		// 		_id: "629e36cf5a01ea16d66d1f42",
+		// 	})
+		// 	.then((res) => console.log(res))
+		// 	.catch((err) => console.log(err));
 	});
 
 	return (
