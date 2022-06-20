@@ -11,3 +11,5 @@ const slice = createSlice({
 });
 
 export default slice.reducer;
+
+export const { MakeUnAuthenticated } = slice.actions;

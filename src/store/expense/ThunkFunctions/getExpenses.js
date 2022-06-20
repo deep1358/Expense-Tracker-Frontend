@@ -1,16 +1,16 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import axios from "../../../../src/axios";
 
 export const getExpenses = createAsyncThunk(
 	"expense/getExpenses",
 	async ([year, month]) => {
 		try {
-			const res = await axios.get(
-				`http://localhost:5000/expense/year/${year}/${month}`
-			);
-			return res.data;
+			const res = await axios.get(`/expense/year/${year}/${month}`);
+			// console.log(res);
+			return { expenses: res.data, errorMessage: "" };
 		} catch (err) {
-			return err;
+			// console.log(err);
+			return { errorMessage: err.response.data.message, expense: null };
 		}
 	}
 );

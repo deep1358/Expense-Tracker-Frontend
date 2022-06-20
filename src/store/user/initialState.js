@@ -1,6 +1,11 @@
 export const initialState = {
 	user: null,
-	isLoading: false,
+	isFetchingUser: false,
+	isDeletingUser: false,
+	isLoggingOut: false,
 	error: null,
 	isLoggedIn: true,
+	isCreatingCategory: false,
+	isDeletingCategory: false,
+	isUpdatingCategory: false,
 };

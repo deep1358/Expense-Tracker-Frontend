@@ -5,76 +5,100 @@ import { fetchUser } from "./ThunkFunctions/fetchUser";
 import { logoutUser } from "./ThunkFunctions/logoutUser";
 import { updateCategory } from "./ThunkFunctions/updateCategory";
 
-const pending = (state) => {
-	state.isLoading = true;
-};
-
-const fulfilled = (state, action) => {
-	state.user = null;
-	state.isLoading = false;
-	state.isLoggedIn = false;
-	if (action.payload?.isError) state.error = action.payload;
-};
-
-const rejected = (state, action) => {
-	state.error = action.payload;
-	state.isLoading = false;
-	state.isLoggedIn = false;
-};
-
 export const extraReducers = {
-	[fetchUser.pending]: pending,
+	[fetchUser.pending]: (state) => {
+		state.isFetchingUser = true;
+	},
 	[fetchUser.fulfilled]: (state, action) => {
 		if (action.payload?.isError) {
-			state.error = action.payload;
+			state.error = action.payload.message;
 			state.isLoggedIn = false;
 		} else if (!action.payload.user) state.isLoggedIn = false;
 		else {
 			state.user = action.payload.user;
 			state.error = null;
 		}
-		state.isLoading = false;
+		state.isFetchingUser = false;
 	},
-	[fetchUser.rejected]: rejected,
+	[fetchUser.rejected]: (state, action) => {
+		state.error = action.payload;
+		state.isFetchingUser = false;
+		state.isLoggedIn = false;
+	},
 
-	[logoutUser.pending]: pending,
-	[logoutUser.fulfilled]: fulfilled,
-	[logoutUser.rejected]: rejected,
+	[logoutUser.pending]: (state) => {
+		state.isLoggingOut = true;
+	},
+	[logoutUser.fulfilled]: (state, action) => {
+		state.user = null;
+		state.isLoggedIn = false;
+		state.isLoggingOut = false;
+		if (action.payload?.isError) state.error = action.payload;
+	},
+	[logoutUser.rejected]: (state, action) => {
+		state.error = action.payload;
+		state.isLoggingOut = false;
+	},
 
-	[deleteUser.pending]: pending,
-	[deleteUser.fulfilled]: fulfilled,
-	[deleteUser.rejected]: rejected,
+	[deleteUser.pending]: (state) => {
+		state.isDeletingUser = true;
+	},
+	[deleteUser.fulfilled]: (state, action) => {
+		state.user = null;
+		state.isLoggedIn = false;
+		state.isDeletingUser = false;
+		if (action.payload?.isError) state.error = action.payload;
+	},
+	[deleteUser.rejected]: (state, action) => {
+		state.error = action.payload;
+		state.isDeletingUser = false;
+	},
 
-	[createCategory.pending]: pending,
+	[createCategory.pending]: (state) => {
+		state.isCreatingCategory = true;
+	},
 	[createCategory.fulfilled]: (state, action) => {
 		if (action.payload?.isError) state.error = action.payload;
 		else {
 			state.user.categories = action.payload;
 			state.error = null;
 		}
-		state.isLoading = false;
+		state.isCreatingCategory = false;
 	},
-	[createCategory.rejected]: rejected,
+	[createCategory.rejected]: (state, action) => {
+		state.error = action.payload;
+		state.isCreatingCategory = false;
+	},
 
-	[deleteCategory.pending]: pending,
+	[deleteCategory.pending]: (state) => {
+		state.isDeletingCategory = true;
+	},
 	[deleteCategory.fulfilled]: (state, action) => {
 		if (action.payload?.isError) state.error = action.payload;
 		else {
 			state.user.categories = action.payload;
 			state.error = null;
 		}
-		state.isLoading = false;
+		state.isDeletingCategory = false;
 	},
-	[deleteCategory.rejected]: rejected,
+	[deleteCategory.rejected]: (state, action) => {
+		state.error = action.payload;
+		state.isDeletingCategory = false;
+	},
 
-	[updateCategory.pending]: pending,
+	[updateCategory.pending]: (state) => {
+		state.isUpdatingCategory = true;
+	},
 	[updateCategory.fulfilled]: (state, action) => {
 		if (action.payload?.isError) state.error = action.payload;
 		else {
 			state.user.categories = action.payload;
 			state.error = null;
 		}
-		state.isLoading = false;
+		state.isUpdatingCategory = false;
 	},
-	[updateCategory.rejected]: rejected,
+	[updateCategory.rejected]: (state, action) => {
+		state.error = action.payload;
+		state.isUpdatingCategory = false;
+	},
 };

@@ -1,16 +1,14 @@
 import "./App.css";
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+// import axios from "axios";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./Pages/Login/Login";
 import BaseLayout from "./Layout/BaseLayout";
-import Home from "./Pages/Home/Home";
 import { useDispatch } from "react-redux";
 import { fetchUser } from "./store/user/ThunkFunctions/fetchUser";
 import ProtectedRoute from "./Components/ProtectedRoute";
 import DayWiseExpense from "./Pages/DayWiseExpense/DayWiseExpense";
-
-axios.defaults.withCredentials = true;
+import AddOrUpdateExpense from "./Pages/AddExpense/AddOrUpdateExpense";
 
 function App() {
 	const dispatch = useDispatch();
@@ -50,6 +48,11 @@ function App() {
 									to={`/year/${currentYear}/${months[currentMonth]}`}
 								/>
 							}
+						/>
+						<Route path="/addExpense" element={<AddOrUpdateExpense />} />
+						<Route
+							path="/updateExpense/:id"
+							element={<AddOrUpdateExpense />}
 						/>
 						<Route
 							path={`/year/:year/:month`}

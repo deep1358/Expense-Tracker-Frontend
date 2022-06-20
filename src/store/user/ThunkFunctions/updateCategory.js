@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import axios from "../../../../src/axios";
 import { error } from "./commonError";
 
 export const updateCategory = createAsyncThunk(
@@ -7,7 +7,7 @@ export const updateCategory = createAsyncThunk(
 	async ([oldValue, newValue]) => {
 		console.log(oldValue, newValue);
 		try {
-			const res = await axios.patch("http://localhost:5000/category", {
+			const res = await axios.patch("/category", {
 				oldValue,
 				newValue,
 			});

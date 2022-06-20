@@ -5,6 +5,22 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import store from "./store";
 import { Provider } from "react-redux";
+import axios from "axios";
+import { MakeUnAuthenticated } from "./store/user";
+
+const UNAUTHORIZED = 401;
+const { dispatch } = store; // direct access to redux store.
+axios.interceptors.response.use(
+	(response) => response,
+	(error) => {
+		const { status } = error.response;
+		if (status === UNAUTHORIZED) {
+			dispatch(MakeUnAuthenticated());
+			// window.location = "/login";
+		}
+		return Promise.reject(error);
+	}
+);
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
