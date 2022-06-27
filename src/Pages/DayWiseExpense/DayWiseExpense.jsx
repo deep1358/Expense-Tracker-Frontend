@@ -7,7 +7,7 @@ import {
 	// useSearchParams,
 } from "react-router-dom";
 import { getExpenses } from "../../store/expense/ThunkFunctions/getExpenses";
-import { setCurrentMonth } from "../../store/expense/index";
+import { setCurrentMonth, setCurrentYear } from "../../store/expense/index";
 import { deleteExpense } from "../../store/expense/ThunkFunctions/deleteExpense";
 
 const months = [
@@ -39,6 +39,7 @@ const DayWiseExpense = () => {
 
 	useEffect(() => {
 		dispatch(setCurrentMonth(months.indexOf(month) + 1));
+		dispatch(setCurrentYear(year));
 		user && dispatch(getExpenses([year, month]));
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [user]);

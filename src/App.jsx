@@ -9,6 +9,9 @@ import { fetchUser } from "./store/user/ThunkFunctions/fetchUser";
 import ProtectedRoute from "./Components/ProtectedRoute";
 import DayWiseExpense from "./Pages/DayWiseExpense/DayWiseExpense";
 import AddOrUpdateExpense from "./Pages/AddExpense/AddOrUpdateExpense";
+import Categories from "./Pages/Category/Categories";
+import YearWiseExpense from "./Pages/YearWiseExpense/YearWiseExpense";
+import MonthWiseExpense from "./Pages/MonthWiseExpense.jsx/MonthWiseExpense";
 
 function App() {
 	const dispatch = useDispatch();
@@ -54,10 +57,13 @@ function App() {
 							path="/updateExpense/:id"
 							element={<AddOrUpdateExpense />}
 						/>
+						<Route path={`/year`} element={<YearWiseExpense />} />
+						<Route path={`/year/:year`} element={<MonthWiseExpense />} />
 						<Route
 							path={`/year/:year/:month`}
 							element={<DayWiseExpense />}
 						/>
+						<Route path="/categories" element={<Categories />} />
 					</Route>
 				</Route>
 				<Route path="/login" element={<Login />} />

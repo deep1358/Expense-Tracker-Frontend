@@ -8,6 +8,7 @@ import { updateCategory } from "./ThunkFunctions/updateCategory";
 export const extraReducers = {
 	[fetchUser.pending]: (state) => {
 		state.isFetchingUser = true;
+		state.isFetchingCategories = true;
 	},
 	[fetchUser.fulfilled]: (state, action) => {
 		if (action.payload?.isError) {
@@ -19,10 +20,12 @@ export const extraReducers = {
 			state.error = null;
 		}
 		state.isFetchingUser = false;
+		state.isFetchingCategories = false;
 	},
 	[fetchUser.rejected]: (state, action) => {
 		state.error = action.payload;
 		state.isFetchingUser = false;
+		state.isFetchingCategories = false;
 		state.isLoggedIn = false;
 	},
 

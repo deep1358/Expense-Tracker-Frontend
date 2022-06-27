@@ -5,6 +5,7 @@ export const initialState = {
 	isLoggingOut: false,
 	error: null,
 	isLoggedIn: true,
+	isFetchingCategories: false,
 	isCreatingCategory: false,
 	isDeletingCategory: false,
 	isUpdatingCategory: false,

@@ -3,6 +3,8 @@ import { getExpenses } from "./ThunkFunctions/getExpenses";
 import { deleteExpense } from "./ThunkFunctions/deleteExpense";
 import { updateExpense } from "./ThunkFunctions/updateExpense";
 import { getExpense } from "./ThunkFunctions/getExpense";
+import { getYearWiseExpenses } from "./ThunkFunctions/getYearWiseExpenses";
+import { getMonthWiseExpenses } from "./ThunkFunctions/getMonthWiseExpenses";
 
 export const extraReducers = {
 	[getExpenses.pending]: (state) => {
@@ -76,6 +78,34 @@ export const extraReducers = {
 	},
 	[updateExpense.rejected]: (state, action) => {
 		state.updatingExpense = false;
+		state.error = action.error;
+	},
+
+	[getYearWiseExpenses.pending]: (state) => {
+		state.isGettingYearWiseExpenses = true;
+	},
+	[getYearWiseExpenses.fulfilled]: (state, action) => {
+		const { expenses, errorMessage } = action.payload;
+		state.isGettingYearWiseExpenses = false;
+		state.errorMessage = errorMessage;
+		state.yearWiseExpenses = expenses;
+	},
+	[getYearWiseExpenses.rejected]: (state, action) => {
+		state.isGettingYearWiseExpenses = false;
+		state.error = action.error;
+	},
+
+	[getMonthWiseExpenses.pending]: (state) => {
+		state.isGettingMonthWiseExpenses = true;
+	},
+	[getMonthWiseExpenses.fulfilled]: (state, action) => {
+		const { expenses, errorMessage } = action.payload;
+		state.isGettingMonthWiseExpenses = false;
+		state.errorMessage = errorMessage;
+		state.monthWiseExpenses = expenses;
+	},
+	[getMonthWiseExpenses.rejected]: (state, action) => {
+		state.isGettingMonthWiseExpenses = false;
 		state.error = action.error;
 	},
 };

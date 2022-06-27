@@ -11,6 +11,21 @@ const Navbar = () => {
 	);
 	const { currentMonth, currentYear } = useSelector((state) => state.expense);
 
+	const months = [
+		"January",
+		"February",
+		"March",
+		"April",
+		"May",
+		"June",
+		"July",
+		"August",
+		"September",
+		"October",
+		"November",
+		"December",
+	];
+
 	return (
 		<>
 			<p>
@@ -21,10 +36,26 @@ const Navbar = () => {
 			{user && (
 				<>
 					<p>{user.userName}</p>
-					<button onClick={() => dispatch(deleteUser())}>Delete</button>
+					<button onClick={() => dispatch(deleteUser())}>
+						Delete User
+					</button>
 					<button onClick={() => dispatch(logoutUser())}>Logout</button>
 					<button>
+						<Link to="/year">Year</Link>
+					</button>
+					<button>
+						<Link to={`/year/${currentYear}`}>{currentYear}</Link>
+					</button>
+					<button>
+						<Link to={`/year/${currentYear}/${months[currentMonth - 1]}`}>
+							{months[currentMonth - 1]}
+						</Link>
+					</button>
+					<button>
 						<Link to="addExpense">Add Expense</Link>
+					</button>
+					<button>
+						<Link to="categories">My Categories</Link>
 					</button>
 				</>
 			)}

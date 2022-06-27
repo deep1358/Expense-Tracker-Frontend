@@ -1,5 +1,7 @@
 export const initialState = {
 	expenses: null,
+	yearWiseExpenses: {},
+	monthWiseExpenses: {},
 	focusedExpense: {},
 	error: null,
 	currentYear: new Date().getFullYear(),
@@ -9,4 +11,6 @@ export const initialState = {
 	creatingExpense: false,
 	updatingExpense: false,
 	deletingExpense: false,
+	isGettingYearWiseExpenses: false,
+	isGettingMonthWiseExpenses: false,
 };
