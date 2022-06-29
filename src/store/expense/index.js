@@ -12,4 +12,5 @@ const slice = createSlice({
 
 export default slice.reducer;
 
-export const { setCurrentYear, setCurrentMonth } = slice.actions;
+export const { setCurrentYear, setCurrentMonth, setFocusedExpense } =
+	slice.actions;

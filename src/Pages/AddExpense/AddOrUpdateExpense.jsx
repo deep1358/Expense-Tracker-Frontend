@@ -5,6 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { addExpense } from "../../store/expense/ThunkFunctions/addExpense";
 import { getExpense } from "../../store/expense/ThunkFunctions/getExpense";
 import { updateExpense } from "../../store/expense/ThunkFunctions/updateExpense";
+import { setFocusedExpense } from "../../store/expense/index";
 
 const months = [
 	"January",
@@ -51,7 +52,7 @@ const AddOrUpdateExpense = () => {
 			if (Object.keys(focusedExpense).length > 0)
 				setForm({
 					amount: focusedExpense.amount,
-					date: null,
+					date: "",
 					category: focusedExpense.category,
 					note: focusedExpense.note,
 				});
@@ -62,6 +63,7 @@ const AddOrUpdateExpense = () => {
 				category: "",
 				note: "",
 			});
+			dispatch(setFocusedExpense({}));
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [Object.values(focusedExpense).length, id]);
@@ -74,7 +76,7 @@ const AddOrUpdateExpense = () => {
 		}));
 	};
 
-	const handleSubmit = (e) => {
+	const handleSaveOrUpdate = (e) => {
 		e.preventDefault();
 		if (id === undefined) {
 			const year = date.split("-")[0];
@@ -94,13 +96,30 @@ const AddOrUpdateExpense = () => {
 			);
 	};
 
+	const handleAddMore = () => {
+		const year = date.split("-")[0];
+		const month = date.split("-")[1];
+		dispatch(addExpense({ form, year, month: months[month - 1] }));
+		setForm({
+			amount: 0,
+			date: currentDate.toISOString().split("T")[0],
+			category: "",
+			note: "",
+		});
+	};
+
 	if (creatingExpense) return <div>Creating Expense</div>;
 	if (updatingExpense) return <div>Updating Expense</div>;
 
 	return (
-		<form>
+		<form onSubmit={handleSaveOrUpdate}>
 			{/* Form for adding expense */}
-			<select name="category" value={category} onChange={handleChange}>
+			<select
+				required
+				name="category"
+				value={category}
+				onChange={handleChange}
+			>
 				<option defaultValue="Select Category">Select Category</option>
 				{user?.categories?.map((category, index) => (
 					<option value={category} key={index}>
@@ -109,6 +128,7 @@ const AddOrUpdateExpense = () => {
 				))}
 			</select>
 			<input
+				required
 				value={amount}
 				name="amount"
 				onChange={handleChange}
@@ -131,7 +151,10 @@ const AddOrUpdateExpense = () => {
 				type="text"
 				placeholder="Note"
 			/>
-			<button onClick={handleSubmit}>Save</button>
+			{!Object.keys(focusedExpense).length > 0 && (
+				<button onClick={handleAddMore}>Add More</button>
+			)}
+			<button type="submit">Save</button>
 		</form>
 	);
 };

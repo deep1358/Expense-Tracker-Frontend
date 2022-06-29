@@ -57,6 +57,9 @@ const Navbar = () => {
 					<button>
 						<Link to="categories">My Categories</Link>
 					</button>
+					<button>
+						<Link to="visulization">Vizulization</Link>
+					</button>
 				</>
 			)}
 		</>

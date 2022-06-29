@@ -1,8 +1,9 @@
 export const initialState = {
-	expenses: null,
+	expenses: [],
 	yearWiseExpenses: {},
 	monthWiseExpenses: {},
 	focusedExpense: {},
+	categoryWiseExpensesViz: [],
 	error: null,
 	currentYear: new Date().getFullYear(),
 	currentMonth: new Date().getMonth() + 1,
@@ -13,4 +14,5 @@ export const initialState = {
 	deletingExpense: false,
 	isGettingYearWiseExpenses: false,
 	isGettingMonthWiseExpenses: false,
+	gettingCategoryWiseExpensesViz: false,
 };

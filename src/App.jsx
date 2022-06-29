@@ -12,6 +12,7 @@ import AddOrUpdateExpense from "./Pages/AddExpense/AddOrUpdateExpense";
 import Categories from "./Pages/Category/Categories";
 import YearWiseExpense from "./Pages/YearWiseExpense/YearWiseExpense";
 import MonthWiseExpense from "./Pages/MonthWiseExpense.jsx/MonthWiseExpense";
+import Visulization from "./Pages/Visulization/Visulization";
 
 function App() {
 	const dispatch = useDispatch();
@@ -57,6 +58,7 @@ function App() {
 							path="/updateExpense/:id"
 							element={<AddOrUpdateExpense />}
 						/>
+						<Route path={`/visulization`} element={<Visulization />} />
 						<Route path={`/year`} element={<YearWiseExpense />} />
 						<Route path={`/year/:year`} element={<MonthWiseExpense />} />
 						<Route

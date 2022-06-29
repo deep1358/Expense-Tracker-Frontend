@@ -5,4 +5,7 @@ export const reducers = {
 	setCurrentMonth: (state, action) => {
 		state.currentMonth = action.payload;
 	},
+	setFocusedExpense: (state, action) => {
+		state.focusedExpense = action.payload;
+	},
 };

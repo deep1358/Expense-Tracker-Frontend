@@ -5,6 +5,7 @@ import { updateExpense } from "./ThunkFunctions/updateExpense";
 import { getExpense } from "./ThunkFunctions/getExpense";
 import { getYearWiseExpenses } from "./ThunkFunctions/getYearWiseExpenses";
 import { getMonthWiseExpenses } from "./ThunkFunctions/getMonthWiseExpenses";
+import { getCategoryWiseExpenseViz } from "./ThunkFunctions/getCategoryWiseExpenseViz";
 
 export const extraReducers = {
 	[getExpenses.pending]: (state) => {
@@ -106,6 +107,20 @@ export const extraReducers = {
 	},
 	[getMonthWiseExpenses.rejected]: (state, action) => {
 		state.isGettingMonthWiseExpenses = false;
+		state.error = action.error;
+	},
+
+	[getCategoryWiseExpenseViz.pending]: (state) => {
+		state.gettingCategoryWiseExpensesViz = true;
+	},
+	[getCategoryWiseExpenseViz.fulfilled]: (state, action) => {
+		const { expenses, errorMessage } = action.payload;
+		state.gettingCategoryWiseExpensesViz = false;
+		state.errorMessage = errorMessage;
+		state.categoryWiseExpensesViz = expenses;
+	},
+	[getCategoryWiseExpenseViz.rejected]: (state, action) => {
+		state.gettingCategoryWiseExpensesViz = false;
 		state.error = action.error;
 	},
 };

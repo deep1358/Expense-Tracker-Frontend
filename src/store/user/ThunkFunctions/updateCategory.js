@@ -5,7 +5,7 @@ import { error } from "./commonError";
 export const updateCategory = createAsyncThunk(
 	"user/updateCategory",
 	async ([oldValue, newValue]) => {
-		console.log(oldValue, newValue);
+		// console.log(oldValue, newValue);
 		try {
 			const res = await axios.patch("/category", {
 				oldValue,
