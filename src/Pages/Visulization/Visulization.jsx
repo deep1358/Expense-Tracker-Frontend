@@ -1,41 +1,120 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { getCategoryWiseExpenseViz } from "../../store/expense/ThunkFunctions/getCategoryWiseExpenseViz";
-import Barchart from "../../Components/BarChart/BarChart";
+import { useSelector } from "react-redux";
+import CategoryWiseExpenseViz from "../../Components/CategoryWiseExpenseViz/CategoryWiseExpenseViz";
+import DayWiseExpenseViz from "../../Components/DayWiseExpenseViz/DayWiseExpenseViz";
+import MonthWiseExpenseViz from "../../Components/MonthWiseExpenseViz/MonthWiseExpenseViz";
+import YearWiseExpenseViz from "../../Components/YearWiseExpenseViz/YearWiseExpenseViz";
+
+const months = [
+	"January",
+	"February",
+	"March",
+	"April",
+	"May",
+	"June",
+	"July",
+	"August",
+	"September",
+	"October",
+	"November",
+	"December",
+];
+
+const _31DaysMonths = [
+	"January",
+	"March",
+	"May",
+	"July",
+	"August",
+	"October",
+	"December",
+];
+const _30DaysMonths = [
+	"January",
+	"March",
+	"April",
+	"May",
+	"June",
+	"July",
+	"August",
+	"September",
+	"October",
+	"November",
+	"December",
+];
+
+const fixedDays = [
+	"01",
+	"02",
+	"03",
+	"04",
+	"05",
+	"06",
+	"07",
+	"08",
+	"09",
+	"10",
+	"11",
+	"12",
+	"13",
+	"14",
+	"15",
+	"16",
+	"17",
+	"18",
+	"19",
+	"20",
+	"21",
+	"22",
+	"23",
+	"24",
+	"25",
+	"26",
+	"27",
+	"28",
+	"29",
+	"30",
+	"31",
+];
 
 const Visulization = () => {
-	const dispatch = useDispatch();
 	const { user } = useSelector((state) => state.user);
-	const { categoryWiseExpensesViz, gettingCategoryWiseExpensesViz } =
-		useSelector((state) => state.expense);
+	const { yearWiseExpenses } = useSelector((state) => state.expense);
 
-	const [data, setData] = useState([]);
+	const [vizCategories, setVizCategories] = useState([]);
 
 	useEffect(() => {
-		if (user) {
-			dispatch(getCategoryWiseExpenseViz(["2022", "All"]));
-			setData(categoryWiseExpensesViz);
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [categoryWiseExpensesViz.length, user, data]);
+		if (user) setVizCategories(user.categories);
+	}, [user]);
 
 	return (
-		<div style={{ width: "50vw", height: "80vh" }}>
-			<button
-				onClick={() => {
-					dispatch(getCategoryWiseExpenseViz(["All", "7"]));
-				}}
-			>
-				Click
-			</button>
-			{gettingCategoryWiseExpensesViz ? (
-				<div>Loading...</div>
-			) : (
-				<Barchart data={categoryWiseExpensesViz} />
-			)}
-		</div>
+		<>
+			<CategoryWiseExpenseViz
+				months={months}
+				fixedDays={fixedDays}
+				_30DaysMonths={_30DaysMonths}
+				_31DaysMonths={_31DaysMonths}
+				yearWiseExpenses={yearWiseExpenses}
+			/>
+			<DayWiseExpenseViz
+				vizCategories={vizCategories}
+				months={months}
+				yearWiseExpenses={yearWiseExpenses}
+			/>
+			<MonthWiseExpenseViz
+				vizCategories={vizCategories}
+				fixedDays={fixedDays}
+				yearWiseExpenses={yearWiseExpenses}
+			/>
+			<YearWiseExpenseViz
+				vizCategories={vizCategories}
+				months={months}
+				fixedDays={fixedDays}
+				_30DaysMonths={_30DaysMonths}
+				_31DaysMonths={_31DaysMonths}
+			/>
+		</>
 	);
 };
 

@@ -6,6 +6,9 @@ import { getExpense } from "./ThunkFunctions/getExpense";
 import { getYearWiseExpenses } from "./ThunkFunctions/getYearWiseExpenses";
 import { getMonthWiseExpenses } from "./ThunkFunctions/getMonthWiseExpenses";
 import { getCategoryWiseExpenseViz } from "./ThunkFunctions/getCategoryWiseExpenseViz";
+import { getDayWiseExpenseViz } from "./ThunkFunctions/getDayWiseExpenseViz";
+import { getMonthWiseExpenseViz } from "./ThunkFunctions/getMonthWiseExpensesViz";
+import { getYearWiseExpenseViz } from "./ThunkFunctions/getYearWiseExpenseViz";
 
 export const extraReducers = {
 	[getExpenses.pending]: (state) => {
@@ -116,11 +119,53 @@ export const extraReducers = {
 	[getCategoryWiseExpenseViz.fulfilled]: (state, action) => {
 		const { expenses, errorMessage } = action.payload;
 		state.gettingCategoryWiseExpensesViz = false;
-		state.errorMessage = errorMessage;
+		state.categoryWiseExpensesVizError = errorMessage;
 		state.categoryWiseExpensesViz = expenses;
 	},
 	[getCategoryWiseExpenseViz.rejected]: (state, action) => {
 		state.gettingCategoryWiseExpensesViz = false;
+		state.error = action.error;
+	},
+
+	[getDayWiseExpenseViz.pending]: (state) => {
+		state.gettingDayWiseExpensesViz = true;
+	},
+	[getDayWiseExpenseViz.fulfilled]: (state, action) => {
+		const { expenses, errorMessage } = action.payload;
+		state.gettingDayWiseExpensesViz = false;
+		state.dayWiseExpensesVizError = errorMessage;
+		state.dayWiseExpensesViz = expenses;
+	},
+	[getDayWiseExpenseViz.rejected]: (state, action) => {
+		state.gettingDayWiseExpensesViz = false;
+		state.error = action.error;
+	},
+
+	[getMonthWiseExpenseViz.pending]: (state) => {
+		state.gettingMonthWiseExpensesViz = true;
+	},
+	[getMonthWiseExpenseViz.fulfilled]: (state, action) => {
+		const { expenses, errorMessage } = action.payload;
+		state.gettingMonthWiseExpensesViz = false;
+		state.monthWiseExpensesVizError = errorMessage;
+		state.monthWiseExpensesViz = expenses;
+	},
+	[getMonthWiseExpenseViz.rejected]: (state, action) => {
+		state.gettingMonthWiseExpensesViz = false;
+		state.error = action.error;
+	},
+
+	[getYearWiseExpenseViz.pending]: (state) => {
+		state.gettingYearWiseExpensesViz = true;
+	},
+	[getYearWiseExpenseViz.fulfilled]: (state, action) => {
+		const { expenses, errorMessage } = action.payload;
+		state.gettingYearWiseExpensesViz = false;
+		state.yearWiseExpensesVizError = errorMessage;
+		state.yearWiseExpensesViz = expenses;
+	},
+	[getYearWiseExpenseViz.rejected]: (state, action) => {
+		state.gettingYearWiseExpensesViz = false;
 		state.error = action.error;
 	},
 };

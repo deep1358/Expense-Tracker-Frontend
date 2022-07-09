@@ -43,10 +43,7 @@ const AddOrUpdateExpense = () => {
 
 	const { id } = useParams();
 
-	// console.log("Page updated");
-
 	useEffect(() => {
-		// console.log(id);
 		if (id !== undefined) {
 			dispatch(getExpense(id));
 			if (Object.keys(focusedExpense).length > 0)
@@ -82,7 +79,7 @@ const AddOrUpdateExpense = () => {
 			const year = date.split("-")[0];
 			const month = date.split("-")[1];
 			dispatch(
-				addExpense({ form, year, month: months[month - 1], navigate })
+				addExpense({ form, year, month: months[+month - 1], navigate })
 			);
 		} else
 			dispatch(
@@ -99,7 +96,7 @@ const AddOrUpdateExpense = () => {
 	const handleAddMore = () => {
 		const year = date.split("-")[0];
 		const month = date.split("-")[1];
-		dispatch(addExpense({ form, year, month: months[month - 1] }));
+		dispatch(addExpense({ form, year, month: months[month] }));
 		setForm({
 			amount: 0,
 			date: currentDate.toISOString().split("T")[0],

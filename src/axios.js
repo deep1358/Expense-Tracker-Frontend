@@ -1,5 +1,4 @@
 import axios from "axios";
-// import { store } from "redux";
 
 axios.defaults.withCredentials = true;
 
@@ -11,15 +10,10 @@ const customAxios = axios.create({
 const requestHandler = (request) => request;
 
 const responseHandler = (response) => {
-	// console.log(response, "Good");
-	// if (response.status === 401) {
-	// 	window.location = "/login";
-	// }
 	return response;
 };
 
 const errorHandler = (error) => {
-	// console.log(error, "Error");
 	if (error.response.status === 401) window.location = "/login";
 	else if (error.response.status === 0) alert("Server is not running");
 	return Promise.reject(error);

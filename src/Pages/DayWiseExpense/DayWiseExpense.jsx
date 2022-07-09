@@ -26,8 +26,6 @@ const months = [
 ];
 
 const DayWiseExpense = () => {
-	// console.log("rendered");
-
 	const { expenses, gettingExpenses, deletingExpense } = useSelector(
 		(state) => state.expense
 	);

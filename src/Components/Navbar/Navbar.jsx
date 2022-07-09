@@ -1,7 +1,7 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { deleteUser } from "../../store/user/ThunkFunctions/deleteUser";
+// import { deleteUser } from "../../store/user/ThunkFunctions/deleteUser";
 import { logoutUser } from "../../store/user/ThunkFunctions/logoutUser";
 
 const Navbar = () => {
@@ -36,9 +36,9 @@ const Navbar = () => {
 			{user && (
 				<>
 					<p>{user.userName}</p>
-					<button onClick={() => dispatch(deleteUser())}>
+					{/* <button onClick={() => dispatch(deleteUser())}>
 						Delete User
-					</button>
+					</button> */}
 					<button onClick={() => dispatch(logoutUser())}>Logout</button>
 					<button>
 						<Link to="/year">Year</Link>
