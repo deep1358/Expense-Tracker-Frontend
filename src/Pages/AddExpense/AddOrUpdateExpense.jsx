@@ -7,26 +7,14 @@ import { getExpense } from "../../store/expense/ThunkFunctions/getExpense";
 import { updateExpense } from "../../store/expense/ThunkFunctions/updateExpense";
 import { setFocusedExpense } from "../../store/expense/index";
 
-const months = [
-	"January",
-	"February",
-	"March",
-	"April",
-	"May",
-	"June",
-	"July",
-	"August",
-	"September",
-	"October",
-	"November",
-	"December",
-];
-
 const AddOrUpdateExpense = () => {
 	const { user } = useSelector((state) => state.user);
 	const { creatingExpense, focusedExpense, updatingExpense } = useSelector(
 		(state) => state.expense
 	);
+
+	const { months } = useSelector((state) => state.utils);
+
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
@@ -148,10 +136,10 @@ const AddOrUpdateExpense = () => {
 				type="text"
 				placeholder="Note"
 			/>
+			<button type="submit">Save</button>
 			{!Object.keys(focusedExpense).length > 0 && (
 				<button onClick={handleAddMore}>Add More</button>
 			)}
-			<button type="submit">Save</button>
 		</form>
 	);
 };

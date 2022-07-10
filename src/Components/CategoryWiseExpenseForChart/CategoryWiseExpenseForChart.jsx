@@ -1,23 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getCategoryWiseExpenseViz } from "../../store/expense/ThunkFunctions/getCategoryWiseExpenseViz";
+import { getCategoryWiseExpenseForChart } from "../../store/expense/ThunkFunctions/getCategoryWiseExpenseForChart";
 import BarOrAreaChart from "../BarOrAreaChart/BarOrAreaChart";
 import DonutChart from "../DonutChart/DonutChart";
 
-const CategoryWiseExpenseViz = ({
-	months,
-	yearWiseExpenses,
-	fixedDays,
-	_30DaysMonths,
-	_31DaysMonths,
-}) => {
+const CategoryWiseExpenseForChart = ({ yearWiseExpense }) => {
 	const dispatch = useDispatch();
 
 	const {
-		categoryWiseExpensesViz,
-		gettingCategoryWiseExpensesViz,
-		categoryWiseExpensesVizError,
+		categoryWiseExpenseForChart,
+		gettingCategoryWiseExpenseForChart,
+		categoryWiseExpenseForChartError,
 	} = useSelector((state) => state.expense);
+
+	const { months, fixedDays, _30DaysMonths, _31DaysMonths } = useSelector(
+		(state) => state.utils
+	);
 
 	const { user } = useSelector((state) => state.user);
 
@@ -36,7 +34,7 @@ const CategoryWiseExpenseViz = ({
 	useEffect(() => {
 		if (user) {
 			dispatch(
-				getCategoryWiseExpenseViz([
+				getCategoryWiseExpenseForChart([
 					categoryWiseExpenseYear,
 					categoryWiseExpenseMonth,
 					categoryWiseExpenseDay,
@@ -88,7 +86,7 @@ const CategoryWiseExpenseViz = ({
 	}, [categoryWiseExpenseDay, categoryWiseExpenseYear]);
 
 	useEffect(() => {
-		setCategoryWiseYears(Object.keys(yearWiseExpenses).sort((a, b) => b - a));
+		setCategoryWiseYears(Object.keys(yearWiseExpense).sort((a, b) => b - a));
 		if (
 			categoryWiseExpenseDay === "29" &&
 			categoryWiseExpenseMonth === "February"
@@ -100,7 +98,7 @@ const CategoryWiseExpenseViz = ({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-		Object.keys(yearWiseExpenses).length,
+		Object.keys(yearWiseExpense).length,
 		categoryWiseExpenseMonth,
 		categoryWiseExpenseDay,
 	]);
@@ -112,7 +110,7 @@ const CategoryWiseExpenseViz = ({
 	const handleCategoryWiseExpenseYearChange = (e) => {
 		setCategoryWiseExpenseYear(e.target.value);
 		dispatch(
-			getCategoryWiseExpenseViz([
+			getCategoryWiseExpenseForChart([
 				e.target.value,
 				months.indexOf(categoryWiseExpenseMonth) === -1
 					? "All"
@@ -125,7 +123,7 @@ const CategoryWiseExpenseViz = ({
 	const handleCategoryWiseExpenseMonthChange = (e) => {
 		setCategoryWiseExpenseMonth(e.target.value);
 		dispatch(
-			getCategoryWiseExpenseViz([
+			getCategoryWiseExpenseForChart([
 				categoryWiseExpenseYear,
 				months.indexOf(e.target.value) === -1
 					? "All"
@@ -138,7 +136,7 @@ const CategoryWiseExpenseViz = ({
 	const handleCategoryWiseExpenseDayChange = (e) => {
 		setCategoryWiseExpenseDay(e.target.value);
 		dispatch(
-			getCategoryWiseExpenseViz([
+			getCategoryWiseExpenseForChart([
 				categoryWiseExpenseYear,
 				months.indexOf(categoryWiseExpenseMonth) === -1
 					? "All"
@@ -195,20 +193,23 @@ const CategoryWiseExpenseViz = ({
 				<option value="bar">Bar</option>
 				<option value="donut">Donut</option>
 			</select>
-			{gettingCategoryWiseExpensesViz ? (
+			{gettingCategoryWiseExpenseForChart ? (
 				<div>Category Loading...</div>
-			) : categoryWiseExpensesVizError ? (
-				<div>{categoryWiseExpensesVizError}</div>
+			) : categoryWiseExpenseForChartError ? (
+				<div>{categoryWiseExpenseForChartError}</div>
 			) : (
-				categoryWiseExpensesViz &&
+				categoryWiseExpenseForChart &&
 				(chartType === "donut" ? (
-					<DonutChart data={categoryWiseExpensesViz} name="category" />
+					<DonutChart data={categoryWiseExpenseForChart} name="category" />
 				) : (
-					<BarOrAreaChart data={categoryWiseExpensesViz} name="category" />
+					<BarOrAreaChart
+						data={categoryWiseExpenseForChart}
+						name="category"
+					/>
 				))
 			)}
 		</div>
 	);
 };
 
-export default CategoryWiseExpenseViz;
+export default CategoryWiseExpenseForChart;

@@ -2,7 +2,7 @@ import { memo, useEffect } from "react";
 import { useState } from "react";
 import Chart from "react-apexcharts";
 
-const BarOrAreaChart = ({ data, name, chartType = "bar" }) => {
+const BarOrAreaChart = ({ data = [], name, chartType = "bar" }) => {
 	const [options, setOptions] = useState({});
 	const [series, setSeries] = useState([]);
 

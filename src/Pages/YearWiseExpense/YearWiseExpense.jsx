@@ -1,31 +1,31 @@
 import React from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getYearWiseExpenses } from "../../store/expense/ThunkFunctions/getYearWiseExpenses";
+import { getYearWiseExpense } from "../../store/expense/ThunkFunctions/getYearWiseExpense";
 import { Link } from "react-router-dom";
 
 const YearWiseExpense = () => {
 	const dispatch = useDispatch();
-	const { yearWiseExpenses, isGettingYearWiseExpenses } = useSelector(
+	const { yearWiseExpense, gettingYearWiseExpense } = useSelector(
 		(state) => state.expense
 	);
 	const { user } = useSelector((state) => state.user);
 
 	useEffect(() => {
-		user && dispatch(getYearWiseExpenses());
+		user && dispatch(getYearWiseExpense());
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [user]);
 
-	if (isGettingYearWiseExpenses) return <div>Getting Expenses...</div>;
+	if (gettingYearWiseExpense) return <div>Getting Expenses...</div>;
 	return (
 		<div>
-			{Object.keys(yearWiseExpenses)?.map((expense, index) => (
+			{Object.keys(yearWiseExpense)?.map((expense, index) => (
 				<Link
 					style={{ margin: "10px" }}
 					key={index}
 					to={`/year/${expense}`}
 				>
-					{expense}: {yearWiseExpenses[expense]}
+					{expense}: {yearWiseExpense[expense]}
 				</Link>
 			))}
 		</div>

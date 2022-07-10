@@ -1,19 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getDayWiseExpenseViz } from "../../store/expense/ThunkFunctions/getDayWiseExpenseViz";
-import { getYearWiseExpenses } from "../../store/expense/ThunkFunctions/getYearWiseExpenses";
+import { getDayWiseExpenseForChart } from "../../store/expense/ThunkFunctions/getDayWiseExpenseForChart";
+import { getYearWiseExpense } from "../../store/expense/ThunkFunctions/getYearWiseExpense";
 import BarOrAreaChart from "../BarOrAreaChart/BarOrAreaChart";
 
-const DayWiseExpenseViz = ({ months, yearWiseExpenses, vizCategories }) => {
+const DayWiseExpenseForChart = ({ yearWiseExpense, chartCategories }) => {
 	const dispatch = useDispatch();
 
 	const {
-		dayWiseExpensesViz,
-		gettingDayWiseExpensesViz,
-		dayWiseExpensesVizError,
+		dayWiseExpenseForChart,
+		gettingDayWiseExpenseForChart,
+		dayWiseExpenseForChartError,
 		currentMonth,
 		currentYear,
 	} = useSelector((state) => state.expense);
+
+	const { months } = useSelector((state) => state.utils);
 
 	const { user } = useSelector((state) => state.user);
 
@@ -24,7 +26,7 @@ const DayWiseExpenseViz = ({ months, yearWiseExpenses, vizCategories }) => {
 	useEffect(() => {
 		if (user)
 			dispatch(
-				getDayWiseExpenseViz([
+				getDayWiseExpenseForChart([
 					currentYear,
 					currentMonth,
 					dayWiseExpenseCategory,
@@ -35,18 +37,18 @@ const DayWiseExpenseViz = ({ months, yearWiseExpenses, vizCategories }) => {
 
 	useEffect(() => {
 		if (user) {
-			dispatch(getYearWiseExpenses());
+			dispatch(getYearWiseExpense());
 
 			setDayWiseExpenseYear(currentYear);
 			setDayWiseExpenseMonth(months[currentMonth - 1]);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [user, Object(yearWiseExpenses).length]);
+	}, [user, Object(yearWiseExpense).length]);
 
 	const handleDayWiseExpenseYearChange = (e) => {
 		setDayWiseExpenseYear(e.target.value);
 		dispatch(
-			getDayWiseExpenseViz([
+			getDayWiseExpenseForChart([
 				e.target.value,
 				months.indexOf(dayWiseExpenseMonth) === -1
 					? "All"
@@ -59,7 +61,7 @@ const DayWiseExpenseViz = ({ months, yearWiseExpenses, vizCategories }) => {
 	const handleDayWiseExpenseMonthChange = (e) => {
 		setDayWiseExpenseMonth(e.target.value);
 		dispatch(
-			getDayWiseExpenseViz([
+			getDayWiseExpenseForChart([
 				dayWiseExpenseYear,
 				months.indexOf(e.target.value) === -1
 					? "All"
@@ -72,7 +74,7 @@ const DayWiseExpenseViz = ({ months, yearWiseExpenses, vizCategories }) => {
 	const handleDayWiseExpenseCategoryChange = (e) => {
 		setDayWiseExpenseCategory(e.target.value);
 		dispatch(
-			getDayWiseExpenseViz([
+			getDayWiseExpenseForChart([
 				dayWiseExpenseYear,
 				months.indexOf(dayWiseExpenseMonth) === -1
 					? "All"
@@ -88,7 +90,7 @@ const DayWiseExpenseViz = ({ months, yearWiseExpenses, vizCategories }) => {
 				value={dayWiseExpenseYear}
 				onChange={handleDayWiseExpenseYearChange}
 			>
-				{Object.keys(yearWiseExpenses)
+				{Object.keys(yearWiseExpense)
 					?.sort((a, b) => b - a)
 					.map((year) => (
 						<option key={year} value={year}>
@@ -113,7 +115,7 @@ const DayWiseExpenseViz = ({ months, yearWiseExpenses, vizCategories }) => {
 				onChange={handleDayWiseExpenseCategoryChange}
 			>
 				<option value="All">All</option>
-				{vizCategories?.map((category) => {
+				{chartCategories?.map((category) => {
 					return (
 						<option key={category} value={category}>
 							{category}
@@ -121,14 +123,14 @@ const DayWiseExpenseViz = ({ months, yearWiseExpenses, vizCategories }) => {
 					);
 				})}
 			</select>
-			{gettingDayWiseExpensesViz ? (
+			{gettingDayWiseExpenseForChart ? (
 				<div>Day Loading...</div>
-			) : dayWiseExpensesVizError ? (
-				<div>{dayWiseExpensesVizError}</div>
+			) : dayWiseExpenseForChartError ? (
+				<div>{dayWiseExpenseForChartError}</div>
 			) : (
 				<BarOrAreaChart
 					name="day"
-					data={dayWiseExpensesViz}
+					data={dayWiseExpenseForChart}
 					chartType="area"
 				/>
 			)}
@@ -136,4 +138,4 @@ const DayWiseExpenseViz = ({ months, yearWiseExpenses, vizCategories }) => {
 	);
 };
 
-export default DayWiseExpenseViz;
+export default DayWiseExpenseForChart;

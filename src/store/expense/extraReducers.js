@@ -3,12 +3,12 @@ import { getExpenses } from "./ThunkFunctions/getExpenses";
 import { deleteExpense } from "./ThunkFunctions/deleteExpense";
 import { updateExpense } from "./ThunkFunctions/updateExpense";
 import { getExpense } from "./ThunkFunctions/getExpense";
-import { getYearWiseExpenses } from "./ThunkFunctions/getYearWiseExpenses";
-import { getMonthWiseExpenses } from "./ThunkFunctions/getMonthWiseExpenses";
-import { getCategoryWiseExpenseViz } from "./ThunkFunctions/getCategoryWiseExpenseViz";
-import { getDayWiseExpenseViz } from "./ThunkFunctions/getDayWiseExpenseViz";
-import { getMonthWiseExpenseViz } from "./ThunkFunctions/getMonthWiseExpensesViz";
-import { getYearWiseExpenseViz } from "./ThunkFunctions/getYearWiseExpenseViz";
+import { getYearWiseExpense } from "./ThunkFunctions/getYearWiseExpense";
+import { getMonthWiseExpense } from "./ThunkFunctions/getMonthWiseExpense";
+import { getCategoryWiseExpenseForChart } from "./ThunkFunctions/getCategoryWiseExpenseForChart";
+import { getDayWiseExpenseForChart } from "./ThunkFunctions/getDayWiseExpenseForChart";
+import { getMonthWiseExpenseForChart } from "./ThunkFunctions/getMonthWiseExpenseForChart";
+import { getYearWiseExpenseForChart } from "./ThunkFunctions/getYearWiseExpenseForChart";
 
 export const extraReducers = {
 	[getExpenses.pending]: (state) => {
@@ -85,87 +85,87 @@ export const extraReducers = {
 		state.error = action.error;
 	},
 
-	[getYearWiseExpenses.pending]: (state) => {
-		state.isGettingYearWiseExpenses = true;
+	[getYearWiseExpense.pending]: (state) => {
+		state.gettingYearWiseExpense = true;
 	},
-	[getYearWiseExpenses.fulfilled]: (state, action) => {
+	[getYearWiseExpense.fulfilled]: (state, action) => {
 		const { expenses, errorMessage } = action.payload;
-		state.isGettingYearWiseExpenses = false;
+		state.gettingYearWiseExpense = false;
 		state.errorMessage = errorMessage;
-		state.yearWiseExpenses = expenses;
+		state.yearWiseExpense = expenses;
 	},
-	[getYearWiseExpenses.rejected]: (state, action) => {
-		state.isGettingYearWiseExpenses = false;
+	[getYearWiseExpense.rejected]: (state, action) => {
+		state.gettingYearWiseExpense = false;
 		state.error = action.error;
 	},
 
-	[getMonthWiseExpenses.pending]: (state) => {
-		state.isGettingMonthWiseExpenses = true;
+	[getMonthWiseExpense.pending]: (state) => {
+		state.gettingMonthWiseExpense = true;
 	},
-	[getMonthWiseExpenses.fulfilled]: (state, action) => {
+	[getMonthWiseExpense.fulfilled]: (state, action) => {
 		const { expenses, errorMessage } = action.payload;
-		state.isGettingMonthWiseExpenses = false;
+		state.gettingMonthWiseExpense = false;
 		state.errorMessage = errorMessage;
-		state.monthWiseExpenses = expenses;
+		state.monthWiseExpense = expenses;
 	},
-	[getMonthWiseExpenses.rejected]: (state, action) => {
-		state.isGettingMonthWiseExpenses = false;
+	[getMonthWiseExpense.rejected]: (state, action) => {
+		state.gettingMonthWiseExpense = false;
 		state.error = action.error;
 	},
 
-	[getCategoryWiseExpenseViz.pending]: (state) => {
-		state.gettingCategoryWiseExpensesViz = true;
+	[getCategoryWiseExpenseForChart.pending]: (state) => {
+		state.gettingCategoryWiseExpenseForChart = true;
 	},
-	[getCategoryWiseExpenseViz.fulfilled]: (state, action) => {
+	[getCategoryWiseExpenseForChart.fulfilled]: (state, action) => {
 		const { expenses, errorMessage } = action.payload;
-		state.gettingCategoryWiseExpensesViz = false;
-		state.categoryWiseExpensesVizError = errorMessage;
-		state.categoryWiseExpensesViz = expenses;
+		state.gettingCategoryWiseExpenseForChart = false;
+		state.categoryWiseExpenseForChartError = errorMessage;
+		state.categoryWiseExpenseForChart = expenses;
 	},
-	[getCategoryWiseExpenseViz.rejected]: (state, action) => {
-		state.gettingCategoryWiseExpensesViz = false;
+	[getCategoryWiseExpenseForChart.rejected]: (state, action) => {
+		state.gettingCategoryWiseExpenseForChart = false;
 		state.error = action.error;
 	},
 
-	[getDayWiseExpenseViz.pending]: (state) => {
-		state.gettingDayWiseExpensesViz = true;
+	[getDayWiseExpenseForChart.pending]: (state) => {
+		state.gettingDayWiseExpenseForChart = true;
 	},
-	[getDayWiseExpenseViz.fulfilled]: (state, action) => {
+	[getDayWiseExpenseForChart.fulfilled]: (state, action) => {
 		const { expenses, errorMessage } = action.payload;
-		state.gettingDayWiseExpensesViz = false;
-		state.dayWiseExpensesVizError = errorMessage;
-		state.dayWiseExpensesViz = expenses;
+		state.gettingDayWiseExpenseForChart = false;
+		state.dayWiseExpenseForChartError = errorMessage;
+		state.dayWiseExpenseForChart = expenses;
 	},
-	[getDayWiseExpenseViz.rejected]: (state, action) => {
-		state.gettingDayWiseExpensesViz = false;
+	[getDayWiseExpenseForChart.rejected]: (state, action) => {
+		state.gettingDayWiseExpenseForChart = false;
 		state.error = action.error;
 	},
 
-	[getMonthWiseExpenseViz.pending]: (state) => {
-		state.gettingMonthWiseExpensesViz = true;
+	[getMonthWiseExpenseForChart.pending]: (state) => {
+		state.gettingMonthWiseExpenseForChart = true;
 	},
-	[getMonthWiseExpenseViz.fulfilled]: (state, action) => {
+	[getMonthWiseExpenseForChart.fulfilled]: (state, action) => {
 		const { expenses, errorMessage } = action.payload;
-		state.gettingMonthWiseExpensesViz = false;
-		state.monthWiseExpensesVizError = errorMessage;
-		state.monthWiseExpensesViz = expenses;
+		state.gettingMonthWiseExpenseForChart = false;
+		state.monthWiseExpenseForChartError = errorMessage;
+		state.monthWiseExpenseForChart = expenses;
 	},
-	[getMonthWiseExpenseViz.rejected]: (state, action) => {
-		state.gettingMonthWiseExpensesViz = false;
+	[getMonthWiseExpenseForChart.rejected]: (state, action) => {
+		state.gettingMonthWiseExpenseForChart = false;
 		state.error = action.error;
 	},
 
-	[getYearWiseExpenseViz.pending]: (state) => {
-		state.gettingYearWiseExpensesViz = true;
+	[getYearWiseExpenseForChart.pending]: (state) => {
+		state.gettingYearWiseExpenseForChart = true;
 	},
-	[getYearWiseExpenseViz.fulfilled]: (state, action) => {
+	[getYearWiseExpenseForChart.fulfilled]: (state, action) => {
 		const { expenses, errorMessage } = action.payload;
-		state.gettingYearWiseExpensesViz = false;
-		state.yearWiseExpensesVizError = errorMessage;
-		state.yearWiseExpensesViz = expenses;
+		state.gettingYearWiseExpenseForChart = false;
+		state.yearWiseExpenseForChartError = errorMessage;
+		state.yearWiseExpenseForChart = expenses;
 	},
-	[getYearWiseExpenseViz.rejected]: (state, action) => {
-		state.gettingYearWiseExpensesViz = false;
+	[getYearWiseExpenseForChart.rejected]: (state, action) => {
+		state.gettingYearWiseExpenseForChart = false;
 		state.error = action.error;
 	},
 };

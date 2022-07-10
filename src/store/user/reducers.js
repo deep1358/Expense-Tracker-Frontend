@@ -1,6 +1,6 @@
 export const reducers = {
 	MakeUnAuthenticated: (state) => {
-		state.isLoggedin = false;
+		state.loggedin = false;
 		state.user = null;
 	},
 };

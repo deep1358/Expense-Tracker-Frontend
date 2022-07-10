@@ -6,7 +6,10 @@ import reportWebVitals from "./reportWebVitals";
 import store from "./store";
 import { Provider } from "react-redux";
 import axios from "axios";
+import { ToastContainer } from "react-toastify";
 import { MakeUnAuthenticated } from "./store/user";
+
+import "react-toastify/dist/ReactToastify.css";
 
 const UNAUTHORIZED = 401;
 const { dispatch } = store; // direct access to redux store.
@@ -24,9 +27,16 @@ axios.interceptors.response.use(
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-	<Provider store={store}>
-		<App />
-	</Provider>
+	<>
+		<ToastContainer
+			position="top-center"
+			hideProgressBar={true}
+			closeOnClick
+		/>
+		<Provider store={store}>
+			<App />
+		</Provider>
+	</>
 );
 
 // If you want to start measuring performance in your app, pass a function

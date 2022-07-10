@@ -12,10 +12,10 @@ const Categories = () => {
 
 	const {
 		user,
-		isCreatingCategory,
-		isFetchingCategories,
-		isDeletingCategory,
-		isUpdatingCategory,
+		creatingCategory,
+		fetchingCategories,
+		deletingCategory,
+		updatingCategory,
 	} = useSelector((state) => state.user);
 	const dispatch = useDispatch();
 
@@ -31,10 +31,10 @@ const Categories = () => {
 
 	const inputRef = useRef();
 
-	if (isCreatingCategory) return <p>Creating Categories...</p>;
-	if (isFetchingCategories) return <p>Fetching Categories...</p>;
-	if (isDeletingCategory) return <p>Deleting Category...</p>;
-	if (isUpdatingCategory) return <p>Updating Category...</p>;
+	if (creatingCategory) return <p>Creating Categories...</p>;
+	if (fetchingCategories) return <p>Fetching Categories...</p>;
+	if (deletingCategory) return <p>Deleting Category...</p>;
+	if (updatingCategory) return <p>Updating Category...</p>;
 	return (
 		<div>
 			<form onSubmit={AddOrUpdateCategory}>

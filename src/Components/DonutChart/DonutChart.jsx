@@ -2,7 +2,7 @@ import { memo, useEffect } from "react";
 import { useState } from "react";
 import Chart from "react-apexcharts";
 
-const DonutChart = ({ data, name }) => {
+const DonutChart = ({ data = [], name }) => {
 	const [options, setOptions] = useState({});
 	const [series, setSeries] = useState([]);
 

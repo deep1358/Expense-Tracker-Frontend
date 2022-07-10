@@ -1,44 +1,28 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-// import { deleteUser } from "../../store/user/ThunkFunctions/deleteUser";
 import { logoutUser } from "../../store/user/ThunkFunctions/logoutUser";
+import { toast } from "react-toastify";
 
 const Navbar = () => {
 	const dispatch = useDispatch();
-	const { user, isFetchingUser, isLoggingOut } = useSelector(
+	const { user, fetchingUser, loggingOut } = useSelector(
 		(state) => state.user
 	);
 	const { currentMonth, currentYear } = useSelector((state) => state.expense);
 
-	const months = [
-		"January",
-		"February",
-		"March",
-		"April",
-		"May",
-		"June",
-		"July",
-		"August",
-		"September",
-		"October",
-		"November",
-		"December",
-	];
+	const { months } = useSelector((state) => state.utils);
 
 	return (
 		<>
 			<p>
 				{currentMonth} {currentYear}
 			</p>
-			{isFetchingUser && <p>Fetching...</p>}
-			{isLoggingOut && <p>Logging you out...</p>}
+			{fetchingUser && <p>Fetching...</p>}
+			{loggingOut && <p>Logging you out...</p>}
 			{user && (
 				<>
 					<p>{user.userName}</p>
-					{/* <button onClick={() => dispatch(deleteUser())}>
-						Delete User
-					</button> */}
 					<button onClick={() => dispatch(logoutUser())}>Logout</button>
 					<button>
 						<Link to="/year">Year</Link>
@@ -59,6 +43,15 @@ const Navbar = () => {
 					</button>
 					<button>
 						<Link to="visulization">Vizulization</Link>
+					</button>
+					<button
+						onClick={() => {
+							toast.success("Category Added Successfully", {
+								autoClose: 30000,
+							});
+						}}
+					>
+						Show Toast
 					</button>
 				</>
 			)}

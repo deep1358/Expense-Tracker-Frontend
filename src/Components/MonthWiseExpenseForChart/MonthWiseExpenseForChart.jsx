@@ -1,21 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getMonthWiseExpenseViz } from "../../store/expense/ThunkFunctions/getMonthWiseExpensesViz";
+import { getMonthWiseExpenseForChart } from "../../store/expense/ThunkFunctions/getMonthWiseExpenseForChart";
 import BarOrAreaChart from "../BarOrAreaChart/BarOrAreaChart";
 import DonutChart from "../DonutChart/DonutChart";
 
-const MonthWiseExpenseViz = ({
-	vizCategories,
-	fixedDays,
-	yearWiseExpenses,
-}) => {
+const MonthWiseExpenseForChart = ({ chartCategories, yearWiseExpense }) => {
 	const dispatch = useDispatch();
 
 	const {
-		monthWiseExpensesViz,
-		gettingMonthWiseExpensesViz,
-		monthWiseExpensesVizError,
+		monthWiseExpenseForChart,
+		gettingMonthWiseExpenseForChart,
+		monthWiseExpenseForChartError,
 	} = useSelector((state) => state.expense);
+
+	const { fixedDays } = useSelector((state) => state.utils);
 
 	const { user } = useSelector((state) => state.user);
 
@@ -29,7 +27,7 @@ const MonthWiseExpenseViz = ({
 	const handleMonthWiseExpenseYearChange = (e) => {
 		setMonthWiseExpenseYear(e.target.value);
 		dispatch(
-			getMonthWiseExpenseViz([
+			getMonthWiseExpenseForChart([
 				e.target.value,
 				monthWiseExpenseDay,
 				monthWiseExpenseCategory,
@@ -40,7 +38,7 @@ const MonthWiseExpenseViz = ({
 	const handleMonthWiseExpenseDayChange = (e) => {
 		setMonthWiseExpenseDay(e.target.value);
 		dispatch(
-			getMonthWiseExpenseViz([
+			getMonthWiseExpenseForChart([
 				monthWiseExpenseYear,
 				e.target.value,
 				monthWiseExpenseCategory,
@@ -51,7 +49,7 @@ const MonthWiseExpenseViz = ({
 	useEffect(() => {
 		if (user)
 			dispatch(
-				getMonthWiseExpenseViz([
+				getMonthWiseExpenseForChart([
 					monthWiseExpenseYear,
 					monthWiseExpenseDay,
 					monthWiseExpenseCategory,
@@ -63,7 +61,7 @@ const MonthWiseExpenseViz = ({
 	const handleMonthWiseExpenseCategoryChange = (e) => {
 		setMonthWiseExpenseCategory(e.target.value);
 		dispatch(
-			getMonthWiseExpenseViz([
+			getMonthWiseExpenseForChart([
 				monthWiseExpenseYear,
 				monthWiseExpenseDay,
 				e.target.value,
@@ -82,7 +80,7 @@ const MonthWiseExpenseViz = ({
 				onChange={handleMonthWiseExpenseYearChange}
 			>
 				<option value="All">All</option>
-				{Object.keys(yearWiseExpenses)
+				{Object.keys(yearWiseExpense)
 					?.sort((a, b) => b - a)
 					.map((year) => (
 						<option key={year} value={year}>
@@ -108,7 +106,7 @@ const MonthWiseExpenseViz = ({
 				onChange={handleMonthWiseExpenseCategoryChange}
 			>
 				<option value="All">All</option>
-				{vizCategories?.map((category) => {
+				{chartCategories?.map((category) => {
 					return (
 						<option key={category} value={category}>
 							{category}
@@ -120,20 +118,20 @@ const MonthWiseExpenseViz = ({
 				<option value="bar">Bar</option>
 				<option value="donut">Donut</option>
 			</select>
-			{gettingMonthWiseExpensesViz ? (
+			{gettingMonthWiseExpenseForChart ? (
 				<div>Month Loading...</div>
-			) : monthWiseExpensesVizError ? (
-				<div>{monthWiseExpensesVizError}</div>
+			) : monthWiseExpenseForChartError ? (
+				<div>{monthWiseExpenseForChartError}</div>
 			) : (
-				monthWiseExpensesViz &&
+				monthWiseExpenseForChart &&
 				(chartType === "donut" ? (
-					<DonutChart data={monthWiseExpensesViz} name="month" />
+					<DonutChart data={monthWiseExpenseForChart} name="month" />
 				) : (
-					<BarOrAreaChart data={monthWiseExpensesViz} name="month" />
+					<BarOrAreaChart data={monthWiseExpenseForChart} name="month" />
 				))
 			)}
 		</div>
 	);
 };
 
-export default MonthWiseExpenseViz;
+export default MonthWiseExpenseForChart;

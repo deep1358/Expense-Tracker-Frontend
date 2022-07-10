@@ -1,12 +1,12 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
-import { getMonthWiseExpenses } from "../../store/expense/ThunkFunctions/getMonthWiseExpenses";
+import { getMonthWiseExpense } from "../../store/expense/ThunkFunctions/getMonthWiseExpense";
 import { setCurrentYear } from "../../store/expense";
 
 const MonthWiseExpense = () => {
 	const dispatch = useDispatch();
-	const { monthWiseExpenses, isGettingMonthWiseExpenses } = useSelector(
+	const { monthWiseExpense, gettingMonthWiseExpense } = useSelector(
 		(state) => state.expense
 	);
 	const { user } = useSelector((state) => state.user);
@@ -15,20 +15,20 @@ const MonthWiseExpense = () => {
 
 	useEffect(() => {
 		dispatch(setCurrentYear(year));
-		user && dispatch(getMonthWiseExpenses(year));
+		user && dispatch(getMonthWiseExpense(year));
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [user]);
 
-	if (isGettingMonthWiseExpenses) return <div>Getting Expenses...</div>;
+	if (gettingMonthWiseExpense) return <div>Getting Expenses...</div>;
 	return (
 		<div>
-			{Object.keys(monthWiseExpenses)?.map((expense, index) => (
+			{Object.keys(monthWiseExpense)?.map((expense, index) => (
 				<Link
 					style={{ margin: "10px" }}
 					key={index}
 					to={`/year/${year}/${expense}`}
 				>
-					{expense}: {monthWiseExpenses[expense]}
+					{expense}: {monthWiseExpense[expense]}
 				</Link>
 			))}
 		</div>

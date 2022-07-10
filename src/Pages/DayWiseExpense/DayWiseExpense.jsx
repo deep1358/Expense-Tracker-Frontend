@@ -10,26 +10,13 @@ import { getExpenses } from "../../store/expense/ThunkFunctions/getExpenses";
 import { setCurrentMonth, setCurrentYear } from "../../store/expense/index";
 import { deleteExpense } from "../../store/expense/ThunkFunctions/deleteExpense";
 
-const months = [
-	"January",
-	"February",
-	"March",
-	"April",
-	"May",
-	"June",
-	"July",
-	"August",
-	"September",
-	"October",
-	"November",
-	"December",
-];
-
 const DayWiseExpense = () => {
 	const { expenses, gettingExpenses, deletingExpense } = useSelector(
 		(state) => state.expense
 	);
 	const { user } = useSelector((state) => state.user);
+	const { months } = useSelector((state) => state.utils);
+
 	const dispatch = useDispatch();
 	const { year, month } = useParams();
 
