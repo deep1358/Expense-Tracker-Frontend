@@ -15,50 +15,41 @@ import MonthWiseExpense from "./Pages/MonthWiseExpense.jsx/MonthWiseExpense";
 import Visulization from "./Pages/Visulization/Visulization";
 
 function App() {
-	const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-	const [currentMonth] = useState(new Date().getMonth());
-	const [currentYear] = useState(new Date().getFullYear());
+  const [currentMonth] = useState(new Date().getMonth());
+  const [currentYear] = useState(new Date().getFullYear());
 
-	const { months } = useSelector((state) => state.utils);
+  const { months } = useSelector((state) => state.utils);
 
-	useEffect(() => {
-		dispatch(fetchUser());
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+  useEffect(() => {
+    dispatch(fetchUser());
+  }, []);
 
-	return (
-		<BrowserRouter>
-			<Routes>
-				<Route element={<ProtectedRoute />}>
-					<Route path="/" element={<BaseLayout />}>
-						<Route
-							path="/"
-							element={
-								<Navigate
-									to={`/year/${currentYear}/${months[currentMonth]}`}
-								/>
-							}
-						/>
-						<Route path="/addExpense" element={<AddOrUpdateExpense />} />
-						<Route
-							path="/updateExpense/:id"
-							element={<AddOrUpdateExpense />}
-						/>
-						<Route path={`/visulization`} element={<Visulization />} />
-						<Route path={`/year`} element={<YearWiseExpense />} />
-						<Route path={`/year/:year`} element={<MonthWiseExpense />} />
-						<Route
-							path={`/year/:year/:month`}
-							element={<DayWiseExpense />}
-						/>
-						<Route path="/categories" element={<Categories />} />
-					</Route>
-				</Route>
-				<Route path="/login" element={<Login />} />
-			</Routes>
-		</BrowserRouter>
-	);
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route element={<ProtectedRoute />}>
+          <Route path="/" element={<BaseLayout />}>
+            <Route
+              path="/"
+              element={
+                <Navigate to={`/year/${currentYear}/${months[currentMonth]}`} />
+              }
+            />
+            <Route path="/addExpense" element={<AddOrUpdateExpense />} />
+            <Route path="/updateExpense/:id" element={<AddOrUpdateExpense />} />
+            <Route path={`/visulization`} element={<Visulization />} />
+            <Route path={`/year`} element={<YearWiseExpense />} />
+            <Route path={`/year/:year`} element={<MonthWiseExpense />} />
+            <Route path={`/year/:year/:month`} element={<DayWiseExpense />} />
+            <Route path="/categories" element={<Categories />} />
+          </Route>
+        </Route>
+        <Route path="/login" element={<Login />} />
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
 export default App;

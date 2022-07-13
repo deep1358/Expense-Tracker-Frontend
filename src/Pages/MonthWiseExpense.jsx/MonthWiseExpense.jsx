@@ -5,34 +5,33 @@ import { getMonthWiseExpense } from "../../store/expense/ThunkFunctions/getMonth
 import { setCurrentYear } from "../../store/expense";
 
 const MonthWiseExpense = () => {
-	const dispatch = useDispatch();
-	const { monthWiseExpense, gettingMonthWiseExpense } = useSelector(
-		(state) => state.expense
-	);
-	const { user } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  const { monthWiseExpense, gettingMonthWiseExpense } = useSelector(
+    (state) => state.expense
+  );
+  const { user } = useSelector((state) => state.user);
 
-	const { year } = useParams();
+  const { year } = useParams();
 
-	useEffect(() => {
-		dispatch(setCurrentYear(year));
-		user && dispatch(getMonthWiseExpense(year));
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [user]);
+  useEffect(() => {
+    dispatch(setCurrentYear(year));
+    user && dispatch(getMonthWiseExpense(year));
+  }, [user]);
 
-	if (gettingMonthWiseExpense) return <div>Getting Expenses...</div>;
-	return (
-		<div>
-			{Object.keys(monthWiseExpense)?.map((expense, index) => (
-				<Link
-					style={{ margin: "10px" }}
-					key={index}
-					to={`/year/${year}/${expense}`}
-				>
-					{expense}: {monthWiseExpense[expense]}
-				</Link>
-			))}
-		</div>
-	);
+  if (gettingMonthWiseExpense) return <div>Getting Expenses...</div>;
+  return (
+    <div>
+      {Object.keys(monthWiseExpense)?.map((expense, index) => (
+        <Link
+          style={{ margin: "10px" }}
+          key={index}
+          to={`/year/${year}/${expense}`}
+        >
+          {expense}: {monthWiseExpense[expense]}
+        </Link>
+      ))}
+    </div>
+  );
 };
 
 export default MonthWiseExpense;
