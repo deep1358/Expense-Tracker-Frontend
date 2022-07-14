@@ -39,10 +39,10 @@ function App() {
             />
             <Route path="/addExpense" element={<AddOrUpdateExpense />} />
             <Route path="/updateExpense/:id" element={<AddOrUpdateExpense />} />
-            <Route path={`/visulization`} element={<Visulization />} />
-            <Route path={`/year`} element={<YearWiseExpense />} />
-            <Route path={`/year/:year`} element={<MonthWiseExpense />} />
-            <Route path={`/year/:year/:month`} element={<DayWiseExpense />} />
+            <Route path="/visulization" element={<Visulization />} />
+            <Route path="/year" element={<YearWiseExpense />} />
+            <Route path="/year/:year" element={<MonthWiseExpense />} />
+            <Route path="/year/:year/:month" element={<DayWiseExpense />} />
             <Route path="/categories" element={<Categories />} />
           </Route>
         </Route>

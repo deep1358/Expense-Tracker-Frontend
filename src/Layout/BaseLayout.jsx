@@ -4,12 +4,12 @@ import Navbar from "../Components/Navbar/Navbar";
 // import { useSelector } from "react-redux";
 
 const BaseLayout = () => {
-	return (
-		<>
-			<Navbar />
-			<Outlet />
-		</>
-	);
+  return (
+    <>
+      <Navbar />
+      <Outlet />
+    </>
+  );
 };
 
 export default BaseLayout;
