@@ -17,7 +17,7 @@ export const deleteExpense = createAsyncThunk(
       return { errorMessage: "", id };
     } catch (err) {
       showNotification({
-        id: "addExpense",
+        id: "deleteExpense",
         message: err.response.data.message || "Error deleting expense",
         color: "red",
         icon: <X side={16} />,

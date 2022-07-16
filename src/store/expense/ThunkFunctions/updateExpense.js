@@ -23,7 +23,7 @@ export const updateExpense = createAsyncThunk(
       return { errorMessage: "", id };
     } catch (err) {
       showNotification({
-        id: "addExpense",
+        id: "updateExpense",
         message: err.response.data.message || "Error updating expense",
         color: "red",
         icon: <X side={16} />,

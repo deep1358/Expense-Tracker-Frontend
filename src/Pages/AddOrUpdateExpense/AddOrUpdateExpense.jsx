@@ -71,17 +71,21 @@ const AddOrUpdateExpense = () => {
             note: focusedExpense.note,
           });
         }
-      } else {
+      } else
         form.setValues({
           category: "",
           amount: 1,
           date: new Date(),
           note: "",
         });
-        dispatch(setFocusedExpense({}));
-      }
     }
   }, [id, user, Object.values(focusedExpense).length]);
+
+  useEffect(() => {
+    return () => {
+      dispatch(setFocusedExpense({}));
+    };
+  }, []);
 
   const handleSaveOrUpdate = (values) => {
     if (id === undefined) {
