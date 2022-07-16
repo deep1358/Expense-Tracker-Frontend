@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "../../../../src/axios";
-import { Check } from "tabler-icons-react";
+import { Check, X } from "tabler-icons-react";
 import { showNotification } from "@mantine/notifications";
 
 export const deleteExpense = createAsyncThunk(
@@ -16,6 +16,12 @@ export const deleteExpense = createAsyncThunk(
       });
       return { errorMessage: "", id };
     } catch (err) {
+      showNotification({
+        id: "addExpense",
+        message: err.response.data.message || "Error deleting expense",
+        color: "red",
+        icon: <X side={16} />,
+      });
       return { errorMessage: err.response.data.message };
     }
   }

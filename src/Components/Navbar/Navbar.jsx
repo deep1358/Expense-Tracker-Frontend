@@ -170,13 +170,7 @@ const Navbar = () => {
             )}
           </Transition>
 
-          <img
-            alt="logo"
-            // height={80}
-            // withPlaceholder
-            className={classes.logo}
-            src="/Logo.png"
-          />
+          <img alt="logo" className={classes.logo} src="/Logo.png" />
 
           <Group spacing={5} className={classes.links}>
             {items}

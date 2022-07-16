@@ -55,41 +55,39 @@ const AddOrUpdateExpense = () => {
     }),
   });
 
-  console.log("rendered");
-
   useEffect(() => {
-    console.log("useEffect");
-    if (id !== undefined) {
-      dispatch(getExpense(id));
-      if (Object.keys(focusedExpense).length > 0) {
+    if (user) {
+      if (id !== undefined) {
+        dispatch(getExpense(id));
+        if (Object.keys(focusedExpense)?.length > 0) {
+          form.setValues({
+            category: focusedExpense.category,
+            amount: +focusedExpense.amount,
+            date: new Date(
+              focusedExpense.year,
+              focusedExpense.month - 1,
+              focusedExpense.day
+            ),
+            note: focusedExpense.note,
+          });
+        }
+      } else {
         form.setValues({
-          category: focusedExpense.category,
-          amount: +focusedExpense.amount,
-          date: new Date(
-            focusedExpense.year,
-            focusedExpense.month - 1,
-            focusedExpense.day
-          ),
-          note: focusedExpense.note,
+          category: "",
+          amount: 1,
+          date: new Date(),
+          note: "",
         });
+        dispatch(setFocusedExpense({}));
       }
-    } else {
-      form.setValues({
-        category: "",
-        amount: 1,
-        date: new Date(),
-        note: "",
-      });
-      dispatch(setFocusedExpense({}));
     }
-    console.log(form.values);
-  }, [id, form?.values?.note, Object.values(focusedExpense).length]);
+  }, [id, user, Object.values(focusedExpense).length]);
 
   const handleSaveOrUpdate = (values) => {
     if (id === undefined) {
-      const year = form.values.date.getFullYear();
-      const month = form.values.date.getMonth();
-      const day = form.values.date.getDate();
+      const year = form?.values?.date.getFullYear();
+      const month = form?.values?.date.getMonth();
+      const day = form?.values?.date.getDate();
 
       dispatch(
         addExpense({
