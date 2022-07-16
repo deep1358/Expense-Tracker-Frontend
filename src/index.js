@@ -42,7 +42,7 @@ root.render(
               margin: 0,
               padding: 0,
               boxSizing: "border-box",
-              fontFamily: "Poppins, serif",
+              fontFamily: "Poppins, serif !important",
             },
             ".apexcharts-zoomin-icon,.apexcharts-zoomout-icon,.apexcharts-zoom-icon,.apexcharts-pan-icon,.apexcharts-reset-icon":
               {
