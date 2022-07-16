@@ -1,25 +1,23 @@
-import React from "react";
 import { Link } from "react-router-dom";
-import "./css.css";
+import useStyles from "./Breadcrumb.style.js";
 
-const Breadcrumb = ({ items = [] }) => {
+const Breadcrumb = ({ crumbItems }) => {
+  const { classes, cx } = useStyles();
+
   return (
-    <div id="crumbs">
-      <h1>Breadcrumbs</h1>
-      <ul>
-        <li>
-          <Link to="#1">Home</Link>
-        </li>
-        <li>
-          <Link to="#2">Home</Link>
-        </li>
-        <li>
-          <Link to="#3">Home</Link>
-        </li>
-        <li>
-          <Link to="#4">Home</Link>
-        </li>
-      </ul>
+    <div className={classes.breadcrumb}>
+      {crumbItems.map((crumbItem, index) => (
+        <div
+          className={cx(classes.breadcrumbItem, {
+            [classes.breadcrumbItemActive]: index === crumbItems.length - 1,
+          })}
+          key={crumbItem.to}
+        >
+          <Link className={classes.breadcrumbItemLink} to={crumbItem.to}>
+            {crumbItem.label}
+          </Link>
+        </div>
+      ))}
     </div>
   );
 };

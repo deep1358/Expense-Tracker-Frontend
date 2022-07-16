@@ -68,6 +68,10 @@ root.render(
               textAlign: "center",
               textDecoration: "none",
             },
+            a: {
+              textDecoration: "none",
+              color: "inherit",
+            },
             ".noSelect": {
               WebkitTouchCallout: "none" /* iOS Safari */,
               WebkitUserSelect: "none" /* Safari */,

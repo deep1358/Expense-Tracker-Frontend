@@ -3,8 +3,6 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getYearWiseExpense } from "../../store/expense/ThunkFunctions/getYearWiseExpense";
 import { Link } from "react-router-dom";
-import Breadcrumb from "../../Components/Breadcrumb/Breadcrumb";
-// import { Breadcrumbs } from "@mantine/core";
 
 const YearWiseExpense = () => {
   const dispatch = useDispatch();
@@ -17,21 +15,11 @@ const YearWiseExpense = () => {
     user && dispatch(getYearWiseExpense());
   }, [user]);
 
-  const items = [
-    { label: "Year", link: "/year" },
-    // {
-    //   label: "Expense",
-    //   link: "/expense",
-    // },
-  ];
-
   if (gettingYearWiseExpense) return <div>Getting Expenses...</div>;
   return (
     <div>
-      {/* <Breadcrumbs>{items}</Breadcrumbs> */}
-      <Breadcrumb items={items} />
       {Object.keys(yearWiseExpense)?.map((expense, index) => (
-        <Link style={{ margin: "10px" }} key={index} to={`/year/${expense}`}>
+        <Link style={{ margin: "10px" }} key={index} to={`/years/${expense}`}>
           {expense}: {yearWiseExpense[expense]}
         </Link>
       ))}

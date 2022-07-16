@@ -20,18 +20,27 @@ import {
   Modal,
   Alert,
   Button,
-  Image,
   Skeleton,
 } from "@mantine/core";
 import { useBooleanToggle, useMediaQuery } from "@mantine/hooks";
 import {} from "@mantine/hooks";
 import { useNavigate } from "react-router-dom";
-import { Apps, CirclePlus, ChartBar, AlertCircle } from "tabler-icons-react";
+import {
+  Apps,
+  CirclePlus,
+  ChartBar,
+  AlertCircle,
+  Coin,
+} from "tabler-icons-react";
 
 const Navbar = () => {
   const dispatch = useDispatch();
 
   const { user, deletingUser } = useSelector((state) => state.user);
+
+  const { currentMonth, currentYear } = useSelector((state) => state.expense);
+
+  const { months } = useSelector((state) => state.utils);
 
   const smallScreen = useMediaQuery("(max-width: 576px)");
 
@@ -50,11 +59,12 @@ const Navbar = () => {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    setNavLinkActive(location.pathname);
-  });
-
   const links = [
+    {
+      label: "My Expenses",
+      link: `/years/${currentYear}/${months[currentMonth - 1]}`,
+      icon: Coin,
+    },
     {
       label: "Add Expense",
       link: "/addExpense",
@@ -72,12 +82,16 @@ const Navbar = () => {
     },
   ];
 
+  useEffect(() => {
+    setNavLinkActive(location.pathname);
+  });
+
   const items = links.map((link) => (
     <Link
       key={link.label}
       to={link.link}
       className={cx(classes.link, {
-        [classes.linkActive]: activeNavLink === link.link,
+        [classes.linkActive]: link.link.includes(activeNavLink),
       })}
       onClick={() => {
         setNavLinkActive(link.link);
@@ -122,7 +136,7 @@ const Navbar = () => {
           />
 
           <Button
-            style={{ width: "100%" }}
+            fullWidth
             loading={deletingUser}
             disabled={deleteText !== "delete my account"}
             color="red"
@@ -135,7 +149,7 @@ const Navbar = () => {
         </Group>
       </Modal>
 
-      <Header height={smallScreen ? 60 : 80} mb={30} className={classes.root}>
+      <Header height={smallScreen ? 60 : 70} mb={30} className={classes.root}>
         <Container size="xl" className={classes.header}>
           <Burger
             opened={burgerOpened}
@@ -208,9 +222,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-
-// 	<Link to="/year">Year</Link>
-// 	<Link to={`/year/${currentYear}`}>{currentYear}</Link>
-// 	<Link to={`/year/${currentYear}/${months[currentMonth - 1]}`}>
-// 		{months[currentMonth - 1]}
-// 	</Link>

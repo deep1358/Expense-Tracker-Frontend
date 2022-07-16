@@ -13,6 +13,7 @@ import Categories from "./Pages/Category/Categories";
 import YearWiseExpense from "./Pages/YearWiseExpense/YearWiseExpense";
 import MonthWiseExpense from "./Pages/MonthWiseExpense.jsx/MonthWiseExpense";
 import Visulization from "./Pages/Visulization/Visulization";
+import DurationLayout from "./Layout/DurationLayout";
 
 function App() {
   const dispatch = useDispatch();
@@ -34,16 +35,28 @@ function App() {
             <Route
               path="/"
               element={
-                <Navigate to={`/year/${currentYear}/${months[currentMonth]}`} />
+                <Navigate
+                  to={`/years/${currentYear}/${months[currentMonth]}`}
+                />
               }
             />
             <Route path="/addExpense" element={<AddOrUpdateExpense />} />
             <Route path="/updateExpense/:id" element={<AddOrUpdateExpense />} />
             <Route path="/visulization" element={<Visulization />} />
-            <Route path="/year" element={<YearWiseExpense />} />
-            <Route path="/year/:year" element={<MonthWiseExpense />} />
-            <Route path="/year/:year/:month" element={<DayWiseExpense />} />
             <Route path="/categories" element={<Categories />} />
+            <Route path="/" element={<DurationLayout />}>
+              <Route
+                path="/"
+                element={
+                  <Navigate
+                    to={`/years/${currentYear}/${months[currentMonth]}`}
+                  />
+                }
+              />
+              <Route path="/years" element={<YearWiseExpense />} />
+              <Route path="/years/:year" element={<MonthWiseExpense />} />
+              <Route path="/years/:year/:month" element={<DayWiseExpense />} />
+            </Route>
           </Route>
         </Route>
         <Route path="/login" element={<Login />} />

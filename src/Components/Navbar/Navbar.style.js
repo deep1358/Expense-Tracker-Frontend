@@ -5,7 +5,7 @@ const useStyles = createStyles((theme, _params, getRef) => {
   return {
     root: {
       position: "sticky",
-      zIndex: 1,
+      zIndex: 2,
       backgroundColor: theme.colors.dark[6],
     },
 
@@ -116,7 +116,7 @@ const useStyles = createStyles((theme, _params, getRef) => {
       [theme.fn.smallerThan("xs")]: {
         top: 60,
       },
-      top: 80,
+      top: 70,
       left: 0,
       right: 0,
       zIndex: 0,

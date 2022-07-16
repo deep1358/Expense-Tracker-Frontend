@@ -25,7 +25,7 @@ const MonthWiseExpense = () => {
         <Link
           style={{ margin: "10px" }}
           key={index}
-          to={`/year/${year}/${expense}`}
+          to={`/years/${year}/${expense}`}
         >
           {expense}: {monthWiseExpense[expense]}
         </Link>
