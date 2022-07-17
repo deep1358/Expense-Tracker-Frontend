@@ -1,6 +1,5 @@
 import "./App.css";
 import React, { useEffect, useState } from "react";
-// import axios from "axios";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./Pages/Login/Login";
 import BaseLayout from "./Layout/BaseLayout";
@@ -14,6 +13,7 @@ import YearWiseExpense from "./Pages/YearWiseExpense/YearWiseExpense";
 import MonthWiseExpense from "./Pages/MonthWiseExpense.jsx/MonthWiseExpense";
 import Visulization from "./Pages/Visulization/Visulization";
 import DurationLayout from "./Layout/DurationLayout";
+import Error404 from "./Pages/404/404";
 
 function App() {
   const dispatch = useDispatch();
@@ -60,6 +60,7 @@ function App() {
           </Route>
         </Route>
         <Route path="/login" element={<Login />} />
+        <Route path="*" element={<Error404 />} />
       </Routes>
     </BrowserRouter>
   );

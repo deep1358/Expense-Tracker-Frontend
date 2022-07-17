@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { addExpense } from "../../store/expense/ThunkFunctions/addExpense";
 import { getExpense } from "../../store/expense/ThunkFunctions/getExpense";
 import { updateExpense } from "../../store/expense/ThunkFunctions/updateExpense";
@@ -14,13 +14,12 @@ import {
   Group,
   Title,
   Button,
-  LoadingOverlay,
 } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
 import { Calendar } from "tabler-icons-react";
 import { useForm } from "@mantine/form";
 import { useMediaQuery } from "@mantine/hooks";
-import CustomLoader from "../../Components/CustomLoader";
+import { toggleLoadingOverlay } from "../../store/utils";
 
 const AddOrUpdateExpense = () => {
   const { user } = useSelector((state) => state.user);
@@ -34,7 +33,6 @@ const AddOrUpdateExpense = () => {
   const navigate = useNavigate();
 
   const { id } = useParams();
-  const location = useLocation();
 
   const matches = useMediaQuery("(min-width: 400px)");
 
@@ -46,7 +44,7 @@ const AddOrUpdateExpense = () => {
       note: "",
     },
     validate: (values) => ({
-      category: values.category === "" ? "Category is required" : undefined,
+      // category: values.category === "" ? "Category is required" : undefined,
       amount:
         values.amount < 0 || isNaN(values.amount) || values.amount === null
           ? "Amount must be greater than 0"
@@ -81,11 +79,16 @@ const AddOrUpdateExpense = () => {
     }
   }, [id, user, Object.values(focusedExpense).length]);
 
+  // Clear focused expense on unmount
   useEffect(() => {
-    return () => {
-      dispatch(setFocusedExpense({}));
-    };
+    return () => dispatch(setFocusedExpense({}));
   }, []);
+
+  useEffect(() => {
+    if (creatingExpense || updatingExpense)
+      dispatch(toggleLoadingOverlay(true));
+    else dispatch(toggleLoadingOverlay(false));
+  }, [creatingExpense, updatingExpense]);
 
   const handleSaveOrUpdate = (values) => {
     if (id === undefined) {
@@ -146,13 +149,6 @@ const AddOrUpdateExpense = () => {
         radius="md"
         mx="auto"
       >
-        <LoadingOverlay
-          visible={creatingExpense || updatingExpense}
-          opacity={0.6}
-          color="#000"
-          loader={<CustomLoader />}
-          blur={2}
-        />
         <form onSubmit={form.onSubmit(handleSaveOrUpdate)}>
           <Select
             clearable

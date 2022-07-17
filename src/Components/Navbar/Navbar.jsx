@@ -32,11 +32,12 @@ import {
   AlertCircle,
   Coin,
 } from "tabler-icons-react";
+import { toggleLoadingOverlay } from "../../store/utils";
 
 const Navbar = () => {
   const dispatch = useDispatch();
 
-  const { user, deletingUser } = useSelector((state) => state.user);
+  const { user, deletingUser, loggingOut } = useSelector((state) => state.user);
 
   const { currentMonth, currentYear } = useSelector((state) => state.expense);
 
@@ -85,6 +86,11 @@ const Navbar = () => {
   useEffect(() => {
     setNavLinkActive(location.pathname);
   });
+
+  useEffect(() => {
+    if (loggingOut || deletingUser) dispatch(toggleLoadingOverlay(true));
+    else dispatch(toggleLoadingOverlay(false));
+  }, [loggingOut, deletingUser]);
 
   const items = links.map((link) => (
     <Link
@@ -137,14 +143,13 @@ const Navbar = () => {
 
           <Button
             fullWidth
-            loading={deletingUser}
             disabled={deleteText !== "delete my account"}
             color="red"
             onClick={() => {
               dispatch(deleteUser());
             }}
           >
-            Delete my account
+            {deletingUser ? "Deleting..." : "Delete My Account"}
           </Button>
         </Group>
       </Modal>
