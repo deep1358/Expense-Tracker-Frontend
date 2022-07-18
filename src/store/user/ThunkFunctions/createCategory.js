@@ -1,17 +1,32 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "../../../../src/axios";
 import { error } from "./commonError";
+import { Check, X } from "tabler-icons-react";
+import { showNotification } from "@mantine/notifications";
 
 export const createCategory = createAsyncThunk(
-	"user/createCategory",
-	async (categoryName) => {
-		try {
-			const res = await axios.post("/category", {
-				categoryName,
-			});
-			return res.data.categories;
-		} catch (err) {
-			return error(err);
-		}
-	}
+  "user/createCategory",
+  async ([categoryName, setModalOpened]) => {
+    try {
+      const res = await axios.post("/category", {
+        categoryName,
+      });
+      setModalOpened(false);
+      showNotification({
+        id: "addCategory",
+        message: "Category added successfully",
+        color: "teal",
+        icon: <Check />,
+      });
+      return res.data.categories;
+    } catch (err) {
+      showNotification({
+        id: "addCategory",
+        message: err.response.data.message || "Error adding category",
+        color: "red",
+        icon: <X side={16} />,
+      });
+      return error(err);
+    }
+  }
 );

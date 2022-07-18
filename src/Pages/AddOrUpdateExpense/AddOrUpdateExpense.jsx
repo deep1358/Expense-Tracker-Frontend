@@ -20,12 +20,12 @@ import { Calendar } from "tabler-icons-react";
 import { useForm } from "@mantine/form";
 import { useMediaQuery } from "@mantine/hooks";
 import { toggleLoadingOverlay } from "../../store/utils";
+import UpdateExpenseSkeleton from "./UpdateExpenseSkeleton";
 
 const AddOrUpdateExpense = () => {
   const { user } = useSelector((state) => state.user);
-  const { creatingExpense, focusedExpense, updatingExpense } = useSelector(
-    (state) => state.expense
-  );
+  const { creatingExpense, focusedExpense, updatingExpense, gettingExpense } =
+    useSelector((state) => state.expense);
 
   const { months } = useSelector((state) => state.utils);
 
@@ -44,7 +44,7 @@ const AddOrUpdateExpense = () => {
       note: "",
     },
     validate: (values) => ({
-      // category: values.category === "" ? "Category is required" : undefined,
+      category: values.category === "" ? "Category is required" : undefined,
       amount:
         values.amount < 0 || isNaN(values.amount) || values.amount === null
           ? "Amount must be greater than 0"
@@ -77,7 +77,7 @@ const AddOrUpdateExpense = () => {
           note: "",
         });
     }
-  }, [id, user, Object.values(focusedExpense).length]);
+  }, [user, Object.values(focusedExpense).length]);
 
   // Clear focused expense on unmount
   useEffect(() => {
@@ -136,86 +136,92 @@ const AddOrUpdateExpense = () => {
   };
 
   return (
-    <Container size={420}>
-      <Title align="center">
-        {id === undefined ? "Add Expense" : "Update Expense"}
-      </Title>
-      <Paper
-        withBorder
-        shadow="md"
-        p={30}
-        mt={30}
-        size="md"
-        radius="md"
-        mx="auto"
-      >
-        <form onSubmit={form.onSubmit(handleSaveOrUpdate)}>
-          <Select
-            clearable
-            data={user?.categories || []}
-            label="Select a category"
-            placeholder="Pick one"
-            {...form.getInputProps("category")}
-            required
-          />
-          <NumberInput
-            name="amount"
-            label="Amount"
-            parser={(value) => value.replace(/\₹\s?|(,*)/g, "")}
-            formatter={(value) =>
-              !Number.isNaN(parseFloat(value))
-                ? `₹ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                : "₹ "
-            }
-            min={1}
-            {...form.getInputProps("amount")}
-            required
-            stepHoldDelay={500}
-            stepHoldInterval={100}
-            spellCheck={false}
-            mt="md"
-          />
-          <DatePicker
-            placeholder="Pick a date"
-            label="Date"
-            {...form.getInputProps("date")}
-            disabled={id !== undefined}
-            required
-            icon={<Calendar size={16} />}
-            mt="md"
-          />
+    <>
+      <Container size={420}>
+        <Title align="center">
+          {id === undefined ? "Add Expense" : "Update Expense"}
+        </Title>
+        <Paper
+          withBorder
+          shadow="md"
+          p={30}
+          mt={30}
+          size="md"
+          radius="md"
+          mx="auto"
+        >
+          {id !== undefined && gettingExpense ? (
+            <UpdateExpenseSkeleton />
+          ) : (
+            <form onSubmit={form.onSubmit(handleSaveOrUpdate)}>
+              <Select
+                clearable
+                data={user?.categories || []}
+                label="Select a category"
+                placeholder="Pick one"
+                {...form.getInputProps("category")}
+                required
+              />
+              <NumberInput
+                name="amount"
+                label="Amount"
+                parser={(value) => value.replace(/\₹\s?|(,*)/g, "")}
+                formatter={(value) =>
+                  !Number.isNaN(parseFloat(value))
+                    ? `₹ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                    : "₹ "
+                }
+                min={1}
+                {...form.getInputProps("amount")}
+                required
+                stepHoldDelay={500}
+                stepHoldInterval={100}
+                spellCheck={false}
+                mt="md"
+              />
+              <DatePicker
+                placeholder="Pick a date"
+                label="Date"
+                {...form.getInputProps("date")}
+                disabled={id !== undefined}
+                required
+                icon={<Calendar size={16} />}
+                mt="md"
+              />
 
-          <Textarea
-            label="Note"
-            placeholder="Leave a note"
-            {...form.getInputProps("note")}
-            autosize
-            mt="md"
-          />
-          <Group position="apart" mt="lg">
-            <Button
-              style={
-                id === undefined && matches
-                  ? { width: "47%" }
-                  : { width: "100%" }
-              }
-              type="submit"
-            >
-              {creatingExpense || updatingExpense ? "Saving..." : "Save"}
-            </Button>
-            {id === undefined && (
-              <Button
-                style={matches ? { width: "47%" } : { width: "100%" }}
-                onClick={form.onSubmit(handleAddMore)}
-                variant="outline"
-              >
-                Add More
-              </Button>
-            )}
-          </Group>
-        </form>
-      </Paper>
-    </Container>
+              <Textarea
+                label="Note"
+                placeholder="Leave a note"
+                {...form.getInputProps("note")}
+                autosize
+                mt="md"
+              />
+              <Group position="apart" mt="lg">
+                <Button
+                  style={
+                    id === undefined && matches
+                      ? { width: "47%" }
+                      : { width: "100%" }
+                  }
+                  type="submit"
+                >
+                  {creatingExpense || updatingExpense ? "Saving..." : "Save"}
+                </Button>
+                {id === undefined && (
+                  <Button
+                    style={matches ? { width: "47%" } : { width: "100%" }}
+                    onClick={form.onSubmit(handleAddMore)}
+                    variant="outline"
+                  >
+                    Add More
+                  </Button>
+                )}
+              </Group>
+            </form>
+          )}
+        </Paper>
+      </Container>
+    </>
   );
 };
 

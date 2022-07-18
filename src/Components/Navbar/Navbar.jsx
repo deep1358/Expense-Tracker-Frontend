@@ -20,7 +20,7 @@ import {
   Modal,
   Alert,
   Button,
-  Skeleton,
+  Image,
 } from "@mantine/core";
 import { useBooleanToggle, useMediaQuery } from "@mantine/hooks";
 import {} from "@mantine/hooks";
@@ -162,7 +162,6 @@ const Navbar = () => {
             size="sm"
             className={classes.burger}
           />
-
           <Transition
             transition="scale-y"
             duration={200}
@@ -174,46 +173,39 @@ const Navbar = () => {
               </Paper>
             )}
           </Transition>
-
-          <img alt="logo" className={classes.logo} src="/Logo.png" />
-
+          <Image alt="logo" className={classes.logo} src="/Logo.png" />
           <Group spacing={5} className={classes.links}>
             {items}
           </Group>
-
-          {user ? (
-            <Menu
-              className={classes.Menu}
-              control={
-                <Avatar
-                  size="md"
-                  referrerPolicy="no-referrer"
-                  src={user.userAvatar}
-                  alt="no image here"
-                  color="indigo"
-                  radius="xl"
-                />
-              }
+          <Menu
+            className={classes.Menu}
+            control={
+              <Avatar
+                size="md"
+                referrerPolicy="no-referrer"
+                src={user.userAvatar}
+                alt="no image here"
+                color="indigo"
+                radius="xl"
+              />
+            }
+          >
+            <Menu.Item
+              onClick={() => {
+                dispatch(logoutUser(navigate));
+              }}
             >
-              <Menu.Item
-                onClick={() => {
-                  dispatch(logoutUser(navigate));
-                }}
-              >
-                Logout
-              </Menu.Item>
-              <Divider />
-              <Menu.Label>Danger zone</Menu.Label>
-              <Menu.Item
-                color="red"
-                onClick={() => deleteConfirmBoxToggleOpened()}
-              >
-                Delete account
-              </Menu.Item>
-            </Menu>
-          ) : (
-            <Skeleton height={50} circle />
-          )}
+              Logout
+            </Menu.Item>
+            <Divider />
+            <Menu.Label>Danger zone</Menu.Label>
+            <Menu.Item
+              color="red"
+              onClick={() => deleteConfirmBoxToggleOpened()}
+            >
+              Delete account
+            </Menu.Item>
+          </Menu>
         </Container>
       </Header>
     </>
