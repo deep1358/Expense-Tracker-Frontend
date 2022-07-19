@@ -184,7 +184,7 @@ const Navbar = () => {
                 size="md"
                 referrerPolicy="no-referrer"
                 src={user.userAvatar}
-                alt="no image here"
+                alt="User Avatar"
                 color="indigo"
                 radius="xl"
               />
