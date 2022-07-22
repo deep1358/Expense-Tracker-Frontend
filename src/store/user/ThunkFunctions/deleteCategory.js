@@ -6,9 +6,10 @@ import { showNotification } from "@mantine/notifications";
 
 export const deleteCategory = createAsyncThunk(
   "user/deleteCategory",
-  async (categoryName) => {
+  async ([categoryName, setDeleteModalOpened]) => {
     try {
       const res = await axios.delete("/category/" + categoryName);
+      setDeleteModalOpened(false);
       showNotification({
         id: "deleteCategory",
         message: "Category deleted successfully",

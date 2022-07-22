@@ -3,13 +3,16 @@ import axios from "../../../../src/axios";
 import { Check, X } from "tabler-icons-react";
 import { showNotification } from "@mantine/notifications";
 
+// get current seconds since epoch to use as a unique id
+const getCurrentSeconds = () => Math.floor(Date.now() / 1000);
+
 export const addExpense = createAsyncThunk(
   "expense/addExpense",
   async ({ form, year, month, navigate = null }) => {
     try {
       const res = await axios.post("/expense", form);
       showNotification({
-        id: "addExpense",
+        id: `addExpense-${getCurrentSeconds()}`,
         message: "Expense added successfully",
         color: "teal",
         icon: <Check />,

@@ -161,6 +161,7 @@ const AddOrUpdateExpense = () => {
                 placeholder="Pick one"
                 {...form.getInputProps("category")}
                 required
+                autoFocus={id === undefined}
               />
               <NumberInput
                 name="amount"

@@ -18,6 +18,8 @@ import {
   Text,
   Stack,
   ActionIcon,
+  Alert,
+  Image,
 } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import { useForm } from "@mantine/form";
@@ -30,12 +32,15 @@ import {
   ChevronDown,
   ChevronUp,
   Plus,
+  AlertCircle,
 } from "tabler-icons-react";
 
 const Categories = () => {
   const [oldCategory, setOldCategory] = useState("");
   const [isUpdating, setIsUpdating] = useState(false);
-  const [modalOpened, setModalOpened] = useState(false);
+  const [editOrUploadModalOpened, setEditOrUploadModalOpened] = useState(false);
+  const [deleteModalOpened, setDeleteModalOpened] = useState(false);
+  const [selectDeleteCategory, setSelectDeleteCategory] = useState("");
 
   const [search, setSearch] = useState("");
   const [sortedData, setSortedData] = useState([]);
@@ -66,8 +71,8 @@ const Categories = () => {
   }, [creatingCategory, updatingCategory, deletingCategory]);
 
   useEffect(() => {
-    if (!modalOpened) categoryForm.reset();
-  }, [modalOpened]);
+    if (!editOrUploadModalOpened) categoryForm.reset();
+  }, [editOrUploadModalOpened]);
 
   useEffect(() => {
     setSortedData(user?.categories);
@@ -100,6 +105,15 @@ const Categories = () => {
       padding: "0 !important",
       textAlign: "center !important",
       minHeight: "40px",
+      backgroundColor:
+        theme.colorScheme === "dark" ? theme.colors.dark[5] : theme.gray[7],
+
+      "&:first-of-type": {
+        borderTopLeftRadius: "3px",
+      },
+      "&:last-of-type": {
+        borderTopRightRadius: "3px",
+      },
     },
 
     control: {
@@ -122,22 +136,33 @@ const Categories = () => {
         fontSize: "0.8rem !important",
       },
     },
+
+    noResultImage: {
+      width: "200px",
+    },
   }));
 
   const { classes } = useStyles();
 
   const AddOrUpdateCategory = (values) => {
     if (!isUpdating)
-      dispatch(createCategory([values.newCategory, setModalOpened]));
+      dispatch(
+        createCategory([values.newCategory, setEditOrUploadModalOpened])
+      );
     else
       dispatch(
-        updateCategory([oldCategory, values.newCategory, setModalOpened])
+        updateCategory([
+          oldCategory,
+          values.newCategory,
+          setEditOrUploadModalOpened,
+        ])
       );
     setIsUpdating(false);
   };
 
   const DeleteCategory = (category) => {
-    dispatch(deleteCategory(category));
+    setDeleteModalOpened(true);
+    setSelectDeleteCategory(category);
   };
 
   function Th({ children, reversed, sorted, onSort }) {
@@ -238,7 +263,7 @@ const Categories = () => {
                 categoryForm.setValues({ newCategory: category });
                 setOldCategory(category);
                 setIsUpdating(true);
-                setModalOpened(true);
+                setEditOrUploadModalOpened(true);
               }}
               leftIcon={<Pencil />}
               variant="light"
@@ -262,7 +287,7 @@ const Categories = () => {
                 categoryForm.setValues({ newCategory: category });
                 setOldCategory(category);
                 setIsUpdating(true);
-                setModalOpened(true);
+                setEditOrUploadModalOpened(true);
               }}
               variant="light"
               color="blue"
@@ -276,11 +301,49 @@ const Categories = () => {
   ));
 
   return (
-    <div>
+    <>
+      <Modal
+        size="md"
+        opened={deleteModalOpened}
+        onClose={() => setDeleteModalOpened(false)}
+        title={<Title order={4}>Delete Category</Title>}
+      >
+        <Group className={classes.deleteModalGroup}>
+          <Alert
+            style={{ width: "100%" }}
+            icon={<AlertCircle size={16} />}
+            color="red"
+          >
+            This action cannot be undone.
+          </Alert>
+
+          <Text>
+            Once you delete this category, all expense related to this category
+            will also be deleted.
+          </Text>
+
+          <Button
+            fullWidth
+            color="red"
+            onClick={() => {
+              if (selectDeleteCategory !== "") {
+                dispatch(
+                  deleteCategory([selectDeleteCategory, setDeleteModalOpened])
+                );
+                setSelectDeleteCategory("");
+              }
+            }}
+          >
+            {deletingCategory
+              ? "Deleting..."
+              : `Delete ${selectDeleteCategory}`}
+          </Button>
+        </Group>
+      </Modal>
       <Modal
         size="sm"
-        opened={modalOpened}
-        onClose={() => setModalOpened(false)}
+        opened={editOrUploadModalOpened}
+        onClose={() => setEditOrUploadModalOpened(false)}
         title={
           <Title order={4}>
             {isUpdating ? "Update Category" : "Add Category"}
@@ -305,40 +368,43 @@ const Categories = () => {
           <Button
             size={smallerScreen ? "xs" : "sm"}
             leftIcon={<Plus />}
-            onClick={() => setModalOpened(true)}
+            onClick={() => setEditOrUploadModalOpened(true)}
           >
             ADD CATEGORY
           </Button>
-          {user?.categories?.length > 0 ? (
-            <>
-              <TextInput
-                sx={{ width: "100%" }}
-                placeholder="Search by Category Name"
-                icon={<Search size={14} />}
-                value={search}
-                onChange={handleSearchChange}
-                mb="sm"
-              />
-              <ScrollArea sx={{ height: "calc(75vh - 50px)", width: "100%" }}>
-                <Table
-                  striped
-                  highlightOnHover
-                  verticalSpacing={smallerScreen && "sm"}
-                  fontSize="md"
-                >
-                  <thead className={classes.header}>{ths}</thead>
-                  <tbody>{rows}</tbody>
-                </Table>
-              </ScrollArea>
-            </>
-          ) : (
-            <Text color="gray" size="sm">
-              No categories yet.
-            </Text>
+          {user?.categories?.length > 0 && (
+            <TextInput
+              sx={{ width: "100%" }}
+              placeholder="Search by Category Name"
+              icon={<Search size={14} />}
+              value={search}
+              onChange={handleSearchChange}
+              mb="sm"
+            />
           )}
+          <ScrollArea sx={{ height: "calc(75vh - 50px)", width: "100%" }}>
+            <Table
+              highlightOnHover
+              verticalSpacing={smallerScreen && "xs"}
+              fontSize="sm"
+            >
+              <thead className={classes.header}>{ths}</thead>
+              {user?.categories?.length > 0 && <tbody>{rows}</tbody>}
+            </Table>
+            {!user?.categories?.length > 0 && (
+              <Stack mt="lg" align="center">
+                <Image
+                  className={classes.noResultImage}
+                  src="/no-result.svg"
+                  alt="no-result"
+                />
+                <Text color="grey">No Category found</Text>
+              </Stack>
+            )}
+          </ScrollArea>
         </Stack>
       </Container>
-    </div>
+    </>
   );
 };
 
