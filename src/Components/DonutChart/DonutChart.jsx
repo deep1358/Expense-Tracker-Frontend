@@ -1,6 +1,7 @@
 import { memo, useEffect } from "react";
 import { useState } from "react";
 import Chart from "react-apexcharts";
+import { Image, Center, Text, Stack } from "@mantine/core";
 
 const DonutChart = ({ data = [], name }) => {
   const [options, setOptions] = useState({});
@@ -9,12 +10,8 @@ const DonutChart = ({ data = [], name }) => {
   const [isDataAvailable, setIsDataAvailable] = useState(false);
 
   useEffect(() => {
-    // For responsiveness
-    // https://apexcharts.com/docs/options/responsive/
-
     setOptions({
       chart: {
-        width: 380,
         type: "donut",
         toolbar: {
           show: true,
@@ -41,26 +38,46 @@ const DonutChart = ({ data = [], name }) => {
           },
         },
       },
+      theme: {
+        mode: "dark",
+      },
+      colors: [
+        "#2880EC",
+        "#f16161",
+        "#20C997",
+        "#9775FA",
+        "#AE3EC9",
+        "#82C91E",
+        "#F76707",
+      ],
       fill: {
         type: "gradient",
+        gradient: {
+          shade: "dark",
+          type: "horizontal",
+          shadeIntensity: 0.2,
+          gradientToColors: undefined,
+          inverseColors: true,
+          opacityFrom: 0.85,
+          opacityTo: 0.85,
+          stops: [20, 60, 80, 100],
+        },
       },
       legend: {
         formatter: function (val, opts) {
           return val + " - " + opts.w.globals.series[opts.seriesIndex] + " Rs";
         },
       },
-      labels: data?.map((item) => item[name]) || [],
+      labels:
+        data?.filter((item) => item["amount"] > 0).map((item) => item[name]) ||
+        [],
       dataLabels: {
         enabled: true,
+        style: {
+          fontSize: "8px",
+        },
         formatter: function (val) {
           return +val.toFixed(2) + "%";
-        },
-      },
-      title: {
-        text: `${name} Wise Expenses`.toUpperCase(),
-        align: "center",
-        style: {
-          color: "#444",
         },
       },
       tooltip: {
@@ -72,10 +89,10 @@ const DonutChart = ({ data = [], name }) => {
       },
       responsive: [
         {
-          breakpoint: 480,
+          breakpoint: 700,
           options: {
             chart: {
-              width: 200,
+              height: 400,
             },
             legend: {
               position: "bottom",
@@ -84,7 +101,7 @@ const DonutChart = ({ data = [], name }) => {
         },
       ],
     });
-    setSeries(data?.map((item) => item.amount));
+    setSeries(data?.map((item) => item.amount).filter((item) => item > 0));
 
     data?.forEach(({ amount }) => {
       if (amount > 0) {
@@ -93,8 +110,30 @@ const DonutChart = ({ data = [], name }) => {
     });
   }, [data]);
 
-  if (!isDataAvailable) return <p>No Data Available</p>;
-  return <Chart options={options} series={series} type="donut" height={350} />;
+  if (!isDataAvailable)
+    return (
+      <Center style={{ height: "250px" }}>
+        <Stack>
+          <Image
+            width={120}
+            height={120}
+            src="/empty-donut.png"
+            alt="empty-donut"
+            ml={12}
+          />
+          <Text>No Data Available</Text>
+        </Stack>
+      </Center>
+    );
+  return (
+    <Chart
+      style={{ marginTop: "10px" }}
+      options={options}
+      series={series}
+      type="donut"
+      height={300}
+    />
+  );
 };
 
 export default memo(DonutChart);

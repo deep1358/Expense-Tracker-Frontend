@@ -3,6 +3,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { getCategoryWiseExpenseForChart } from "../../store/expense/ThunkFunctions/getCategoryWiseExpenseForChart";
 import BarOrAreaChart from "../BarOrAreaChart/BarOrAreaChart";
 import DonutChart from "../DonutChart/DonutChart";
+import {
+  Select,
+  Group,
+  LoadingOverlay,
+  Alert,
+  Center,
+  Title,
+} from "@mantine/core";
+import CustomLoader from "../CustomLoader";
+import { AlertCircle } from "tabler-icons-react";
 
 const CategoryWiseExpenseForChart = ({ yearWiseExpense }) => {
   const dispatch = useDispatch();
@@ -98,11 +108,11 @@ const CategoryWiseExpenseForChart = ({ yearWiseExpense }) => {
     return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
   }
 
-  const handleCategoryWiseExpenseYearChange = (e) => {
-    setCategoryWiseExpenseYear(e.target.value);
+  const handleCategoryWiseExpenseYearChange = (value) => {
+    setCategoryWiseExpenseYear(value);
     dispatch(
       getCategoryWiseExpenseForChart([
-        e.target.value,
+        value,
         months.indexOf(categoryWiseExpenseMonth) === -1
           ? "All"
           : months.indexOf(categoryWiseExpenseMonth) + 1,
@@ -111,83 +121,82 @@ const CategoryWiseExpenseForChart = ({ yearWiseExpense }) => {
     );
   };
 
-  const handleCategoryWiseExpenseMonthChange = (e) => {
-    setCategoryWiseExpenseMonth(e.target.value);
+  const handleCategoryWiseExpenseMonthChange = (value) => {
+    setCategoryWiseExpenseMonth(value);
     dispatch(
       getCategoryWiseExpenseForChart([
         categoryWiseExpenseYear,
-        months.indexOf(e.target.value) === -1
-          ? "All"
-          : months.indexOf(e.target.value) + 1,
+        months.indexOf(value) === -1 ? "All" : months.indexOf(value) + 1,
         categoryWiseExpenseDay,
       ])
     );
   };
 
-  const handleCategoryWiseExpenseDayChange = (e) => {
-    setCategoryWiseExpenseDay(e.target.value);
+  const handleCategoryWiseExpenseDayChange = (value) => {
+    setCategoryWiseExpenseDay(value);
     dispatch(
       getCategoryWiseExpenseForChart([
         categoryWiseExpenseYear,
         months.indexOf(categoryWiseExpenseMonth) === -1
           ? "All"
           : months.indexOf(categoryWiseExpenseMonth) + 1,
-        e.target.value,
+        value,
       ])
     );
   };
 
-  const handleChartTypeChange = (e) => {
-    setChartType(e.target.value);
+  const handleChartTypeChange = (value) => {
+    setChartType(value);
   };
 
   return (
-    <div>
-      <select
-        value={categoryWiseExpenseYear}
-        onChange={handleCategoryWiseExpenseYearChange}
-      >
-        <option value="All">All</option>
-        {categoryWiseYears.map((year) => (
-          <option key={year} value={year}>
-            {year}
-          </option>
-        ))}
-      </select>
-      <select
-        value={categoryWiseExpenseMonth}
-        onChange={handleCategoryWiseExpenseMonthChange}
-      >
-        <option value="All">All</option>
-        {categoryWiseMonths.map((month) => {
-          return (
-            <option key={month} value={month}>
-              {month}
-            </option>
-          );
-        })}
-      </select>
-      <select
-        value={categoryWiseExpenseDay}
-        onChange={handleCategoryWiseExpenseDayChange}
-      >
-        <option value="All">All</option>
-        {categoryWiseDays.map((day) => {
-          return (
-            <option key={day} value={day}>
-              {day}
-            </option>
-          );
-        })}
-      </select>
-      <select value={chartType} onChange={handleChartTypeChange}>
-        <option value="bar">Bar</option>
-        <option value="donut">Donut</option>
-      </select>
+    <>
+      <Center style={{ width: "100%" }}>
+        <Title mb={10} order={2}>
+          Category Wise Expense
+        </Title>
+      </Center>
+      <Group>
+        <Select
+          size="xs"
+          data={["All", ...categoryWiseYears]}
+          label="Select a Year"
+          value={categoryWiseExpenseYear}
+          onChange={handleCategoryWiseExpenseYearChange}
+        />
+        <Select
+          size="xs"
+          data={["All", ...categoryWiseMonths]}
+          label="Select a Month"
+          value={categoryWiseExpenseMonth}
+          onChange={handleCategoryWiseExpenseMonthChange}
+        />
+        <Select
+          size="xs"
+          data={["All", ...categoryWiseDays]}
+          label="Select a Day"
+          value={categoryWiseExpenseDay}
+          onChange={handleCategoryWiseExpenseDayChange}
+        />
+        <Select
+          size="xs"
+          data={["bar", "donut"]}
+          label="Select a Chart Type"
+          value={chartType}
+          onChange={handleChartTypeChange}
+        />
+      </Group>
       {gettingCategoryWiseExpenseForChart ? (
-        <div>Category Loading...</div>
+        <LoadingOverlay loader={<CustomLoader />} visible blur={2} />
       ) : categoryWiseExpenseForChartError ? (
-        <div>{categoryWiseExpenseForChartError}</div>
+        <Alert
+          mt={50}
+          icon={<AlertCircle size={16} />}
+          title="Error!"
+          color="red"
+        >
+          {categoryWiseExpenseForChartError}
+        </Alert>
       ) : (
         categoryWiseExpenseForChart &&
         (chartType === "donut" ? (
@@ -196,7 +205,7 @@ const CategoryWiseExpenseForChart = ({ yearWiseExpense }) => {
           <BarOrAreaChart data={categoryWiseExpenseForChart} name="category" />
         ))
       )}
-    </div>
+    </>
   );
 };
 

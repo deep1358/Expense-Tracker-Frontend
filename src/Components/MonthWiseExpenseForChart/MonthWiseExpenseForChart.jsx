@@ -3,6 +3,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { getMonthWiseExpenseForChart } from "../../store/expense/ThunkFunctions/getMonthWiseExpenseForChart";
 import BarOrAreaChart from "../BarOrAreaChart/BarOrAreaChart";
 import DonutChart from "../DonutChart/DonutChart";
+import {
+  Select,
+  Group,
+  LoadingOverlay,
+  Alert,
+  Center,
+  Title,
+} from "@mantine/core";
+import CustomLoader from "../CustomLoader";
+import { AlertCircle } from "tabler-icons-react";
 
 const MonthWiseExpenseForChart = ({ chartCategories, yearWiseExpense }) => {
   const dispatch = useDispatch();
@@ -24,23 +34,23 @@ const MonthWiseExpenseForChart = ({ chartCategories, yearWiseExpense }) => {
 
   const [chartType, setChartType] = useState("bar");
 
-  const handleMonthWiseExpenseYearChange = (e) => {
-    setMonthWiseExpenseYear(e.target.value);
+  const handleMonthWiseExpenseYearChange = (value) => {
+    setMonthWiseExpenseYear(value);
     dispatch(
       getMonthWiseExpenseForChart([
-        e.target.value,
+        value,
         monthWiseExpenseDay,
         monthWiseExpenseCategory,
       ])
     );
   };
 
-  const handleMonthWiseExpenseDayChange = (e) => {
-    setMonthWiseExpenseDay(e.target.value);
+  const handleMonthWiseExpenseDayChange = (value) => {
+    setMonthWiseExpenseDay(value);
     dispatch(
       getMonthWiseExpenseForChart([
         monthWiseExpenseYear,
-        e.target.value,
+        value,
         monthWiseExpenseCategory,
       ])
     );
@@ -57,70 +67,69 @@ const MonthWiseExpenseForChart = ({ chartCategories, yearWiseExpense }) => {
       );
   }, [user]);
 
-  const handleMonthWiseExpenseCategoryChange = (e) => {
-    setMonthWiseExpenseCategory(e.target.value);
+  const handleMonthWiseExpenseCategoryChange = (value) => {
+    setMonthWiseExpenseCategory(value);
     dispatch(
       getMonthWiseExpenseForChart([
         monthWiseExpenseYear,
         monthWiseExpenseDay,
-        e.target.value,
+        value,
       ])
     );
   };
 
-  const handleChartTypeChange = (e) => {
-    setChartType(e.target.value);
+  const handleChartTypeChange = (value) => {
+    setChartType(value);
   };
 
   return (
-    <div>
-      <select
-        value={monthWiseExpenseYear}
-        onChange={handleMonthWiseExpenseYearChange}
-      >
-        <option value="All">All</option>
-        {Object.keys(yearWiseExpense)
-          ?.sort((a, b) => b - a)
-          .map((year) => (
-            <option key={year} value={year}>
-              {year}
-            </option>
-          ))}
-      </select>
-      <select
-        value={monthWiseExpenseDay}
-        onChange={handleMonthWiseExpenseDayChange}
-      >
-        <option value="All">All</option>
-        {fixedDays.map((day) => {
-          return (
-            <option key={day} value={day}>
-              {day}
-            </option>
-          );
-        })}
-      </select>
-      <select
-        value={monthWiseExpenseCategory}
-        onChange={handleMonthWiseExpenseCategoryChange}
-      >
-        <option value="All">All</option>
-        {chartCategories?.map((category) => {
-          return (
-            <option key={category} value={category}>
-              {category}
-            </option>
-          );
-        })}
-      </select>
-      <select value={chartType} onChange={handleChartTypeChange}>
-        <option value="bar">Bar</option>
-        <option value="donut">Donut</option>
-      </select>
+    <>
+      <Center style={{ width: "100%" }}>
+        <Title mb={10} order={2}>
+          Month Wise Expense
+        </Title>
+      </Center>
+      <Group>
+        <Select
+          size="xs"
+          data={["All", ...Object.keys(yearWiseExpense)?.sort((a, b) => b - a)]}
+          label="Select a Year"
+          value={monthWiseExpenseYear}
+          onChange={handleMonthWiseExpenseYearChange}
+        />
+        <Select
+          size="xs"
+          data={["All", ...fixedDays]}
+          label="Select a Day"
+          value={monthWiseExpenseDay}
+          onChange={handleMonthWiseExpenseDayChange}
+        />
+        <Select
+          size="xs"
+          data={["All", ...chartCategories]}
+          label="Select a Category"
+          value={monthWiseExpenseCategory}
+          onChange={handleMonthWiseExpenseCategoryChange}
+        />
+        <Select
+          size="xs"
+          data={["bar", "donut"]}
+          label="Select a Chart Type"
+          value={chartType}
+          onChange={handleChartTypeChange}
+        />
+      </Group>
       {gettingMonthWiseExpenseForChart ? (
-        <div>Month Loading...</div>
+        <LoadingOverlay loader={<CustomLoader />} visible blur={2} />
       ) : monthWiseExpenseForChartError ? (
-        <div>{monthWiseExpenseForChartError}</div>
+        <Alert
+          mt={50}
+          icon={<AlertCircle size={16} />}
+          title="Error!"
+          color="red"
+        >
+          {monthWiseExpenseForChartError}
+        </Alert>
       ) : (
         monthWiseExpenseForChart &&
         (chartType === "donut" ? (
@@ -129,7 +138,7 @@ const MonthWiseExpenseForChart = ({ chartCategories, yearWiseExpense }) => {
           <BarOrAreaChart data={monthWiseExpenseForChart} name="month" />
         ))
       )}
-    </div>
+    </>
   );
 };
 

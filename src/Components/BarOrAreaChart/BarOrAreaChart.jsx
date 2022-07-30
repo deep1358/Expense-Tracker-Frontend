@@ -1,15 +1,14 @@
 import { memo, useEffect } from "react";
 import { useState } from "react";
 import Chart from "react-apexcharts";
+import { Image, Center, Text, Stack } from "@mantine/core";
 
 const BarOrAreaChart = ({ data = [], name, chartType = "bar" }) => {
   const [options, setOptions] = useState({});
   const [series, setSeries] = useState([]);
+  const [isDataAvailable, setIsDataAvailable] = useState(false);
 
   useEffect(() => {
-    // For responsiveness
-    // https://apexcharts.com/docs/options/responsive/
-
     setOptions({
       plotOptions: {
         chart: {
@@ -34,7 +33,6 @@ const BarOrAreaChart = ({ data = [], name, chartType = "bar" }) => {
         offsetY: -20,
         style: {
           fontSize: "12px",
-          colors: ["#304758"],
         },
       },
       legend: {
@@ -70,9 +68,9 @@ const BarOrAreaChart = ({ data = [], name, chartType = "bar" }) => {
       fill: {
         type: "gradient",
         gradient: {
-          shade: "light",
+          shade: "dark",
           type: "horizontal",
-          shadeIntensity: 0.25,
+          shadeIntensity: 0.2,
           gradientToColors: undefined,
           inverseColors: true,
           opacityFrom: 0.85,
@@ -80,21 +78,21 @@ const BarOrAreaChart = ({ data = [], name, chartType = "bar" }) => {
           stops: [20, 60, 80, 100],
         },
       },
-      title: {
-        text: `${name} Wise Expenses`.toUpperCase(),
-        align: "center",
-        style: {
-          color: "#444",
-        },
-      },
       grid: {
-        row: {
-          colors: ["#fff", "#f2f2f2"],
-        },
+        borderColor: "#5C5F66",
       },
       theme: {
-        palette: "palette1",
+        mode: "dark",
       },
+      colors: [
+        "#4263EB",
+        "#f16161",
+        "#20C997",
+        "#9775FA",
+        "#AE3EC9",
+        "#82C91E",
+        "#F76707",
+      ],
       tooltip: {
         y: {
           formatter: function (value) {
@@ -109,10 +107,37 @@ const BarOrAreaChart = ({ data = [], name, chartType = "bar" }) => {
         data: data?.map((item) => item.amount),
       },
     ]);
+
+    data?.forEach(({ amount }) => {
+      if (amount > 0) {
+        setIsDataAvailable(true);
+      }
+    });
   }, [data]);
 
+  if (!isDataAvailable)
+    return (
+      <Center style={{ height: "280px" }}>
+        <Stack>
+          <Image
+            width={120}
+            height={120}
+            src="/empty-bar.png"
+            alt="empty-bar"
+            ml={12}
+          />
+          <Text>No Data Available</Text>
+        </Stack>
+      </Center>
+    );
   return (
-    <Chart options={options} series={series} type={chartType} height={350} />
+    <Chart
+      style={{ marginTop: "10px" }}
+      options={options}
+      series={series}
+      type={chartType}
+      height={chartType === "bar" ? "250px" : "320px"}
+    />
   );
 };
 

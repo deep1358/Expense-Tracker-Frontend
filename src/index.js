@@ -49,7 +49,7 @@ root.render(
                 display: "none",
               },
             ".apexcharts-toolbar": {
-              zIndex: "-1 !important",
+              zIndex: "1 !important",
             },
             body: {
               ...theme.fn.fontStyles(),
@@ -63,7 +63,9 @@ root.render(
                   : theme.black,
               lineHeight: theme.lineHeight,
             },
-
+            ".apexcharts-theme-dark > svg": {
+              background: "transparent !important",
+            },
             ".mantine-Paper-root a": {
               textAlign: "center",
               textDecoration: "none",

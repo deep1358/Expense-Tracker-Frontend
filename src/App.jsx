@@ -11,9 +11,9 @@ import AddOrUpdateExpense from "./Pages/AddOrUpdateExpense/AddOrUpdateExpense";
 import Categories from "./Pages/Category/Categories";
 import YearWiseExpense from "./Pages/YearWiseExpense/YearWiseExpense";
 import MonthWiseExpense from "./Pages/MonthWiseExpense.jsx/MonthWiseExpense";
-import Visulization from "./Pages/Visulization/Visulization";
 import DurationLayout from "./Layout/DurationLayout";
 import Error404 from "./Pages/404/404";
+import Visualization from "./Pages/Visualization/Visualization";
 
 function App() {
   const dispatch = useDispatch();
@@ -42,7 +42,7 @@ function App() {
             />
             <Route path="/addExpense" element={<AddOrUpdateExpense />} />
             <Route path="/updateExpense/:id" element={<AddOrUpdateExpense />} />
-            <Route path="/visulization" element={<Visulization />} />
+            <Route path="/visualization" element={<Visualization />} />
             <Route path="/categories" element={<Categories />} />
             <Route path="/" element={<DurationLayout />}>
               <Route

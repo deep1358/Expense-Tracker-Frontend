@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { useMediaQuery } from "@mantine/hooks";
 import {
   Table,
@@ -159,4 +159,4 @@ const CategoryTable = ({
   );
 };
 
-export default CategoryTable;
+export default memo(CategoryTable);

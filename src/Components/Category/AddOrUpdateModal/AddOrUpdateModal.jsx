@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { Modal, Title, TextInput, Button } from "@mantine/core";
 import { useDispatch, useSelector } from "react-redux";
 import { X } from "tabler-icons-react";
@@ -70,4 +70,4 @@ const AddOrUpdateModal = ({
   );
 };
 
-export default AddOrUpdateModal;
+export default memo(AddOrUpdateModal);

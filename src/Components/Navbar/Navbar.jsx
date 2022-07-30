@@ -78,7 +78,7 @@ const Navbar = () => {
     },
     {
       label: "Visualize your data",
-      link: "/visulization",
+      link: "/visualization",
       icon: ChartBar,
     },
   ];

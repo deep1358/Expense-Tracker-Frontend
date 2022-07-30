@@ -3,6 +3,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { getDayWiseExpenseForChart } from "../../store/expense/ThunkFunctions/getDayWiseExpenseForChart";
 import { getYearWiseExpense } from "../../store/expense/ThunkFunctions/getYearWiseExpense";
 import BarOrAreaChart from "../BarOrAreaChart/BarOrAreaChart";
+import {
+  Select,
+  Group,
+  LoadingOverlay,
+  Alert,
+  Title,
+  Center,
+} from "@mantine/core";
+import CustomLoader from "../CustomLoader";
+import { AlertCircle } from "tabler-icons-react";
 
 const DayWiseExpenseForChart = ({ yearWiseExpense, chartCategories }) => {
   const dispatch = useDispatch();
@@ -36,18 +46,16 @@ const DayWiseExpenseForChart = ({ yearWiseExpense, chartCategories }) => {
 
   useEffect(() => {
     if (user) {
-      dispatch(getYearWiseExpense());
-
-      setDayWiseExpenseYear(currentYear);
       setDayWiseExpenseMonth(months[currentMonth - 1]);
+      dispatch(getYearWiseExpense());
     }
   }, [user, Object(yearWiseExpense).length]);
 
-  const handleDayWiseExpenseYearChange = (e) => {
-    setDayWiseExpenseYear(e.target.value);
+  const handleDayWiseExpenseYearChange = (value) => {
+    setDayWiseExpenseYear(value);
     dispatch(
       getDayWiseExpenseForChart([
-        e.target.value,
+        value,
         months.indexOf(dayWiseExpenseMonth) === -1
           ? "All"
           : months.indexOf(dayWiseExpenseMonth) + 1,
@@ -56,75 +64,75 @@ const DayWiseExpenseForChart = ({ yearWiseExpense, chartCategories }) => {
     );
   };
 
-  const handleDayWiseExpenseMonthChange = (e) => {
-    setDayWiseExpenseMonth(e.target.value);
+  const handleDayWiseExpenseMonthChange = (value) => {
+    setDayWiseExpenseMonth(value);
     dispatch(
       getDayWiseExpenseForChart([
         dayWiseExpenseYear,
-        months.indexOf(e.target.value) === -1
-          ? "All"
-          : months.indexOf(e.target.value) + 1,
+        months.indexOf(value) === -1 ? "All" : months.indexOf(value) + 1,
         dayWiseExpenseCategory,
       ])
     );
   };
 
-  const handleDayWiseExpenseCategoryChange = (e) => {
-    setDayWiseExpenseCategory(e.target.value);
+  const handleDayWiseExpenseCategoryChange = (value) => {
+    setDayWiseExpenseCategory(value);
     dispatch(
       getDayWiseExpenseForChart([
         dayWiseExpenseYear,
         months.indexOf(dayWiseExpenseMonth) === -1
           ? "All"
           : months.indexOf(dayWiseExpenseMonth) + 1,
-        e.target.value,
+        value,
       ])
     );
   };
 
   return (
-    <div>
-      <select
-        value={dayWiseExpenseYear}
-        onChange={handleDayWiseExpenseYearChange}
-      >
-        {Object.keys(yearWiseExpense)
-          ?.sort((a, b) => b - a)
-          .map((year) => (
-            <option key={year} value={year}>
-              {year}
-            </option>
-          ))}
-      </select>
-      <select
-        value={dayWiseExpenseMonth}
-        onChange={handleDayWiseExpenseMonthChange}
-      >
-        {months.map((month) => {
-          return (
-            <option key={month} value={month}>
-              {month}
-            </option>
-          );
-        })}
-      </select>
-      <select
-        value={dayWiseExpenseCategory}
-        onChange={handleDayWiseExpenseCategoryChange}
-      >
-        <option value="All">All</option>
-        {chartCategories?.map((category) => {
-          return (
-            <option key={category} value={category}>
-              {category}
-            </option>
-          );
-        })}
-      </select>
+    <>
+      <Center style={{ width: "100%" }}>
+        <Title mb={10} order={2}>
+          Day Wise Expense
+        </Title>
+      </Center>
+      <Group>
+        <Select
+          size="xs"
+          data={Object.keys(yearWiseExpense)?.sort((a, b) => b - a)}
+          label="Select a Year"
+          value={
+            !dayWiseExpenseYear
+              ? `${new Date().getFullYear()}`
+              : dayWiseExpenseYear
+          }
+          onChange={handleDayWiseExpenseYearChange}
+        />
+        <Select
+          size="xs"
+          data={months}
+          label="Select a Month"
+          value={dayWiseExpenseMonth}
+          onChange={handleDayWiseExpenseMonthChange}
+        />
+        <Select
+          size="xs"
+          data={["All", ...chartCategories]}
+          label="Select a Category"
+          value={dayWiseExpenseCategory}
+          onChange={handleDayWiseExpenseCategoryChange}
+        />
+      </Group>
       {gettingDayWiseExpenseForChart ? (
-        <div>Day Loading...</div>
+        <LoadingOverlay loader={<CustomLoader />} visible blur={2} />
       ) : dayWiseExpenseForChartError ? (
-        <div>{dayWiseExpenseForChartError}</div>
+        <Alert
+          mt={50}
+          icon={<AlertCircle size={16} />}
+          title="Error!"
+          color="red"
+        >
+          {dayWiseExpenseForChartError}
+        </Alert>
       ) : (
         <BarOrAreaChart
           name="day"
@@ -132,7 +140,7 @@ const DayWiseExpenseForChart = ({ yearWiseExpense, chartCategories }) => {
           chartType="area"
         />
       )}
-    </div>
+    </>
   );
 };
 
