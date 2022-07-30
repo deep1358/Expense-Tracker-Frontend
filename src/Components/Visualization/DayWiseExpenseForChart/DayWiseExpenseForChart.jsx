@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getDayWiseExpenseForChart } from "../../store/expense/ThunkFunctions/getDayWiseExpenseForChart";
-import { getYearWiseExpense } from "../../store/expense/ThunkFunctions/getYearWiseExpense";
+import { getDayWiseExpenseForChart } from "../../../store/expense/ThunkFunctions/getDayWiseExpenseForChart";
+import { getYearWiseExpense } from "../../../store/expense/ThunkFunctions/getYearWiseExpense";
 import BarOrAreaChart from "../BarOrAreaChart/BarOrAreaChart";
 import {
   Select,
@@ -11,7 +11,7 @@ import {
   Title,
   Center,
 } from "@mantine/core";
-import CustomLoader from "../CustomLoader";
+import CustomLoader from "../../CustomLoader";
 import { AlertCircle } from "tabler-icons-react";
 
 const DayWiseExpenseForChart = ({ yearWiseExpense, chartCategories }) => {

@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
-import CategoryWiseExpenseForChart from "../../Components/CategoryWiseExpenseForChart/CategoryWiseExpenseForChart";
-import DayWiseExpenseForChart from "../../Components/DayWiseExpenseForChart/DayWiseExpenseForChart";
-import MonthWiseExpenseForChart from "../../Components/MonthWiseExpenseForChart/MonthWiseExpenseForChart";
-import YearWiseExpenseForChart from "../../Components/YearWiseExpenseForChart/YearWiseExpenseForChart";
+import CategoryWiseExpenseForChart from "../../Components/Visualization/CategoryWiseExpenseForChart/CategoryWiseExpenseForChart";
+import DayWiseExpenseForChart from "../../Components/Visualization/DayWiseExpenseForChart/DayWiseExpenseForChart";
+import MonthWiseExpenseForChart from "../../Components/Visualization/MonthWiseExpenseForChart/MonthWiseExpenseForChart";
+import YearWiseExpenseForChart from "../../Components/Visualization/YearWiseExpenseForChart/YearWiseExpenseForChart";
 import { Container, SimpleGrid, Paper } from "@mantine/core";
 
 const Visualization = () => {

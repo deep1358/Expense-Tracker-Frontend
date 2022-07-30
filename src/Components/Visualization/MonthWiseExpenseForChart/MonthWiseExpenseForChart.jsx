@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getMonthWiseExpenseForChart } from "../../store/expense/ThunkFunctions/getMonthWiseExpenseForChart";
+import { getMonthWiseExpenseForChart } from "../../../store/expense/ThunkFunctions/getMonthWiseExpenseForChart";
 import BarOrAreaChart from "../BarOrAreaChart/BarOrAreaChart";
 import DonutChart from "../DonutChart/DonutChart";
 import {
@@ -11,7 +11,7 @@ import {
   Center,
   Title,
 } from "@mantine/core";
-import CustomLoader from "../CustomLoader";
+import CustomLoader from "../../CustomLoader";
 import { AlertCircle } from "tabler-icons-react";
 
 const MonthWiseExpenseForChart = ({ chartCategories, yearWiseExpense }) => {

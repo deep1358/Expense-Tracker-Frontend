@@ -20,7 +20,7 @@ import { Calendar } from "tabler-icons-react";
 import { useForm } from "@mantine/form";
 import { useMediaQuery } from "@mantine/hooks";
 import { toggleLoadingOverlay } from "../../store/utils";
-import UpdateExpenseSkeleton from "./UpdateExpenseSkeleton";
+import UpdateExpenseSkeleton from "../../Components/AddOrUpdateExpense/UpdateExpenseSkeleton";
 
 const AddOrUpdateExpense = () => {
   const { user } = useSelector((state) => state.user);
