@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getDayWiseExpenseForChart } from "../../../store/expense/ThunkFunctions/getDayWiseExpenseForChart";
 import { getYearWiseExpense } from "../../../store/expense/ThunkFunctions/getYearWiseExpense";
@@ -144,4 +144,4 @@ const DayWiseExpenseForChart = ({ yearWiseExpense, chartCategories }) => {
   );
 };
 
-export default DayWiseExpenseForChart;
+export default memo(DayWiseExpenseForChart);

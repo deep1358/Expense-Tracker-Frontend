@@ -130,19 +130,6 @@ const useStyles = createStyles((theme, _params, getRef) => {
         display: "none",
       },
     },
-
-    Menu: {
-      cursor: "pointer",
-    },
-
-    deleteModalGroup: {
-      "& > *": {
-        fontSize: ".95rem",
-        [theme.fn.smallerThan("xs")]: {
-          fontSize: ".75rem !important",
-        },
-      },
-    },
   };
 });
 

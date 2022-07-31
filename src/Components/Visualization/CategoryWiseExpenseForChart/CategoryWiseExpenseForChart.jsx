@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getCategoryWiseExpenseForChart } from "../../../store/expense/ThunkFunctions/getCategoryWiseExpenseForChart";
 import BarOrAreaChart from "../BarOrAreaChart/BarOrAreaChart";
@@ -209,4 +209,4 @@ const CategoryWiseExpenseForChart = ({ yearWiseExpense }) => {
   );
 };
 
-export default CategoryWiseExpenseForChart;
+export default memo(CategoryWiseExpenseForChart);
