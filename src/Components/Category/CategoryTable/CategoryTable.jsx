@@ -8,6 +8,8 @@ import {
   Center,
   Button,
   ActionIcon,
+  Stack,
+  Image,
 } from "@mantine/core";
 import {
   Trash,
@@ -148,14 +150,26 @@ const CategoryTable = ({
   };
 
   return (
-    <Table
-      highlightOnHover
-      verticalSpacing={smallerScreen && "xs"}
-      fontSize="sm"
-    >
-      <thead className={classes.header}>{ths}</thead>
-      {user?.categories?.length > 0 && <tbody>{rows}</tbody>}
-    </Table>
+    <>
+      <Table
+        highlightOnHover
+        verticalSpacing={smallerScreen && "xs"}
+        fontSize="sm"
+      >
+        <thead className={classes.header}>{ths}</thead>
+        {user?.categories?.length > 0 && <tbody>{rows}</tbody>}
+      </Table>
+      {(user?.categories?.length < 1 || rows?.length < 1) && (
+        <Stack mt="lg" align="center">
+          <Image
+            className={classes.noResultImage}
+            src="/no-result.svg"
+            alt="no-result"
+          />
+          <Text color="grey">No Category found</Text>
+        </Stack>
+      )}
+    </>
   );
 };
 

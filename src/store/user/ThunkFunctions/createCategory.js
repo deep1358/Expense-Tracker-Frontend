@@ -4,6 +4,9 @@ import { error } from "./commonError";
 import { Check, X } from "tabler-icons-react";
 import { showNotification } from "@mantine/notifications";
 
+// get current seconds since epoch to use as a unique id
+const getCurrentSeconds = () => Math.floor(Date.now() / 1000);
+
 export const createCategory = createAsyncThunk(
   "user/createCategory",
   async ([categoryName, setModalOpened]) => {
@@ -13,7 +16,7 @@ export const createCategory = createAsyncThunk(
       });
       setModalOpened(false);
       showNotification({
-        id: "addCategory",
+        id: `addCategory-${getCurrentSeconds()}`,
         message: "Category added successfully",
         color: "teal",
         icon: <Check />,
@@ -21,7 +24,7 @@ export const createCategory = createAsyncThunk(
       return res.data.categories;
     } catch (err) {
       showNotification({
-        id: "addCategory",
+        id: `addCategory-${getCurrentSeconds()}`,
         message: err.response.data.message || "Error adding category",
         color: "red",
         icon: <X side={16} />,

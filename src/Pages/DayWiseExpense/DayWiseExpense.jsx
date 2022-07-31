@@ -1,26 +1,37 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  useNavigate,
-  // Link,
-  useParams,
-  // useSearchParams,
-} from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { getExpenses } from "../../store/expense/ThunkFunctions/getExpenses";
 import { setCurrentMonth, setCurrentYear } from "../../store/expense/index";
-import { deleteExpense } from "../../store/expense/ThunkFunctions/deleteExpense";
+import DayWiseExpenseTable from "../../Components/DayWiseExpense/DayWiseExpenseTable/DayWiseExpenseTable";
+import { Container, ScrollArea, Stack, Select } from "@mantine/core";
+import { toggleLoadingOverlay } from "../../store/utils";
+import DeleteExpenseConfirmModal from "../../Components/DayWiseExpense/DeleteExpenseConfirmModal/DeleteExpenseConfirmModal";
+import ViewExpenseModal from "../../Components/DayWiseExpense/ViewExpenseModal/ViewExpenseModal";
 
 const DayWiseExpense = () => {
-  const { expenses, gettingExpenses, deletingExpense } = useSelector(
-    (state) => state.expense
-  );
+  const [sortedData, setSortedData] = useState([]);
+  const [sortBy, setSortBy] = useState(null);
+  const [reverseSortDirection, setReverseSortDirection] = useState(false);
+
+  const [categoryExpense, setCategoryExpense] = useState("All");
+
+  const [deleteModalOpened, setDeleteModalOpened] = useState(false);
+  const [deleteExpenseID, setDeleteExpenseID] = useState("");
+
+  const [viewModalOpened, setViewModalOpened] = useState(false);
+  const [viewExpenseID, setViewExpenseID] = useState("");
+
+  const { expenses, deletingExpense } = useSelector((state) => state.expense);
   const { user } = useSelector((state) => state.user);
   const { months } = useSelector((state) => state.utils);
 
   const dispatch = useDispatch();
   const { year, month } = useParams();
 
-  const navigate = useNavigate();
+  useEffect(() => {
+    setSortedData(expenses);
+  }, [expenses]);
 
   useEffect(() => {
     dispatch(setCurrentMonth(months.indexOf(month) + 1));
@@ -28,32 +39,93 @@ const DayWiseExpense = () => {
     user && dispatch(getExpenses([year, month]));
   }, [user]);
 
-  const handleDelete = (id) => {
-    dispatch(deleteExpense(id));
+  useEffect(() => {
+    if (deletingExpense) dispatch(toggleLoadingOverlay(true));
+    else dispatch(toggleLoadingOverlay(false));
+  }, [deletingExpense]);
+
+  useEffect(() => {
+    filterData();
+  }, [categoryExpense]);
+
+  const handleCategoryExpenseChange = (value) => {
+    setCategoryExpense(value);
   };
 
-  const handleUpdate = (id) => {
-    navigate(`/updateExpense/${id}`);
-  };
+  function filterData(data = expenses) {
+    if (categoryExpense === "All") return setSortedData(data);
+    setSortedData(
+      data.filter((expense) => expense.category === categoryExpense)
+    );
+  }
 
-  if (gettingExpenses) return <div>Getting Expense</div>;
-  if (deletingExpense) return <div>Deleting Expense</div>;
+  function sortData(data, payload) {
+    const { sortBy, reversed } = payload;
+    return filterData(
+      data.slice().sort((a, b) => {
+        if (reversed) {
+          if (sortBy === "date") {
+            return (
+              new Date(b.year, b.month, b.day) -
+              new Date(a.year, a.month, a.day)
+            );
+          } else if (sortBy === "amount") return b.amount - a.amount;
+          return b[sortBy].localeCompare(a[sortBy]);
+        }
+        if (sortBy === "date") {
+          return (
+            new Date(a.year, a.month, a.day) - new Date(b.year, b.month, b.day)
+          );
+        } else if (sortBy === "amount") return a.amount - b.amount;
+        return a[sortBy].localeCompare(b[sortBy]);
+      })
+    );
+  }
 
   return (
-    <div>
-      {expenses?.map((expense, index) => (
-        <div key={index}>
-          <p>{expense.category}</p>
-          <p>{expense.amount}</p>
-          <p>{expense.year}</p>
-          <p>{expense.month}</p>
-          <p>{expense.day}</p>
-          <p>{expense.note}</p>
-          <button onClick={() => handleDelete(expense._id)}>Delete</button>
-          <button onClick={() => handleUpdate(expense._id)}>Update</button>
-        </div>
-      ))}
-    </div>
+    <>
+      <DeleteExpenseConfirmModal
+        deleteModalOpened={deleteModalOpened}
+        setDeleteModalOpened={setDeleteModalOpened}
+        deleteExpenseID={deleteExpenseID}
+      />
+      <ViewExpenseModal
+        viewModalOpened={viewModalOpened}
+        setViewModalOpened={setViewModalOpened}
+        viewExpenseID={viewExpenseID}
+        setViewExpenseID={setViewExpenseID}
+        setDeleteModalOpened={setDeleteModalOpened}
+        setDeleteExpenseID={setDeleteExpenseID}
+      />
+      <Container style={{ marginTop: "-2vh" }}>
+        <Stack align="flex-end">
+          {expenses?.length > 0 && (
+            <Select
+              size="xs"
+              data={["All", ...user?.categories]}
+              label="Filter By Category"
+              value={categoryExpense}
+              onChange={handleCategoryExpenseChange}
+            />
+          )}
+          <ScrollArea sx={{ height: "calc(75vh - 70px)", width: "100%" }}>
+            <DayWiseExpenseTable
+              sortedData={sortedData}
+              setSortedData={setSortedData}
+              sortData={sortData}
+              sortBy={sortBy}
+              setSortBy={setSortBy}
+              reverseSortDirection={reverseSortDirection}
+              setReverseSortDirection={setReverseSortDirection}
+              setDeleteExpenseID={setDeleteExpenseID}
+              setDeleteModalOpened={setDeleteModalOpened}
+              setViewExpenseID={setViewExpenseID}
+              setViewModalOpened={setViewModalOpened}
+            />
+          </ScrollArea>
+        </Stack>
+      </Container>
+    </>
   );
 };
 

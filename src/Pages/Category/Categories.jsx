@@ -1,14 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  TextInput,
-  Button,
-  Container,
-  ScrollArea,
-  Text,
-  Stack,
-  Image,
-} from "@mantine/core";
+import { TextInput, Button, Container, ScrollArea, Stack } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { toggleLoadingOverlay } from "../../store/utils";
 import { Search, Plus } from "tabler-icons-react";
@@ -151,16 +143,6 @@ const Categories = () => {
               reverseSortDirection={reverseSortDirection}
               setReverseSortDirection={setReverseSortDirection}
             />
-            {!user?.categories?.length > 0 && (
-              <Stack mt="lg" align="center">
-                <Image
-                  className={classes.noResultImage}
-                  src="/no-result.svg"
-                  alt="no-result"
-                />
-                <Text color="grey">No Category found</Text>
-              </Stack>
-            )}
           </ScrollArea>
         </Stack>
       </Container>

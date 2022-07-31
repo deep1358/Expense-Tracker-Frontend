@@ -20,10 +20,13 @@ const AddOrUpdateModal = ({
     (state) => state.user
   );
 
+  // get current seconds since epoch to use as a unique id
+  const getCurrentSeconds = () => Math.floor(Date.now() / 1000);
+
   const AddOrUpdateCategory = (values) => {
     if (!/^[a-zA-Z]+$/.test(values.newCategory))
       return showNotification({
-        id: "add-category-error",
+        id: `add-category-error-${getCurrentSeconds()}`,
         message: "Category name must be alphabetic",
         color: "red",
         icon: <X side={16} />,

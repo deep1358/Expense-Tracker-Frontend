@@ -68,7 +68,7 @@ const DayWiseExpenseForChart = ({ yearWiseExpense, chartCategories }) => {
     setDayWiseExpenseMonth(value);
     dispatch(
       getDayWiseExpenseForChart([
-        dayWiseExpenseYear,
+        dayWiseExpenseYear || currentYear,
         months.indexOf(value) === -1 ? "All" : months.indexOf(value) + 1,
         dayWiseExpenseCategory,
       ])
@@ -79,7 +79,7 @@ const DayWiseExpenseForChart = ({ yearWiseExpense, chartCategories }) => {
     setDayWiseExpenseCategory(value);
     dispatch(
       getDayWiseExpenseForChart([
-        dayWiseExpenseYear,
+        dayWiseExpenseYear || currentYear,
         months.indexOf(dayWiseExpenseMonth) === -1
           ? "All"
           : months.indexOf(dayWiseExpenseMonth) + 1,
