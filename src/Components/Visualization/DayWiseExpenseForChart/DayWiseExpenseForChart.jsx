@@ -102,7 +102,9 @@ const DayWiseExpenseForChart = ({ yearWiseExpense, chartCategories }) => {
           label="Select a Year"
           value={
             !dayWiseExpenseYear
-              ? `${new Date().getFullYear()}`
+              ? currentYear !== new Date().getFullYear()
+                ? currentYear
+                : `${new Date().getFullYear()}`
               : dayWiseExpenseYear
           }
           onChange={handleDayWiseExpenseYearChange}

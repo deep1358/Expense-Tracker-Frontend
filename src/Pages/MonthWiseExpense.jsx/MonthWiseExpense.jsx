@@ -1,8 +1,26 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { getMonthWiseExpense } from "../../store/expense/ThunkFunctions/getMonthWiseExpense";
 import { setCurrentYear } from "../../store/expense";
+import ExpenseCard from "../../Components/ExpenseCard/ExpenseCard";
+import { Container, Group } from "@mantine/core";
+import ExpenseCardSkeleton from "../../Components/ExpenseCard/ExpenseCardSkeleton";
+
+const MonthShortNames = [
+  "JAN",
+  "FEB",
+  "MAR",
+  "APR",
+  "MAY",
+  "JUNE",
+  "JULY",
+  "AUG",
+  "SEP",
+  "OCT",
+  "NOV",
+  "DEC",
+];
 
 const MonthWiseExpense = () => {
   const dispatch = useDispatch();
@@ -18,19 +36,24 @@ const MonthWiseExpense = () => {
     user && dispatch(getMonthWiseExpense(year));
   }, [user]);
 
-  if (gettingMonthWiseExpense) return <div>Getting Expenses...</div>;
   return (
-    <div>
-      {Object.keys(monthWiseExpense)?.map((expense, index) => (
-        <Link
-          style={{ margin: "10px" }}
-          key={index}
-          to={`/years/${year}/${expense}`}
-        >
-          {expense}: {monthWiseExpense[expense]}
-        </Link>
-      ))}
-    </div>
+    <Container size="xl">
+      <Group mb="xs" position="center">
+        {gettingMonthWiseExpense
+          ? [...Array(12)].map((_, index) => (
+              <ExpenseCardSkeleton key={index} />
+            ))
+          : Object.entries(monthWiseExpense)?.map(([month, amount], index) => (
+              <ExpenseCard
+                key={index}
+                name={MonthShortNames[index]}
+                amount={amount}
+                month={month}
+                year={year}
+              />
+            ))}
+      </Group>
+    </Container>
   );
 };
 

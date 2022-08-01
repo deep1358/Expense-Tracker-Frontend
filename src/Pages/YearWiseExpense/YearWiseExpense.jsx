@@ -2,7 +2,9 @@ import React from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getYearWiseExpense } from "../../store/expense/ThunkFunctions/getYearWiseExpense";
-import { Link } from "react-router-dom";
+import ExpenseCard from "../../Components/ExpenseCard/ExpenseCard";
+import { Container, Group } from "@mantine/core";
+import ExpenseCardSkeleton from "../../Components/ExpenseCard/ExpenseCardSkeleton";
 
 const YearWiseExpense = () => {
   const dispatch = useDispatch();
@@ -15,15 +17,21 @@ const YearWiseExpense = () => {
     user && dispatch(getYearWiseExpense());
   }, [user]);
 
-  if (gettingYearWiseExpense) return <div>Getting Expenses...</div>;
   return (
-    <div>
-      {Object.keys(yearWiseExpense)?.map((expense, index) => (
-        <Link style={{ margin: "10px" }} key={index} to={`/years/${expense}`}>
-          {expense}: {yearWiseExpense[expense]}
-        </Link>
-      ))}
-    </div>
+    <Container size="xl">
+      <Group mb="xs" position="center">
+        {gettingYearWiseExpense
+          ? [...Array(8)].map((_, index) => <ExpenseCardSkeleton key={index} />)
+          : Object.entries(yearWiseExpense)?.map(([year, amount], index) => (
+              <ExpenseCard
+                key={index}
+                name={year}
+                amount={amount}
+                year={year}
+              />
+            ))}
+      </Group>
+    </Container>
   );
 };
 

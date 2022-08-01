@@ -26,7 +26,6 @@ import DayWiseExpenseTableSkeleton from "./DayWiseExpenseTableSkeleton";
 
 const DayWiseExpenseTable = ({
   sortedData,
-  setSortedData,
   sortData,
   sortBy,
   setSortBy,
@@ -194,7 +193,7 @@ const DayWiseExpenseTable = ({
     const reversed = field === sortBy ? !reverseSortDirection : false;
     setReverseSortDirection(reversed);
     setSortBy(field);
-    setSortedData(sortData(expenses, { sortBy: field, reversed }));
+    sortData(expenses, { sortBy: field, reversed });
   };
 
   return (
