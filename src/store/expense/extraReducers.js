@@ -1,14 +1,14 @@
-import { addExpense } from "./ThunkFunctions/addExpense";
-import { getExpenses } from "./ThunkFunctions/getExpenses";
-import { deleteExpense } from "./ThunkFunctions/deleteExpense";
-import { updateExpense } from "./ThunkFunctions/updateExpense";
-import { getExpense } from "./ThunkFunctions/getExpense";
-import { getYearWiseExpense } from "./ThunkFunctions/getYearWiseExpense";
-import { getMonthWiseExpense } from "./ThunkFunctions/getMonthWiseExpense";
-import { getCategoryWiseExpenseForChart } from "./ThunkFunctions/getCategoryWiseExpenseForChart";
-import { getDayWiseExpenseForChart } from "./ThunkFunctions/getDayWiseExpenseForChart";
-import { getMonthWiseExpenseForChart } from "./ThunkFunctions/getMonthWiseExpenseForChart";
-import { getYearWiseExpenseForChart } from "./ThunkFunctions/getYearWiseExpenseForChart";
+import { addExpense } from './ThunkFunctions/addExpense';
+import { getExpenses } from './ThunkFunctions/getExpenses';
+import { deleteExpense } from './ThunkFunctions/deleteExpense';
+import { updateExpense } from './ThunkFunctions/updateExpense';
+import { getExpense } from './ThunkFunctions/getExpense';
+import { getYearWiseExpense } from './ThunkFunctions/getYearWiseExpense';
+import { getMonthWiseExpense } from './ThunkFunctions/getMonthWiseExpense';
+import { getCategoryWiseExpenseForChart } from './ThunkFunctions/getCategoryWiseExpenseForChart';
+import { getDayWiseExpenseForChart } from './ThunkFunctions/getDayWiseExpenseForChart';
+import { getMonthWiseExpenseForChart } from './ThunkFunctions/getMonthWiseExpenseForChart';
+import { getYearWiseExpenseForChart } from './ThunkFunctions/getYearWiseExpenseForChart';
 
 export const extraReducers = {
   [getExpenses.pending]: (state) => {
@@ -167,5 +167,5 @@ export const extraReducers = {
   [getYearWiseExpenseForChart.rejected]: (state, action) => {
     state.gettingYearWiseExpenseForChart = false;
     state.error = action.error;
-  },
+  }
 };

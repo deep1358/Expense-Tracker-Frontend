@@ -1,10 +1,10 @@
 import React from 'react';
-import { createStyles, Container, Title, Text, Button, Group, Image } from '@mantine/core';
+import { Container, Title, Text, Button, Group, Image } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { useStyles } from './404.style';
+import { useStyles } from './500.style';
 
-export default function Error404() {
+export default function Error500() {
   const { classes } = useStyles();
 
   const navigate = useNavigate();
@@ -15,11 +15,11 @@ export default function Error404() {
   return (
     <Container className={classes.root}>
       <div className={classes.inner}>
-        <Image src="/404.svg" alt="404" className={classes.image} />
+        <Image src="/500.svg" alt="500" className={classes.image} />
         <div className={classes.content}>
-          <Title className={classes.title}>Nothing to see here</Title>
+          <Title className={classes.title}>Internal Server Error</Title>
           <Text color="dimmed" size="lg" align="center" className={classes.description}>
-            Page you are trying to open does not exist. You may have mistyped the address.
+            Something went wrong. Please try again later.
           </Text>
           <Group position="center">
             <Button

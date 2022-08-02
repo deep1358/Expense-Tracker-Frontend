@@ -1,22 +1,14 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Link, useLocation } from "react-router-dom";
-import useStyles from "./Navbar.style";
-import {
-  Header,
-  Container,
-  Group,
-  Burger,
-  Paper,
-  Transition,
-  Image,
-} from "@mantine/core";
-import { useBooleanToggle, useMediaQuery } from "@mantine/hooks";
-import {} from "@mantine/hooks";
-import { Apps, CirclePlus, ChartBar, Coin } from "tabler-icons-react";
-import { toggleLoadingOverlay } from "../../store/utils";
-import DeleteUserConfirmModal from "./DeleteUserConfirmModal/DeleteUserConfirmModal";
-import AvatarMenu from "./AvatarMenu/AvatarMenu";
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useLocation } from 'react-router-dom';
+import useStyles from './Navbar.style';
+import { Header, Container, Group, Burger, Paper, Transition, Image } from '@mantine/core';
+import { useBooleanToggle, useMediaQuery } from '@mantine/hooks';
+import {} from '@mantine/hooks';
+import { Apps, CirclePlus, ChartBar, Coin } from 'tabler-icons-react';
+import { toggleLoadingOverlay } from '../../store/utils';
+import DeleteUserConfirmModal from './DeleteUserConfirmModal/DeleteUserConfirmModal';
+import AvatarMenu from './AvatarMenu/AvatarMenu';
 
 const Navbar = () => {
   const dispatch = useDispatch();
@@ -27,7 +19,7 @@ const Navbar = () => {
 
   const { months } = useSelector((state) => state.utils);
 
-  const smallScreen = useMediaQuery("(max-width: 576px)");
+  const smallScreen = useMediaQuery('(max-width: 576px)');
 
   const { classes, cx } = useStyles();
 
@@ -35,32 +27,31 @@ const Navbar = () => {
 
   const [burgerOpened, burgerToggleOpened] = useBooleanToggle(false);
 
-  const [deleteConfirmBoxOpened, deleteConfirmBoxToggleOpened] =
-    useBooleanToggle(false);
+  const [deleteConfirmBoxOpened, deleteConfirmBoxToggleOpened] = useBooleanToggle(false);
 
-  const [activeNavLink, setNavLinkActive] = useState("");
+  const [activeNavLink, setNavLinkActive] = useState('');
 
   const links = [
     {
-      label: "My Expenses",
+      label: 'My Expenses',
       link: `/years/${currentYear}/${months[currentMonth - 1]}`,
-      icon: Coin,
+      icon: Coin
     },
     {
-      label: "Add Expense",
-      link: "/addExpense",
-      icon: CirclePlus,
+      label: 'Add Expense',
+      link: '/addExpense',
+      icon: CirclePlus
     },
     {
-      label: "My Categories",
-      link: "/categories",
-      icon: Apps,
+      label: 'My Categories',
+      link: '/categories',
+      icon: Apps
     },
     {
-      label: "Visualize your data",
-      link: "/visualization",
-      icon: ChartBar,
-    },
+      label: 'Visualize your data',
+      link: '/visualization',
+      icon: ChartBar
+    }
   ];
 
   useEffect(() => {
@@ -77,7 +68,7 @@ const Navbar = () => {
       key={link.label}
       to={link.link}
       className={cx(classes.link, {
-        [classes.linkActive]: link.link.includes(activeNavLink),
+        [classes.linkActive]: link.link.includes(activeNavLink)
       })}
       onClick={() => {
         setNavLinkActive(link.link);
@@ -103,11 +94,7 @@ const Navbar = () => {
             size="sm"
             className={classes.burger}
           />
-          <Transition
-            transition="scale-y"
-            duration={200}
-            mounted={burgerOpened}
-          >
+          <Transition transition="scale-y" duration={200} mounted={burgerOpened}>
             {(styles) => (
               <Paper className={classes.dropdown} withBorder style={styles}>
                 {items}
@@ -118,9 +105,7 @@ const Navbar = () => {
           <Group spacing={5} className={classes.links}>
             {items}
           </Group>
-          <AvatarMenu
-            deleteConfirmBoxToggleOpened={deleteConfirmBoxToggleOpened}
-          />
+          <AvatarMenu deleteConfirmBoxToggleOpened={deleteConfirmBoxToggleOpened} />
         </Container>
       </Header>
     </>

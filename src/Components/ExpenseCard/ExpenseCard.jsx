@@ -1,8 +1,8 @@
-import React from "react";
-import { Card, Text, Group, Stack, Title, ActionIcon } from "@mantine/core";
-import { ArrowRight } from "tabler-icons-react";
-import { Link } from "react-router-dom";
-import { useStyles } from "./ExpenseCard.style";
+import React from 'react';
+import { Card, Text, Group, Stack, Title, ActionIcon } from '@mantine/core';
+import { ArrowRight } from 'tabler-icons-react';
+import { Link } from 'react-router-dom';
+import { useStyles } from './ExpenseCard.style';
 
 const ExpenseCard = ({ amount, name, year, month }) => {
   const { classes } = useStyles();
@@ -17,9 +17,7 @@ const ExpenseCard = ({ amount, name, year, month }) => {
           <Text className={classes.text} color="grey">
             Total
           </Text>
-          <Title order={3}>
-            {`₹ ${amount}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-          </Title>
+          <Title order={3}>{`₹ ${amount}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</Title>
         </Stack>
         <Link to={month ? `/years/${year}/${month}` : `/years/${year}`}>
           <ActionIcon variant="light">

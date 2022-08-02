@@ -1,5 +1,5 @@
-import { Link } from "react-router-dom";
-import useStyles from "./Breadcrumb.style.js";
+import { Link } from 'react-router-dom';
+import useStyles from './Breadcrumb.style.js';
 
 const Breadcrumb = ({ crumbItems }) => {
   const { classes, cx } = useStyles();
@@ -9,7 +9,7 @@ const Breadcrumb = ({ crumbItems }) => {
       {crumbItems.map((crumbItem, index) => (
         <div
           className={cx(classes.breadcrumbItem, {
-            [classes.breadcrumbItemActive]: index === crumbItems.length - 1,
+            [classes.breadcrumbItemActive]: index === crumbItems.length - 1
           })}
           key={crumbItem.to}
         >

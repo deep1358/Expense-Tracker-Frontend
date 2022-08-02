@@ -1,5 +1,5 @@
-import React from "react";
-import { DEFAULT_THEME } from "@mantine/core";
+import React from 'react';
+import { DEFAULT_THEME } from '@mantine/core';
 
 const CustomLoader = () => {
   return (

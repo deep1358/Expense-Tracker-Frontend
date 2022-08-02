@@ -1,12 +1,12 @@
-import React, { memo, useEffect } from "react";
-import { Modal, Group, Text, Button, Title, Table } from "@mantine/core";
-import { useDispatch, useSelector } from "react-redux";
-import { getExpense } from "../../../store/expense/ThunkFunctions/getExpense";
-import { useNavigate } from "react-router-dom";
-import { setFocusedExpense } from "../../../store/expense";
-import { useMediaQuery } from "@mantine/hooks";
-import { useStyles } from "./ViewExpenseModal.style";
-import ViewExpenseModalSkeleton from "./ViewExpenseModalSkeleton";
+import React, { memo, useEffect } from 'react';
+import { Modal, Group, Text, Button, Title, Table } from '@mantine/core';
+import { useDispatch, useSelector } from 'react-redux';
+import { getExpense } from '../../../store/expense/ThunkFunctions/getExpense';
+import { useNavigate } from 'react-router-dom';
+import { setFocusedExpense } from '../../../store/expense';
+import { useMediaQuery } from '@mantine/hooks';
+import { useStyles } from './ViewExpenseModal.style';
+import ViewExpenseModalSkeleton from './ViewExpenseModalSkeleton';
 
 const ViewExpenseModal = ({
   viewModalOpened,
@@ -14,14 +14,12 @@ const ViewExpenseModal = ({
   viewExpenseID,
   setDeleteModalOpened,
   setDeleteExpenseID,
-  setViewExpenseID,
+  setViewExpenseID
 }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { focusedExpense, gettingExpense } = useSelector(
-    (state) => state.expense
-  );
+  const { focusedExpense, gettingExpense } = useSelector((state) => state.expense);
 
   useEffect(() => {
     if (viewExpenseID) dispatch(getExpense(viewExpenseID));
@@ -42,7 +40,7 @@ const ViewExpenseModal = ({
     setDeleteExpenseID(focusedExpense._id);
   };
 
-  const smallerScreen = useMediaQuery("(max-width: 600px)");
+  const smallerScreen = useMediaQuery('(max-width: 600px)');
 
   const { classes } = useStyles();
 
@@ -79,7 +77,7 @@ const ViewExpenseModal = ({
           <Text className={classes.Text}>Amount: </Text>
         </td>
         <td>
-          <Text className={classes.Text}>{"₹ " + focusedExpense.amount}</Text>
+          <Text className={classes.Text}>{'₹ ' + focusedExpense.amount}</Text>
         </td>
       </tr>
       {focusedExpense.note && (
@@ -116,16 +114,12 @@ const ViewExpenseModal = ({
               <Table fontSize="sm">
                 <tbody>{rows()}</tbody>
               </Table>
-              <Group style={{ width: "95%" }} position="right">
-                <Button
-                  size={smallerScreen ? "xs" : "md"}
-                  variant="outline"
-                  onClick={handleUpdate}
-                >
+              <Group style={{ width: '95%' }} position="right">
+                <Button size={smallerScreen ? 'xs' : 'md'} variant="outline" onClick={handleUpdate}>
                   Edit
                 </Button>
                 <Button
-                  size={smallerScreen ? "xs" : "md"}
+                  size={smallerScreen ? 'xs' : 'md'}
                   onClick={handleDelete}
                   variant="outline"
                   color="red"

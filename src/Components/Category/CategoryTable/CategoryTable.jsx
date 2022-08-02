@@ -1,5 +1,5 @@
-import React, { memo } from "react";
-import { useMediaQuery } from "@mantine/hooks";
+import React, { memo } from 'react';
+import { useMediaQuery } from '@mantine/hooks';
 import {
   Table,
   UnstyledButton,
@@ -9,17 +9,11 @@ import {
   Button,
   ActionIcon,
   Stack,
-  Image,
-} from "@mantine/core";
-import {
-  Trash,
-  Pencil,
-  Selector,
-  ChevronDown,
-  ChevronUp,
-} from "tabler-icons-react";
-import { useStyles } from "./CategoryTable.style";
-import { useSelector } from "react-redux";
+  Image
+} from '@mantine/core';
+import { Trash, Pencil, Selector, ChevronDown, ChevronUp } from 'tabler-icons-react';
+import { useStyles } from './CategoryTable.style';
+import { useSelector } from 'react-redux';
 
 const CategoryTable = ({
   categoryForm,
@@ -35,9 +29,9 @@ const CategoryTable = ({
   sortBy,
   setSortBy,
   reverseSortDirection,
-  setReverseSortDirection,
+  setReverseSortDirection
 }) => {
-  const smallerScreen = useMediaQuery("(max-width: 530px)");
+  const smallerScreen = useMediaQuery('(max-width: 530px)');
 
   const { classes } = useStyles();
 
@@ -65,14 +59,14 @@ const CategoryTable = ({
   const ths = (
     <tr>
       <Th
-        sorted={sortBy === "category"}
+        sorted={sortBy === 'category'}
         reversed={reverseSortDirection}
-        onSort={() => setSorting("category")}
+        onSort={() => setSorting('category')}
       >
         Category Name
       </Th>
       <th className={classes.th}>
-        <Text weight={500} size={smallerScreen ? 18 : "sm"}>
+        <Text weight={500} size={smallerScreen ? 18 : 'sm'}>
           Actions
         </Text>
       </th>
@@ -110,11 +104,7 @@ const CategoryTable = ({
           </>
         ) : (
           <Group position="center">
-            <ActionIcon
-              onClick={() => DeleteCategory(category)}
-              variant="light"
-              color="red"
-            >
+            <ActionIcon onClick={() => DeleteCategory(category)} variant="light" color="red">
               <Trash size={16} />
             </ActionIcon>
             <ActionIcon
@@ -144,28 +134,18 @@ const CategoryTable = ({
     const reversed = field === sortBy ? !reverseSortDirection : false;
     setReverseSortDirection(reversed);
     setSortBy(field);
-    setSortedData(
-      sortData(user?.categories, { sortBy: field, reversed, search })
-    );
+    setSortedData(sortData(user?.categories, { sortBy: field, reversed, search }));
   };
 
   return (
     <>
-      <Table
-        highlightOnHover
-        verticalSpacing={smallerScreen && "xs"}
-        fontSize="sm"
-      >
+      <Table highlightOnHover verticalSpacing={smallerScreen && 'xs'} fontSize="sm">
         <thead className={classes.header}>{ths}</thead>
         {user?.categories?.length > 0 && <tbody>{rows}</tbody>}
       </Table>
       {(user?.categories?.length < 1 || rows?.length < 1) && (
         <Stack mt="lg" align="center">
-          <Image
-            className={classes.noResultImage}
-            src="/no-result.svg"
-            alt="no-result"
-          />
+          <Image className={classes.noResultImage} src="/no-result.svg" alt="no-result" />
           <Text color="grey">No Category found</Text>
         </Stack>
       )}

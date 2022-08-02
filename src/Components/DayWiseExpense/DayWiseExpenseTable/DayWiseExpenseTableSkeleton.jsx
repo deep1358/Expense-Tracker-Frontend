@@ -1,5 +1,5 @@
 import React from "react";
-import { Skeleton, Group } from "@mantine/core";
+import { Skeleton } from "@mantine/core";
 
 const DayWiseExpenseTableSkeleton = () => {
   return [...Array(10)].map((_, i) => (

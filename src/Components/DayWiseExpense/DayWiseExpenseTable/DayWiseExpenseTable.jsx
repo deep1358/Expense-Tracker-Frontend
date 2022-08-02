@@ -1,5 +1,5 @@
-import React, { memo } from "react";
-import { useMediaQuery } from "@mantine/hooks";
+import React, { memo } from 'react';
+import { useMediaQuery } from '@mantine/hooks';
 import {
   Table,
   UnstyledButton,
@@ -9,20 +9,13 @@ import {
   Button,
   ActionIcon,
   Stack,
-  Image,
-} from "@mantine/core";
-import {
-  Trash,
-  Pencil,
-  Selector,
-  ChevronDown,
-  ChevronUp,
-  Eye,
-} from "tabler-icons-react";
-import { useStyles } from "./DayWiseExpenseTable.style";
-import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import DayWiseExpenseTableSkeleton from "./DayWiseExpenseTableSkeleton";
+  Image
+} from '@mantine/core';
+import { Trash, Pencil, Selector, ChevronDown, ChevronUp, Eye } from 'tabler-icons-react';
+import { useStyles } from './DayWiseExpenseTable.style';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import DayWiseExpenseTableSkeleton from './DayWiseExpenseTableSkeleton';
 
 const DayWiseExpenseTable = ({
   sortedData,
@@ -34,10 +27,10 @@ const DayWiseExpenseTable = ({
   setDeleteModalOpened,
   setDeleteExpenseID,
   setViewModalOpened,
-  setViewExpenseID,
+  setViewExpenseID
 }) => {
-  const smallerScreen = useMediaQuery("(max-width: 530px)");
-  const InBetweenScreen = useMediaQuery("(max-width: 770px)");
+  const smallerScreen = useMediaQuery('(max-width: 530px)');
+  const inBetweenScreen = useMediaQuery('(max-width: 770px)');
 
   const { classes } = useStyles();
 
@@ -50,7 +43,7 @@ const DayWiseExpenseTable = ({
       <th className={classes.th}>
         <UnstyledButton onClick={onSort} className={classes.control}>
           <Group position="center">
-            <Text weight={500} size={smallerScreen ? "xs" : "sm"}>
+            <Text weight={500} size={smallerScreen ? 'xs' : 'sm'}>
               {children}
             </Text>
             <Center>
@@ -65,28 +58,28 @@ const DayWiseExpenseTable = ({
   const ths = (
     <tr>
       <Th
-        sorted={sortBy === "date"}
+        sorted={sortBy === 'date'}
         reversed={reverseSortDirection}
-        onSort={() => setSorting("date")}
+        onSort={() => setSorting('date')}
       >
         Date
       </Th>
       <Th
-        sorted={sortBy === "category"}
+        sorted={sortBy === 'category'}
         reversed={reverseSortDirection}
-        onSort={() => setSorting("category")}
+        onSort={() => setSorting('category')}
       >
         Category Name
       </Th>
       <Th
-        sorted={sortBy === "amount"}
+        sorted={sortBy === 'amount'}
         reversed={reverseSortDirection}
-        onSort={() => setSorting("amount")}
+        onSort={() => setSorting('amount')}
       >
         Amount
       </Th>
       <th className={classes.th}>
-        <Text weight={500} size={smallerScreen ? "xs" : "sm"}>
+        <Text weight={500} size={smallerScreen ? 'xs' : 'sm'}>
           Actions
         </Text>
       </th>
@@ -114,21 +107,21 @@ const DayWiseExpenseTable = ({
       <td className={classes.td}>
         <Text
           weight={500}
-          size={smallerScreen ? "xs" : "sm"}
+          size={smallerScreen ? 'xs' : 'sm'}
         >{`${expense.day} / ${expense.month} / ${expense.year}`}</Text>
       </td>
       <td className={classes.td}>
-        <Text weight={500} size={smallerScreen ? "xs" : "sm"}>
+        <Text weight={500} size={smallerScreen ? 'xs' : 'sm'}>
           {expense.category}
         </Text>
       </td>
       <td className={classes.td}>
-        <Text weight={500} size={smallerScreen ? "xs" : "sm"}>
-          {`₹ ${expense.amount}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+        <Text weight={500} size={smallerScreen ? 'xs' : 'sm'}>
+          {`₹ ${expense.amount}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
         </Text>
       </td>
       <td className={classes.td}>
-        {!InBetweenScreen ? (
+        {!inBetweenScreen ? (
           <>
             <Button
               leftIcon={<Eye />}
@@ -162,25 +155,13 @@ const DayWiseExpenseTable = ({
           </>
         ) : (
           <Group position="center" spacing={5}>
-            <ActionIcon
-              onClick={() => handleView(expense._id)}
-              variant="filled"
-              color="blue"
-            >
+            <ActionIcon onClick={() => handleView(expense._id)} variant="filled" color="blue">
               <Eye size={16} />
             </ActionIcon>
-            <ActionIcon
-              onClick={() => handleUpdate(expense._id)}
-              variant="light"
-              color="blue"
-            >
+            <ActionIcon onClick={() => handleUpdate(expense._id)} variant="light" color="blue">
               <Pencil size={16} />
             </ActionIcon>
-            <ActionIcon
-              onClick={() => handleDelete(expense._id)}
-              variant="light"
-              color="red"
-            >
+            <ActionIcon onClick={() => handleDelete(expense._id)} variant="light" color="red">
               <Trash size={16} />
             </ActionIcon>
           </Group>
@@ -201,20 +182,12 @@ const DayWiseExpenseTable = ({
       <Table highlightOnHover fontSize="sm">
         <thead className={classes.header}>{ths}</thead>
         <tbody>
-          {gettingExpenses ? (
-            <DayWiseExpenseTableSkeleton />
-          ) : (
-            expenses?.length > 0 && rows
-          )}
+          {gettingExpenses ? <DayWiseExpenseTableSkeleton /> : expenses?.length > 0 && rows}
         </tbody>
       </Table>
       {!gettingExpenses && (expenses?.length < 1 || sortedData?.length < 1) && (
         <Stack mt="lg" align="center">
-          <Image
-            className={classes.noResultImage}
-            src="/no-result.svg"
-            alt="no-result"
-          />
+          <Image className={classes.noResultImage} src="/no-result.svg" alt="no-result" />
           <Text color="grey">No Expense found</Text>
         </Stack>
       )}

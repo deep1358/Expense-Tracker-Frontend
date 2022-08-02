@@ -1,9 +1,9 @@
-import React from "react";
-import { Menu, Avatar, Divider } from "@mantine/core";
-import { logoutUser } from "../../../store/user/ThunkFunctions/logoutUser";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { useStyles } from "./AvatarMenu.style";
+import React from 'react';
+import { Menu, Avatar, Divider } from '@mantine/core';
+import { logoutUser } from '../../../store/user/ThunkFunctions/logoutUser';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { useStyles } from './AvatarMenu.style';
 
 const AvatarMenu = ({ deleteConfirmBoxToggleOpened }) => {
   const dispatch = useDispatch();

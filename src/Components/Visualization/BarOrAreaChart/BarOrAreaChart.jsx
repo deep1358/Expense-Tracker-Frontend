@@ -1,9 +1,9 @@
-import { memo, useEffect } from "react";
-import { useState } from "react";
-import Chart from "react-apexcharts";
-import { Image, Center, Text, Stack } from "@mantine/core";
+import { memo, useEffect } from 'react';
+import { useState } from 'react';
+import Chart from 'react-apexcharts';
+import { Image, Center, Text, Stack } from '@mantine/core';
 
-const BarOrAreaChart = ({ data = [], name, chartType = "bar" }) => {
+const BarOrAreaChart = ({ data = [], name, chartType = 'bar' }) => {
   const [options, setOptions] = useState({});
   const [series, setSeries] = useState([]);
   const [isDataAvailable, setIsDataAvailable] = useState(false);
@@ -13,99 +13,91 @@ const BarOrAreaChart = ({ data = [], name, chartType = "bar" }) => {
       plotOptions: {
         chart: {
           zoom: {
-            enabled: false,
-          },
+            enabled: false
+          }
         },
         bar: {
           borderRadius: 10,
-          columnWidth: "70%",
+          columnWidth: '70%',
           dataLabels: {
-            position: "top", // top, center, bottom
+            position: 'top' // top, center, bottom
           },
-          distributed: true,
-        },
+          distributed: true
+        }
       },
       dataLabels: {
         enabled: true,
         formatter: function (val) {
-          return val + " Rs";
+          return val + ' Rs';
         },
         offsetY: -20,
         style: {
-          fontSize: "12px",
-        },
+          fontSize: '12px'
+        }
       },
       legend: {
-        show: false,
+        show: false
       },
       xaxis: {
         categories: data?.map((item) => item[name]) || [],
-        position: "bottom",
+        position: 'bottom',
         axisBorder: {
-          show: false,
+          show: false
         },
         axisTicks: {
-          show: false,
+          show: false
         },
         tooltip: {
-          enabled: false,
-        },
+          enabled: false
+        }
       },
       yaxis: {
         axisBorder: {
-          show: false,
+          show: false
         },
         axisTicks: {
-          show: false,
+          show: false
         },
         labels: {
-          show: false,
-        },
+          show: false
+        }
       },
       stroke: {
-        width: 2,
+        width: 2
       },
       fill: {
-        type: "gradient",
+        type: 'gradient',
         gradient: {
-          shade: "dark",
-          type: "horizontal",
+          shade: 'dark',
+          type: 'horizontal',
           shadeIntensity: 0.2,
           gradientToColors: undefined,
           inverseColors: true,
           opacityFrom: 0.85,
           opacityTo: 0.85,
-          stops: [20, 60, 80, 100],
-        },
+          stops: [20, 60, 80, 100]
+        }
       },
       grid: {
-        borderColor: "#5C5F66",
+        borderColor: '#5C5F66'
       },
       theme: {
-        mode: "dark",
+        mode: 'dark'
       },
-      colors: [
-        "#4263EB",
-        "#f16161",
-        "#20C997",
-        "#9775FA",
-        "#AE3EC9",
-        "#82C91E",
-        "#F76707",
-      ],
+      colors: ['#4263EB', '#f16161', '#20C997', '#9775FA', '#AE3EC9', '#82C91E', '#F76707'],
       tooltip: {
         y: {
           formatter: function (value) {
-            return value + " Rs";
-          },
-        },
-      },
+            return value + ' Rs';
+          }
+        }
+      }
     });
     setSeries([
       {
-        name: "Expense",
-        data: data?.map((item) => item.amount),
-      },
+        name: 'Expense',
+        data: data?.map((item) => item.amount)
+      }
     ]);
 
     data?.forEach(({ amount }) => {
@@ -117,26 +109,20 @@ const BarOrAreaChart = ({ data = [], name, chartType = "bar" }) => {
 
   if (!isDataAvailable)
     return (
-      <Center style={{ height: "280px" }}>
+      <Center style={{ height: '280px' }}>
         <Stack>
-          <Image
-            width={120}
-            height={120}
-            src="/empty-bar.png"
-            alt="empty-bar"
-            ml={12}
-          />
+          <Image width={120} height={120} src="/empty-bar.png" alt="empty-bar" ml={12} />
           <Text>No Data Available</Text>
         </Stack>
       </Center>
     );
   return (
     <Chart
-      style={{ marginTop: "10px" }}
+      style={{ marginTop: '10px' }}
       options={options}
       series={series}
       type={chartType}
-      height={chartType === "bar" ? "250px" : "320px"}
+      height={chartType === 'bar' ? '250px' : '320px'}
     />
   );
 };

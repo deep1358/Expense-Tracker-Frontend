@@ -1,6 +1,6 @@
 import { createStyles } from "@mantine/core";
 
-const useStyles = createStyles((theme, _params) => ({
+const useStyles = createStyles((theme) => ({
   deleteModalGroup: {
     "& > *": {
       fontSize: ".95rem",

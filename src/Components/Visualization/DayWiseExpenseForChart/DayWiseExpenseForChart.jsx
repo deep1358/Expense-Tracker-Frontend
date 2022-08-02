@@ -1,18 +1,11 @@
-import React, { memo, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { getDayWiseExpenseForChart } from "../../../store/expense/ThunkFunctions/getDayWiseExpenseForChart";
-import { getYearWiseExpense } from "../../../store/expense/ThunkFunctions/getYearWiseExpense";
-import BarOrAreaChart from "../BarOrAreaChart/BarOrAreaChart";
-import {
-  Select,
-  Group,
-  LoadingOverlay,
-  Alert,
-  Title,
-  Center,
-} from "@mantine/core";
-import CustomLoader from "../../CustomLoader";
-import { AlertCircle } from "tabler-icons-react";
+import React, { memo, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getDayWiseExpenseForChart } from '../../../store/expense/ThunkFunctions/getDayWiseExpenseForChart';
+import { getYearWiseExpense } from '../../../store/expense/ThunkFunctions/getYearWiseExpense';
+import BarOrAreaChart from '../BarOrAreaChart/BarOrAreaChart';
+import { Select, Group, LoadingOverlay, Alert, Title, Center } from '@mantine/core';
+import CustomLoader from '../../CustomLoader';
+import { AlertCircle } from 'tabler-icons-react';
 
 const DayWiseExpenseForChart = ({ yearWiseExpense, chartCategories }) => {
   const dispatch = useDispatch();
@@ -22,26 +15,20 @@ const DayWiseExpenseForChart = ({ yearWiseExpense, chartCategories }) => {
     gettingDayWiseExpenseForChart,
     dayWiseExpenseForChartError,
     currentMonth,
-    currentYear,
+    currentYear
   } = useSelector((state) => state.expense);
 
   const { months } = useSelector((state) => state.utils);
 
   const { user } = useSelector((state) => state.user);
 
-  const [dayWiseExpenseYear, setDayWiseExpenseYear] = useState("");
-  const [dayWiseExpenseMonth, setDayWiseExpenseMonth] = useState("");
-  const [dayWiseExpenseCategory, setDayWiseExpenseCategory] = useState("All");
+  const [dayWiseExpenseYear, setDayWiseExpenseYear] = useState('');
+  const [dayWiseExpenseMonth, setDayWiseExpenseMonth] = useState('');
+  const [dayWiseExpenseCategory, setDayWiseExpenseCategory] = useState('All');
 
   useEffect(() => {
     if (user)
-      dispatch(
-        getDayWiseExpenseForChart([
-          currentYear,
-          currentMonth,
-          dayWiseExpenseCategory,
-        ])
-      );
+      dispatch(getDayWiseExpenseForChart([currentYear, currentMonth, dayWiseExpenseCategory]));
   }, [user]);
 
   useEffect(() => {
@@ -57,9 +44,9 @@ const DayWiseExpenseForChart = ({ yearWiseExpense, chartCategories }) => {
       getDayWiseExpenseForChart([
         value,
         months.indexOf(dayWiseExpenseMonth) === -1
-          ? "All"
+          ? 'All'
           : months.indexOf(dayWiseExpenseMonth) + 1,
-        dayWiseExpenseCategory,
+        dayWiseExpenseCategory
       ])
     );
   };
@@ -69,8 +56,8 @@ const DayWiseExpenseForChart = ({ yearWiseExpense, chartCategories }) => {
     dispatch(
       getDayWiseExpenseForChart([
         dayWiseExpenseYear || currentYear,
-        months.indexOf(value) === -1 ? "All" : months.indexOf(value) + 1,
-        dayWiseExpenseCategory,
+        months.indexOf(value) === -1 ? 'All' : months.indexOf(value) + 1,
+        dayWiseExpenseCategory
       ])
     );
   };
@@ -81,16 +68,16 @@ const DayWiseExpenseForChart = ({ yearWiseExpense, chartCategories }) => {
       getDayWiseExpenseForChart([
         dayWiseExpenseYear || currentYear,
         months.indexOf(dayWiseExpenseMonth) === -1
-          ? "All"
+          ? 'All'
           : months.indexOf(dayWiseExpenseMonth) + 1,
-        value,
+        value
       ])
     );
   };
 
   return (
     <>
-      <Center style={{ width: "100%" }}>
+      <Center style={{ width: '100%' }}>
         <Title mb={10} order={2}>
           Day Wise Expense
         </Title>
@@ -118,7 +105,7 @@ const DayWiseExpenseForChart = ({ yearWiseExpense, chartCategories }) => {
         />
         <Select
           size="xs"
-          data={["All", ...chartCategories]}
+          data={['All', ...chartCategories]}
           label="Select a Category"
           value={dayWiseExpenseCategory}
           onChange={handleDayWiseExpenseCategoryChange}
@@ -127,20 +114,11 @@ const DayWiseExpenseForChart = ({ yearWiseExpense, chartCategories }) => {
       {gettingDayWiseExpenseForChart ? (
         <LoadingOverlay loader={<CustomLoader />} visible blur={2} />
       ) : dayWiseExpenseForChartError ? (
-        <Alert
-          mt={50}
-          icon={<AlertCircle size={16} />}
-          title="Error!"
-          color="red"
-        >
+        <Alert mt={50} icon={<AlertCircle size={16} />} title="Error!" color="red">
           {dayWiseExpenseForChartError}
         </Alert>
       ) : (
-        <BarOrAreaChart
-          name="day"
-          data={dayWiseExpenseForChart}
-          chartType="area"
-        />
+        <BarOrAreaChart name="day" data={dayWiseExpenseForChart} chartType="area" />
       )}
     </>
   );

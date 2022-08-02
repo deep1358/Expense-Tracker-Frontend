@@ -1,40 +1,40 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { TextInput, Button, Container, ScrollArea, Stack } from "@mantine/core";
-import { useForm } from "@mantine/form";
-import { toggleLoadingOverlay } from "../../store/utils";
-import { Search, Plus } from "tabler-icons-react";
-import { useStyles } from "./Categories.style";
-import DeleteCategoryConfirmModal from "../../Components/Category/DeleteCategoryConfirmModal/DeleteCategoryConfirmModal";
-import AddOrUpdateModal from "../../Components/Category/AddOrUpdateModal/AddOrUpdateModal";
-import CategoryTable from "../../Components/Category/CategoryTable/CategoryTable";
-import { useMediaQuery } from "@mantine/hooks";
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { TextInput, Button, Container, ScrollArea, Stack } from '@mantine/core';
+import { useForm } from '@mantine/form';
+import { toggleLoadingOverlay } from '../../store/utils';
+import { Search, Plus } from 'tabler-icons-react';
+import { useStyles } from './Categories.style';
+import DeleteCategoryConfirmModal from '../../Components/Category/DeleteCategoryConfirmModal/DeleteCategoryConfirmModal';
+import AddOrUpdateModal from '../../Components/Category/AddOrUpdateModal/AddOrUpdateModal';
+import CategoryTable from '../../Components/Category/CategoryTable/CategoryTable';
+import { useMediaQuery } from '@mantine/hooks';
 
 const Categories = () => {
-  const [oldCategory, setOldCategory] = useState("");
+  const [oldCategory, setOldCategory] = useState('');
   const [isUpdating, setIsUpdating] = useState(false);
   const [editOrUploadModalOpened, setEditOrUploadModalOpened] = useState(false);
   const [deleteModalOpened, setDeleteModalOpened] = useState(false);
-  const [selectDeleteCategory, setSelectDeleteCategory] = useState("");
+  const [selectDeleteCategory, setSelectDeleteCategory] = useState('');
 
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState('');
   const [sortedData, setSortedData] = useState([]);
   const [sortBy, setSortBy] = useState(null);
   const [reverseSortDirection, setReverseSortDirection] = useState(false);
 
-  const { user, creatingCategory, deletingCategory, updatingCategory } =
-    useSelector((state) => state.user);
+  const { user, creatingCategory, deletingCategory, updatingCategory } = useSelector(
+    (state) => state.user
+  );
   const dispatch = useDispatch();
 
   const categoryForm = useForm({
     initialValues: {
-      newCategory: "",
+      newCategory: ''
     },
 
     validate: {
-      newCategory: (values) =>
-        values.newCategory === "" ? "Category is required" : undefined,
-    },
+      newCategory: (values) => (values.newCategory === '' ? 'Category is required' : undefined)
+    }
   });
 
   useEffect(() => {
@@ -82,12 +82,12 @@ const Categories = () => {
       sortData(user?.categories, {
         sortBy,
         reversed: reverseSortDirection,
-        search: value,
+        search: value
       })
     );
   };
 
-  const smallerScreen = useMediaQuery("(max-width: 530px)");
+  const smallerScreen = useMediaQuery('(max-width: 530px)');
 
   return (
     <>
@@ -107,10 +107,10 @@ const Categories = () => {
         oldCategory={oldCategory}
       />
 
-      <Container size={smallerScreen ? "100vw" : "sm"}>
+      <Container size={smallerScreen ? '100vw' : 'sm'}>
         <Stack align="flex-end">
           <Button
-            size={smallerScreen ? "xs" : "sm"}
+            size={smallerScreen ? 'xs' : 'sm'}
             leftIcon={<Plus />}
             onClick={() => setEditOrUploadModalOpened(true)}
           >
@@ -118,7 +118,7 @@ const Categories = () => {
           </Button>
           {user?.categories?.length > 0 && (
             <TextInput
-              sx={{ width: "100%" }}
+              sx={{ width: '100%' }}
               placeholder="Search by Category Name"
               icon={<Search size={14} />}
               value={search}
@@ -126,7 +126,7 @@ const Categories = () => {
               mb="sm"
             />
           )}
-          <ScrollArea sx={{ height: "calc(75vh - 50px)", width: "100%" }}>
+          <ScrollArea sx={{ height: 'calc(75vh - 50px)', width: '100%' }}>
             <CategoryTable
               categoryForm={categoryForm}
               setOldCategory={setOldCategory}
