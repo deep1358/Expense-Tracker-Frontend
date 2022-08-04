@@ -171,7 +171,11 @@ const AddOrUpdateExpense = () => {
                   return value.replace(/\₹\s?|(,*)/g, "");
                 }}
                 formatter={(value) => {
-                  console.log(value);
+                  console.log(
+                    value,
+                    Number.isNaN(parseFloat(value)),
+                    value.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                  );
                   return !Number.isNaN(parseFloat(value))
                     ? `₹ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                     : "₹ ";
