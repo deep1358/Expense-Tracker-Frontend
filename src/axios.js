@@ -3,7 +3,7 @@ import axios from "axios";
 axios.defaults.withCredentials = true;
 
 const customAxios = axios.create({
-  baseURL: `http://localhost:5000`,
+  baseURL: "https://my-expense-tracker-backend.herokuapp.com",
   timeout: 10000,
 });
 
