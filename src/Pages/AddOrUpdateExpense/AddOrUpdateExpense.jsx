@@ -166,7 +166,7 @@ const AddOrUpdateExpense = () => {
               <NumberInput
                 name="amount"
                 label="Amount"
-                parser={(value) => value.replace(/\₹\s?|(,*)/g, "")}
+                // parser={(value) => value.replace(/\₹\s?|(,*)/g, "")}
                 // formatter={
                 //   (value) => `₹ ${value}`
                 // !Number.isNaN(parseFloat(value))
