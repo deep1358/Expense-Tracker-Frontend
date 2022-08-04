@@ -1,50 +1,66 @@
-import React, { useEffect, useState } from 'react';
-import { Stack, Container, Button, Title, Text, createStyles, Image, Center } from '@mantine/core';
-import { useMediaQuery } from '@mantine/hooks';
+import React, { useEffect, useState } from "react";
+import {
+  Stack,
+  Container,
+  Button,
+  Title,
+  Text,
+  createStyles,
+  Image,
+  Center,
+} from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
 
 const Login = () => {
   const useStyles = createStyles(() => ({
     Title: {
-      fontSize: '3rem',
-      fontWeight: 'bold',
-      textAlign: 'center',
-      fontFamily: 'Lora,serif !important',
+      fontSize: "3rem",
+      fontWeight: "bold",
+      textAlign: "center",
+      fontFamily: "Lora,serif !important",
 
-      '@media (max-width: 460px)': {
-        fontSize: '2.5rem'
+      "@media (max-width: 460px)": {
+        fontSize: "2.5rem",
       },
-      '@media (max-width: 370px)': {
-        fontSize: '1.95rem'
-      }
-    }
+      "@media (max-width: 370px)": {
+        fontSize: "1.95rem",
+      },
+    },
   }));
 
   const { classes } = useStyles();
 
-  const [title, setTitle] = useState('Welcome Back To');
+  const [title, setTitle] = useState("Welcome Back To");
 
   useEffect(() => {
     // Check if user visits the app for the first time
-    if (localStorage.getItem('firstVisit') === null) {
-      setTitle('Welcome To');
-      localStorage.setItem('firstVisit', 'false');
+    if (localStorage.getItem("firstVisit") === null) {
+      setTitle("Welcome To");
+      localStorage.setItem("firstVisit", "false");
     }
   }, [title]);
 
-  const smallerScreen = useMediaQuery('(max-width: 370px)');
+  const smallerScreen = useMediaQuery("(max-width: 370px)");
 
   const handleLogin = () => {
-    window.open('http://localhost:5000/auth/google', '_self');
+    window.open(
+      "https://my-expense-tracker-backend.herokuapp.com/auth/google",
+      "_self"
+    );
   };
 
   return (
-    <Center style={{ height: '90vh' }}>
+    <Center style={{ height: "90vh" }}>
       <Container size={600}>
         <Stack spacing="xs">
           <Title className={classes.Title} mt="md">
             {title}
           </Title>
-          <Image height={smallerScreen ? 150 : 200} src="/Logo.png" alt="logo" />
+          <Image
+            height={smallerScreen ? 150 : 200}
+            src="/Logo.png"
+            alt="logo"
+          />
           <Text align="center" color="dimmed">
             Register or Login to use this service
           </Text>
@@ -52,7 +68,7 @@ const Login = () => {
             leftIcon={<img src="./google.svg" alt="google logo" />}
             onClick={handleLogin}
             variant="default"
-            size={smallerScreen ? 'md' : 'lg'}
+            size={smallerScreen ? "md" : "lg"}
             mt="xs"
           >
             Continue with Google
