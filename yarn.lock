@@ -5839,7 +5839,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-react@npm:^7.27.1, eslint-plugin-react@npm:latest":
+"eslint-plugin-react@npm:^7.27.1, eslint-plugin-react@npm:^7.30.1":
   version: 7.30.1
   resolution: "eslint-plugin-react@npm:7.30.1"
   dependencies:
@@ -6490,7 +6490,7 @@ __metadata:
     axios: ^0.27.2
     dayjs: ^1.11.3
     eslint: ^8.21.0
-    eslint-plugin-react: latest
+    eslint-plugin-react: ^7.30.1
     react: ^18.2.0
     react-apexcharts: ^1.4.0
     react-dom: ^18.2.0
