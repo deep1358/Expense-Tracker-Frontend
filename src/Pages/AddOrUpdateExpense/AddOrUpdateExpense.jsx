@@ -167,12 +167,12 @@ const AddOrUpdateExpense = () => {
                 name="amount"
                 label="Amount"
                 parser={(value) => value.replace(/\₹\s?|(,*)/g, "")}
-                formatter={
-                  (value) => `₹ ${value}`
-                  // !Number.isNaN(parseFloat(value))
-                  // ? `₹ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-                  // : '₹ '
-                }
+                // formatter={
+                //   (value) => `₹ ${value}`
+                // !Number.isNaN(parseFloat(value))
+                // ? `₹ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                // : '₹ '
+                // }
                 min={1}
                 {...form.getInputProps("amount")}
                 required
