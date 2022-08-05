@@ -43,10 +43,7 @@ const Login = () => {
   const smallerScreen = useMediaQuery("(max-width: 370px)");
 
   const handleLogin = () => {
-    window.open(
-      "https://my-expense-tracker-backend.herokuapp.com/auth/google",
-      "_self"
-    );
+    window.open("http://localhost:5000/auth/google", "_self");
   };
 
   return (
