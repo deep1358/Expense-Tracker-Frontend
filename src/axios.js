@@ -3,30 +3,33 @@ import axios from "axios";
 axios.defaults.withCredentials = true;
 
 const customAxios = axios.create({
-  baseURL: "https://my-expense-tracker-backend.herokuapp.com",
-  timeout: 10000,
+	baseURL:
+		process.env.NODE_ENV === "development"
+			? "http://localhost:5000/api"
+			: "https://my-expense-tracker-backend.herokuapp.com/api",
+	timeout: 10000,
 });
 
 const requestHandler = (request) => request;
 
 const responseHandler = (response) => {
-  return response;
+	return response;
 };
 
 const errorHandler = (error) => {
-  if (error.response.status === 401) window.location = "/login";
-  else if (error.response.status === 0) alert("Server is not running");
-  return Promise.reject(error);
+	if (error.response.status === 401) window.location = "/login";
+	else if (error.response.status === 0) alert("Server is not running");
+	return Promise.reject(error);
 };
 
 customAxios.interceptors.request.use(
-  (request) => requestHandler(request),
-  (error) => errorHandler(error)
+	(request) => requestHandler(request),
+	(error) => errorHandler(error)
 );
 
 customAxios.interceptors.response.use(
-  (response) => responseHandler(response),
-  (error) => errorHandler(error)
+	(response) => responseHandler(response),
+	(error) => errorHandler(error)
 );
 
 export default customAxios;
