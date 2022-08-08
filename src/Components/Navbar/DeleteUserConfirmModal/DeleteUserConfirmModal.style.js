@@ -1,14 +1,14 @@
 import { createStyles } from "@mantine/core";
 
-const useStyles = createStyles((theme) => ({
-  deleteModalGroup: {
-    "& > *": {
-      fontSize: ".95rem",
-      [theme.fn.smallerThan("xs")]: {
-        fontSize: ".75rem !important",
-      },
-    },
-  },
+const useStyles = createStyles(() => ({
+	deleteModalGroup: {
+		"& > *": {
+			fontSize: ".95rem",
+			"@media (max-width: 450px)": {
+				fontSize: ".77rem",
+			},
+		},
+	},
 }));
 
 export default useStyles;
