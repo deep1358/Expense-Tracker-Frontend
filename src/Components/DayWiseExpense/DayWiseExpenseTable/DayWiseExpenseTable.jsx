@@ -51,7 +51,7 @@ const DayWiseExpenseTable = ({
 		return (
 			<th className={classes.th}>
 				<UnstyledButton onClick={onSort} className={classes.control}>
-					<Group position="center">
+					<Group spacing={4} position="center">
 						<Text weight={500} size={smallerScreen ? "xs" : "sm"}>
 							{children}
 						</Text>
@@ -129,7 +129,7 @@ const DayWiseExpenseTable = ({
 					{`₹ ${expense.amount}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
 				</Text>
 			</td>
-			<td className={classes.td}>
+			<td className={!inBetweenScreen ? classes.td : classes.paddingLeftTd}>
 				{!inBetweenScreen ? (
 					<>
 						<Button
@@ -202,7 +202,7 @@ const DayWiseExpenseTable = ({
 
 	return (
 		<>
-			<Table highlightOnHover fontSize="sm">
+			<Table highlightOnHover>
 				<thead className={classes.header}>{ths}</thead>
 				<tbody>
 					{gettingExpenses ? (

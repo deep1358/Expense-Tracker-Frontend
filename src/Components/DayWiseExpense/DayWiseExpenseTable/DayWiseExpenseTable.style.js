@@ -59,9 +59,12 @@ export const useStyles = createStyles((theme) => ({
 
 	td: {
 		textAlign: "center",
+	},
 
-		"@media (max-width: 530px)": {
-			fontSize: "1.9rem !important",
+	paddingLeftTd: {
+		textAlign: "center",
+		"@media (max-width: 400px)": {
+			paddingLeft: "0 !important",
 		},
 	},
 
