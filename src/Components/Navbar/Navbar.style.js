@@ -19,7 +19,7 @@ const useStyles = createStyles((theme, _params, getRef) => {
 		logo: {
 			width: "150px !important",
 			[theme.fn.smallerThan("xs")]: {
-				width: "120px",
+				width: "120px !important",
 			},
 		},
 

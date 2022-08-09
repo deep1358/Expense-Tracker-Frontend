@@ -85,9 +85,7 @@ const AddOrUpdateExpense = () => {
 	}, []);
 
 	useEffect(() => {
-		if (creatingExpense || updatingExpense)
-			dispatch(toggleLoadingOverlay(true));
-		else dispatch(toggleLoadingOverlay(false));
+		dispatch(toggleLoadingOverlay(creatingExpense || updatingExpense));
 	}, [creatingExpense, updatingExpense]);
 
 	const handleSaveOrUpdate = (values) => {
