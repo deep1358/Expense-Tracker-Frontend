@@ -163,30 +163,29 @@ const DayWiseExpenseTable = ({
 						</Button>
 					</>
 				) : (
-					<Menu
-						size="xs"
-						className={classes.Menu}
-						control={
-							<ActionIcon variant="filled">
-								<DotsVertical size={14} />
+					<Menu size="xs" className={classes.Menu}>
+						<Menu.Target>
+							<ActionIcon variant="filled" size={20}>
+								<DotsVertical size={16} />
 							</ActionIcon>
-						}
-					>
-						<Menu.Item size="xs">
-							<Group onClick={() => handleView(expense._id)}>
-								<Eye size={16} /> <Text size="xs">View</Text>
-							</Group>
-						</Menu.Item>
-						<Menu.Item>
-							<Group onClick={() => handleUpdate(expense._id)}>
-								<Pencil size={16} /> <Text size="xs">Edit</Text>
-							</Group>
-						</Menu.Item>
-						<Menu.Item>
-							<Group onClick={() => handleDelete(expense._id)}>
-								<Trash size={16} /> <Text size="xs">Delete</Text>
-							</Group>
-						</Menu.Item>
+						</Menu.Target>
+						<Menu.Dropdown>
+							<Menu.Item size="xs">
+								<Group onClick={() => handleView(expense._id)}>
+									<Eye size={16} /> <Text size="xs">View</Text>
+								</Group>
+							</Menu.Item>
+							<Menu.Item>
+								<Group onClick={() => handleUpdate(expense._id)}>
+									<Pencil size={16} /> <Text size="xs">Edit</Text>
+								</Group>
+							</Menu.Item>
+							<Menu.Item>
+								<Group onClick={() => handleDelete(expense._id)}>
+									<Trash size={16} /> <Text size="xs">Delete</Text>
+								</Group>
+							</Menu.Item>
+						</Menu.Dropdown>
 					</Menu>
 				)}
 			</td>

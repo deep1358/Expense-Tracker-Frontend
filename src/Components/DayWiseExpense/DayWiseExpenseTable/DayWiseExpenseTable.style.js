@@ -71,4 +71,7 @@ export const useStyles = createStyles((theme) => ({
 	Menu: {
 		cursor: "pointer",
 	},
+	noResultImage: {
+		width: "30% !important",
+	},
 }));

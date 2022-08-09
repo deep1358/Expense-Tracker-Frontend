@@ -168,13 +168,16 @@ const AddOrUpdateExpense = () => {
 							<NumberInput
 								name="amount"
 								label="Amount"
-								// parser={(value) => value.replace(/\₹\s?|(,*)/g, "")}
-								// formatter={(value) =>
-								//   !Number.isNaN(parseFloat(value))
-								//     ? `₹ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-								//     : "₹ "
-								// }
-								icon={<CurrencyRupee size={16} />}
+								parser={(value) => value.replace(/\₹\s?|(,*)/g, "")}
+								formatter={(value) =>
+									!Number.isNaN(parseFloat(value))
+										? `₹ ${value}`.replace(
+												/\B(?=(\d{3})+(?!\d))/g,
+												","
+										  )
+										: "₹ "
+								}
+								// icon={<CurrencyRupee size={16} />}
 								min={1}
 								{...form.getInputProps("amount")}
 								required
