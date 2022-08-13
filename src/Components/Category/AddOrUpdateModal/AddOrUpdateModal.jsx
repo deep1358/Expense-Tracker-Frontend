@@ -1,5 +1,5 @@
 import React, { memo } from "react";
-import { Modal, Title, TextInput, Button } from "@mantine/core";
+import { Modal, Title, TextInput, Button, List } from "@mantine/core";
 import { useDispatch, useSelector } from "react-redux";
 import { X } from "tabler-icons-react";
 import { showNotification } from "@mantine/notifications";
@@ -24,16 +24,21 @@ const AddOrUpdateModal = ({
 	const getCurrentSeconds = () => Math.floor(Date.now() / 1000);
 
 	const AddOrUpdateCategory = (values) => {
-		if (!/^[a-zA-Z]+$/.test(values.newCategory))
+		if (
+			!/^[a-zA-Z]([a-zA-Z _-]*([a-zA-Z]))?$/.test(values.newCategory.trim())
+		)
 			return showNotification({
 				id: `add-category-error-${getCurrentSeconds()}`,
-				message: "Category name must be alphabetic",
+				message: "Category name is invalid",
 				color: "red",
 				icon: <X size={15} />,
 			});
 		if (!isUpdating)
 			dispatch(
-				createCategory([values.newCategory, setEditOrUploadModalOpened])
+				createCategory([
+					values.newCategory.trim(),
+					setEditOrUploadModalOpened,
+				])
 			);
 		else
 			dispatch(
@@ -69,6 +74,43 @@ const AddOrUpdateModal = ({
 					{creatingCategory || updatingCategory ? "Saving..." : "Save"}
 				</Button>
 			</form>
+			<List style={{ color: "grey" }} mt="lg" size="xs" listStyleType="disc">
+				<List.Item>
+					Category Name Rules:
+					<List
+						style={{ color: "grey" }}
+						size="xs"
+						withPadding
+						listStyleType="disc"
+					>
+						<List.Item>
+							must starts and ends with
+							<List
+								style={{ color: "grey" }}
+								size="xs"
+								withPadding
+								listStyleType="disc"
+							>
+								<List.Item>Alphabets (a-z A-Z)</List.Item>
+							</List>
+						</List.Item>
+						<List.Item>
+							only conatains
+							<List
+								style={{ color: "grey" }}
+								size="xs"
+								withPadding
+								listStyleType="disc"
+							>
+								<List.Item>Alphabets (a-z A-Z)</List.Item>
+								<List.Item>space( )</List.Item>
+								<List.Item>hyphen(-)</List.Item>
+								<List.Item>underscore(_)</List.Item>
+							</List>
+						</List.Item>
+					</List>
+				</List.Item>
+			</List>
 		</Modal>
 	);
 };
