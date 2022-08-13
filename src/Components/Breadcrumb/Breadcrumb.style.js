@@ -24,6 +24,7 @@ const useStyles = createStyles((theme) => ({
 		marginRight: theme.spacing.xs,
 		width: "135px",
 		position: "relative",
+		cursor: "pointer",
 
 		"&:before": {
 			content: `''`,
@@ -113,6 +114,7 @@ const useStyles = createStyles((theme) => ({
 		paddingLeft: "30px",
 		textAlign: "center",
 		"@media (max-width: 600px)": {
+			marginLeft: "7px",
 			padding: "8px 0",
 		},
 	},

@@ -14,6 +14,7 @@ const useStyles = createStyles((theme, _params, getRef) => {
 			justifyContent: "space-between",
 			alignItems: "center",
 			height: "100%",
+			overflow: "hidden",
 		},
 
 		logo: {

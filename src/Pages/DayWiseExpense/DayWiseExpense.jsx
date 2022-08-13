@@ -2,12 +2,12 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { getExpenses } from "../../store/expense/ThunkFunctions/getExpenses";
-import { setCurrentMonth, setCurrentYear } from "../../store/expense/index";
 import DayWiseExpenseTable from "../../Components/DayWiseExpense/DayWiseExpenseTable/DayWiseExpenseTable";
 import { Container, ScrollArea, Stack, Select } from "@mantine/core";
-import { toggleLoadingOverlay } from "../../store/utils";
+import { showAlert, toggleLoadingOverlay } from "../../store/utils";
 import DeleteExpenseConfirmModal from "../../Components/DayWiseExpense/DeleteExpenseConfirmModal/DeleteExpenseConfirmModal";
 import ViewExpenseModal from "../../Components/DayWiseExpense/ViewExpenseModal/ViewExpenseModal";
+import { checkMonthValidity } from "../../utils/CheckMonthValidity";
 
 const DayWiseExpense = () => {
 	const [sortedData, setSortedData] = useState([]);
@@ -34,10 +34,16 @@ const DayWiseExpense = () => {
 	}, [expenses]);
 
 	useEffect(() => {
-		dispatch(setCurrentMonth(months.indexOf(month) + 1));
-		dispatch(setCurrentYear(year));
-		user && dispatch(getExpenses([year, month]));
-	}, [user]);
+		const tempMonth = checkMonthValidity(month, months);
+
+		if (!tempMonth)
+			dispatch(
+				showAlert({
+					alertMessage: "Invalid Month",
+				})
+			);
+		else dispatch(getExpenses([year, tempMonth]));
+	}, []);
 
 	useEffect(() => {
 		dispatch(toggleLoadingOverlay(deletingExpense));
