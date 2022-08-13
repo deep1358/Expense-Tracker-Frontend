@@ -9,10 +9,12 @@ const useStyles = createStyles((theme) => ({
 		margin: "-2vh 0 4vh 2vw",
 		position: "relative",
 		overflow: "hidden",
+		paddingRight: "20px",
 
 		"@media (max-width: 600px)": {
 			width: "90%",
 			justifyContent: "flex-start",
+			paddingRight: "6px",
 		},
 	},
 
