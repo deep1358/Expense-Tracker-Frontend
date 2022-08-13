@@ -8,6 +8,7 @@ const useStyles = createStyles((theme) => ({
 		alignItems: "center",
 		margin: "-2vh 0 4vh 2vw",
 		position: "relative",
+		overflow: "hidden",
 
 		"@media (max-width: 600px)": {
 			width: "90%",
@@ -24,6 +25,7 @@ const useStyles = createStyles((theme) => ({
 		marginRight: theme.spacing.xs,
 		width: "135px",
 		position: "relative",
+		cursor: "pointer",
 
 		"&:before": {
 			content: `''`,
@@ -113,6 +115,7 @@ const useStyles = createStyles((theme) => ({
 		paddingLeft: "30px",
 		textAlign: "center",
 		"@media (max-width: 600px)": {
+			marginLeft: "7px",
 			padding: "8px 0",
 		},
 	},

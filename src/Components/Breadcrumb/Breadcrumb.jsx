@@ -1,25 +1,27 @@
-import { Link } from 'react-router-dom';
-import useStyles from './Breadcrumb.style.js';
+import { Text } from "@mantine/core";
+import { Link } from "react-router-dom";
+import useStyles from "./Breadcrumb.style.js";
 
-const Breadcrumb = ({ crumbItems }) => {
-  const { classes, cx } = useStyles();
+const Breadcrumb = ({ crumbItems, activeLinkIndex }) => {
+	const { classes, cx } = useStyles();
 
-  return (
-    <div className={classes.breadcrumb}>
-      {crumbItems.map((crumbItem, index) => (
-        <div
-          className={cx(classes.breadcrumbItem, {
-            [classes.breadcrumbItemActive]: index === crumbItems.length - 1
-          })}
-          key={crumbItem.to}
-        >
-          <Link className={classes.breadcrumbItemLink} to={crumbItem.to}>
-            {crumbItem.label}
-          </Link>
-        </div>
-      ))}
-    </div>
-  );
+	return (
+		<div className={classes.breadcrumb}>
+			{crumbItems.map((crumbItem, index) => (
+				<Link
+					to={crumbItem.to}
+					className={cx(classes.breadcrumbItem, {
+						[classes.breadcrumbItemActive]: index === activeLinkIndex,
+					})}
+					key={crumbItem.to}
+				>
+					<Text className={classes.breadcrumbItemLink}>
+						{crumbItem.label}
+					</Text>
+				</Link>
+			))}
+		</div>
+	);
 };
 
 export default Breadcrumb;
