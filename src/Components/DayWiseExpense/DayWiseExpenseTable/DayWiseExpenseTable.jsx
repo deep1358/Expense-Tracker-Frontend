@@ -88,7 +88,11 @@ const DayWiseExpenseTable = ({
 				Amount
 			</Th>
 			<th className={classes.th}>
-				<Text weight={500} size={smallerScreen ? "xs" : "sm"}>
+				<Text
+					align={inBetweenScreen ? "left" : "center"}
+					weight={500}
+					size={smallerScreen ? "xs" : "sm"}
+				>
 					Actions
 				</Text>
 			</th>
@@ -163,25 +167,34 @@ const DayWiseExpenseTable = ({
 						</Button>
 					</>
 				) : (
-					<Menu size="xs" className={classes.Menu}>
+					<Menu width={120} size={25} className={classes.Menu}>
 						<Menu.Target>
 							<ActionIcon variant="filled" size={20}>
 								<DotsVertical size={16} />
 							</ActionIcon>
 						</Menu.Target>
 						<Menu.Dropdown>
-							<Menu.Item size="xs">
-								<Group onClick={() => handleView(expense._id)}>
+							<Menu.Item
+								color="blue"
+								onClick={() => handleView(expense._id)}
+							>
+								<Group>
 									<Eye size={16} /> <Text size="xs">View</Text>
 								</Group>
 							</Menu.Item>
-							<Menu.Item>
-								<Group onClick={() => handleUpdate(expense._id)}>
+							<Menu.Item
+								color="blue"
+								onClick={() => handleUpdate(expense._id)}
+							>
+								<Group>
 									<Pencil size={16} /> <Text size="xs">Edit</Text>
 								</Group>
 							</Menu.Item>
-							<Menu.Item>
-								<Group onClick={() => handleDelete(expense._id)}>
+							<Menu.Item
+								color="red"
+								onClick={() => handleDelete(expense._id)}
+							>
+								<Group>
 									<Trash size={16} /> <Text size="xs">Delete</Text>
 								</Group>
 							</Menu.Item>
