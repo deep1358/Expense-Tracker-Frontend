@@ -14,9 +14,8 @@ export const styles = (theme) => ({
 	},
 	body: {
 		...theme.fn.fontStyles(),
-		backgroundColor:
-			theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.white,
-		color: theme.colorScheme === "dark" ? theme.colors.dark[0] : theme.black,
+		backgroundColor: theme.colors.dark[7],
+		color: theme.colors.dark[0],
 		lineHeight: theme.lineHeight,
 	},
 	".apexcharts-theme-dark > svg": {

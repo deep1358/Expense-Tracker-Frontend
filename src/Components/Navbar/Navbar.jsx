@@ -68,8 +68,7 @@ const Navbar = () => {
 	});
 
 	useEffect(() => {
-		if (loggingOut || deletingUser) dispatch(toggleLoadingOverlay(true));
-		else dispatch(toggleLoadingOverlay(false));
+		dispatch(toggleLoadingOverlay(loggingOut || deletingUser));
 	}, [loggingOut, deletingUser]);
 
 	const items = links.map((link) => (

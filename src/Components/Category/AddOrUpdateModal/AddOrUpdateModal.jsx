@@ -29,7 +29,7 @@ const AddOrUpdateModal = ({
 				id: `add-category-error-${getCurrentSeconds()}`,
 				message: "Category name must be alphabetic",
 				color: "red",
-				icon: <X side={16} />,
+				icon: <X size={15} />,
 			});
 		if (!isUpdating)
 			dispatch(

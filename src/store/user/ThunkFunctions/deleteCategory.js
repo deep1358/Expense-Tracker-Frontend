@@ -8,26 +8,26 @@ import { showNotification } from "@mantine/notifications";
 const getCurrentSeconds = () => Math.floor(Date.now() / 1000);
 
 export const deleteCategory = createAsyncThunk(
-  "user/deleteCategory",
-  async ([categoryName, setDeleteModalOpened]) => {
-    try {
-      const res = await axios.delete("/category/" + categoryName);
-      setDeleteModalOpened(false);
-      showNotification({
-        id: `deleteCategory-${getCurrentSeconds()}`,
-        message: "Category deleted successfully",
-        color: "teal",
-        icon: <Check />,
-      });
-      return res.data.categories;
-    } catch (err) {
-      showNotification({
-        id: `deleteCategory-${getCurrentSeconds()}`,
-        message: err.response.data.message || "Error deleting category",
-        color: "red",
-        icon: <X side={16} />,
-      });
-      return error(err);
-    }
-  }
+	"user/deleteCategory",
+	async ([categoryName, setDeleteModalOpened]) => {
+		try {
+			const res = await axios.delete("/category/" + categoryName);
+			setDeleteModalOpened(false);
+			showNotification({
+				id: `deleteCategory-${getCurrentSeconds()}`,
+				message: "Category deleted successfully",
+				color: "teal",
+				icon: <Check size={15} />,
+			});
+			return res.data.categories;
+		} catch (err) {
+			showNotification({
+				id: `deleteCategory-${getCurrentSeconds()}`,
+				message: err.response.data.message || "Error deleting category",
+				color: "red",
+				icon: <X size={15} />,
+			});
+			return error(err);
+		}
+	}
 );
