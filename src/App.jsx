@@ -13,8 +13,10 @@ import YearWiseExpense from "./Pages/YearWiseExpense/YearWiseExpense";
 import MonthWiseExpense from "./Pages/MonthWiseExpense.jsx/MonthWiseExpense";
 import DurationLayout from "./Layout/DurationLayout";
 import Error404 from "./Pages/404/404";
+import Error500 from "./Pages/500/500";
 import Visualization from "./Pages/Visualization/Visualization";
 import { Auth } from "./firebase";
+import { MakeUnAuthenticated } from "./store/user";
 
 function App() {
 	const dispatch = useDispatch();
@@ -25,12 +27,12 @@ function App() {
 	const { months } = useSelector((state) => state.utils);
 
 	useEffect(() => {
-		Auth.onAuthStateChanged((user) => {
-			if (user) {
-				console.log(user.email);
-				dispatch(fetchUser(user.email));
-			}
-		});
+		if (window.location.pathname !== "/serverDown") {
+			Auth.onAuthStateChanged((user) => {
+				if (user) dispatch(fetchUser(user.email));
+				else dispatch(MakeUnAuthenticated());
+			});
+		}
 	}, []);
 
 	return (
@@ -75,6 +77,7 @@ function App() {
 					</Route>
 				</Route>
 				<Route path="/login" element={<Login />} />
+				<Route path="/serverDown" element={<Error500 />} />
 				<Route path="*" element={<Error404 />} />
 			</Routes>
 		</BrowserRouter>

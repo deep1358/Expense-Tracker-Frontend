@@ -8,9 +8,9 @@ const getCurrentSeconds = () => Math.floor(Date.now() / 1000);
 
 export const deleteExpense = createAsyncThunk(
 	"expense/deleteExpense",
-	async ([id, setDeleteModalOpened]) => {
+	async ([_id, setDeleteModalOpened]) => {
 		try {
-			await axios.delete(`expense/${id}`);
+			await axios.delete(`expense/${_id}`);
 			showNotification({
 				id: `deleteExpense-${getCurrentSeconds()}`,
 				message: "Expense deleted successfully",
@@ -18,7 +18,7 @@ export const deleteExpense = createAsyncThunk(
 				icon: <Check size={15} />,
 			});
 			setDeleteModalOpened(false);
-			return { errorMessage: "", id };
+			return { errorMessage: "", _id };
 		} catch (err) {
 			showNotification({
 				id: `deleteExpense-${getCurrentSeconds()}`,

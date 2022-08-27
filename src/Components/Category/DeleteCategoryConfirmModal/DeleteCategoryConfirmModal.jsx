@@ -12,7 +12,10 @@ const DeleteCategoryConfirmModal = ({
 	setSelectDeleteCategory,
 }) => {
 	const dispatch = useDispatch();
-	const { deletingCategory } = useSelector((state) => state.user);
+	const {
+		deletingCategory,
+		user: { categories },
+	} = useSelector((state) => state.user);
 
 	const { classes } = useStyles();
 
@@ -45,6 +48,7 @@ const DeleteCategoryConfirmModal = ({
 							dispatch(
 								deleteCategory([
 									selectDeleteCategory,
+									categories,
 									setDeleteModalOpened,
 								])
 							);

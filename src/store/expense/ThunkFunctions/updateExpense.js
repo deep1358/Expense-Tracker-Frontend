@@ -8,13 +8,13 @@ const getCurrentSeconds = () => Math.floor(Date.now() / 1000);
 
 export const updateExpense = createAsyncThunk(
 	"expense/updateExpense",
-	async ({ form, year, month, id, navigate }) => {
+	async ({ form, year, month, _id, navigate }) => {
 		try {
 			await axios.patch("/expense", {
 				category: form.category,
 				amount: form.amount,
 				note: form.note,
-				_id: id,
+				_id,
 			});
 			showNotification({
 				id: `updateExpense-${getCurrentSeconds()}`,
@@ -23,7 +23,7 @@ export const updateExpense = createAsyncThunk(
 				icon: <Check size={15} />,
 			});
 			navigate(`/years/${year}/${month}`);
-			return { errorMessage: "", id };
+			return { errorMessage: "", _id };
 		} catch (err) {
 			showNotification({
 				id: `updateExpense-${getCurrentSeconds()}`,

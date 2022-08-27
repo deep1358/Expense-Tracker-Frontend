@@ -1,17 +1,11 @@
 import React from "react";
 import { Menu, Avatar, Text, Group, Divider } from "@mantine/core";
-import { logoutUser } from "../../../store/user/ThunkFunctions/logoutUser";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { useStyles } from "./AvatarMenu.style";
 import { Trash, Logout } from "tabler-icons-react";
 
-const AvatarMenu = ({ deleteConfirmBoxToggleOpened }) => {
-	const dispatch = useDispatch();
-
+const AvatarMenu = ({ deleteConfirmBoxToggleOpened, handleLogoutUser }) => {
 	const { user } = useSelector((state) => state.user);
-
-	const navigate = useNavigate();
 
 	const { classes } = useStyles();
 
@@ -34,9 +28,7 @@ const AvatarMenu = ({ deleteConfirmBoxToggleOpened }) => {
 			</Menu.Target>
 			<Menu.Dropdown>
 				<Menu.Item
-					onClick={() => {
-						dispatch(logoutUser(navigate));
-					}}
+					onClick={() => handleLogoutUser("Logged out successfully!")}
 				>
 					<Group>
 						<Logout size={16} />
