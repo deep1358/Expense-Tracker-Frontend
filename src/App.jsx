@@ -16,7 +16,7 @@ import Error404 from "./Pages/404/404";
 import Error500 from "./Pages/500/500";
 import Visualization from "./Pages/Visualization/Visualization";
 import { Auth } from "./firebase";
-import { MakeUnAuthenticated } from "./store/user";
+import { MakeUnAuthenticated, toggleFetchingUser } from "./store/user";
 import { LoadingOverlay } from "@mantine/core";
 import CustomLoader from "./Components/CustomLoader";
 
@@ -30,6 +30,7 @@ function App() {
 
 	useEffect(() => {
 		if (window.location.pathname !== "/serverDown") {
+			dispatch(toggleFetchingUser(true));
 			Auth.onAuthStateChanged((user) => {
 				if (user) dispatch(fetchUser(user.email));
 				else dispatch(MakeUnAuthenticated());

@@ -6,4 +6,7 @@ export const reducers = {
 	loggingOutToggler: (state, action) => {
 		state.loggingOut = action.payload;
 	},
+	toggleFetchingUser: (state, action) => {
+		state.fetchingUser = action.payload;
+	},
 };

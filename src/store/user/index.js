@@ -12,4 +12,5 @@ const slice = createSlice({
 
 export default slice.reducer;
 
-export const { MakeUnAuthenticated, loggingOutToggler } = slice.actions;
+export const { MakeUnAuthenticated, loggingOutToggler, toggleFetchingUser } =
+	slice.actions;
