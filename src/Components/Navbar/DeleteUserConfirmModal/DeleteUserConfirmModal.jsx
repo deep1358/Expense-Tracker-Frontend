@@ -4,10 +4,14 @@ import { AlertCircle } from "tabler-icons-react";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteUser } from "../../../store/user/ThunkFunctions/deleteUser";
 import useStyles from "./DeleteUserConfirmModal.style";
+import { signOut } from "firebase/auth";
+import { Auth } from "../../../firebase";
+import { MakeUnAuthenticated } from "../../../store/user";
 
 const DeleteUserConfirmModal = ({
 	deleteConfirmBoxOpened,
 	deleteConfirmBoxToggleOpened,
+	handleLogoutUser,
 }) => {
 	const { classes } = useStyles();
 
@@ -15,6 +19,10 @@ const DeleteUserConfirmModal = ({
 
 	const { deletingUser } = useSelector((state) => state.user);
 	const dispatch = useDispatch();
+
+	const handleDeleteUser = () => {
+		dispatch(deleteUser(handleLogoutUser));
+	};
 
 	return (
 		<Modal
@@ -56,9 +64,7 @@ const DeleteUserConfirmModal = ({
 					fullWidth
 					disabled={deleteText !== "delete my account"}
 					color="red"
-					onClick={() => {
-						dispatch(deleteUser());
-					}}
+					onClick={handleDeleteUser}
 				>
 					{deletingUser ? "Deleting..." : "Delete My Account"}
 				</Button>

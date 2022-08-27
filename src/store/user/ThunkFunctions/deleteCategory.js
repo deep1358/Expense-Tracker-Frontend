@@ -9,17 +9,19 @@ const getCurrentSeconds = () => Math.floor(Date.now() / 1000);
 
 export const deleteCategory = createAsyncThunk(
 	"user/deleteCategory",
-	async ([categoryName, setDeleteModalOpened]) => {
+	async ([categoryName, categories, setDeleteModalOpened]) => {
 		try {
-			const res = await axios.delete("/category/" + categoryName);
+			await axios.delete(`/category/${categoryName}`);
+
 			setDeleteModalOpened(false);
+
 			showNotification({
 				id: `deleteCategory-${getCurrentSeconds()}`,
 				message: "Category deleted successfully",
 				color: "teal",
 				icon: <Check size={15} />,
 			});
-			return res.data.categories;
+			return categories.filter((category) => category !== categoryName);
 		} catch (err) {
 			showNotification({
 				id: `deleteCategory-${getCurrentSeconds()}`,

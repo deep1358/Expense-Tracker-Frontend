@@ -13,8 +13,12 @@ import YearWiseExpense from "./Pages/YearWiseExpense/YearWiseExpense";
 import MonthWiseExpense from "./Pages/MonthWiseExpense.jsx/MonthWiseExpense";
 import DurationLayout from "./Layout/DurationLayout";
 import Error404 from "./Pages/404/404";
+import Error500 from "./Pages/500/500";
 import Visualization from "./Pages/Visualization/Visualization";
 import { Auth } from "./firebase";
+import { MakeUnAuthenticated } from "./store/user";
+import { LoadingOverlay } from "@mantine/core";
+import CustomLoader from "./Components/CustomLoader";
 
 function App() {
 	const dispatch = useDispatch();
@@ -25,16 +29,31 @@ function App() {
 	const { months } = useSelector((state) => state.utils);
 
 	useEffect(() => {
-		Auth.onAuthStateChanged((user) => {
-			if (user) {
-				console.log(user.email);
-				dispatch(fetchUser(user.email));
-			}
-		});
+		if (window.location.pathname !== "/serverDown") {
+			Auth.onAuthStateChanged((user) => {
+				if (user) dispatch(fetchUser(user.email));
+				else dispatch(MakeUnAuthenticated());
+			});
+		}
 	}, []);
+
+	const { loadingOverlay } = useSelector((state) => state.utils);
 
 	return (
 		<BrowserRouter>
+			<LoadingOverlay
+				style={{
+					position: "fixed",
+					width: "100vw",
+					height: "100vh",
+					zIndex: 9999,
+				}}
+				opacity={0.6}
+				color="#000"
+				loader={<CustomLoader />}
+				blur={2}
+				visible={loadingOverlay}
+			/>
 			<Routes>
 				<Route element={<ProtectedRoute />}>
 					<Route path="/" element={<BaseLayout />}>
@@ -75,6 +94,7 @@ function App() {
 					</Route>
 				</Route>
 				<Route path="/login" element={<Login />} />
+				<Route path="/serverDown" element={<Error500 />} />
 				<Route path="*" element={<Error404 />} />
 			</Routes>
 		</BrowserRouter>
