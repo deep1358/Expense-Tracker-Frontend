@@ -16,6 +16,7 @@ import { useDispatch } from "react-redux";
 import { createUser } from "../../store/user/ThunkFunctions/createUser";
 import { useNavigate } from "react-router-dom";
 import { showNotification } from "@mantine/notifications";
+import { X } from "tabler-icons-react";
 
 const Login = () => {
 	const { classes } = useStyles();
