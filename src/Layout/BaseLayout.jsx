@@ -9,7 +9,7 @@ import { AlertCircle } from "tabler-icons-react";
 import { removeAlert } from "../store/utils";
 
 const BaseLayout = () => {
-	const { user } = useSelector((state) => state.user);
+	const { user, loggedIn, fetchingUser } = useSelector((state) => state.user);
 	const { loadingOverlay, alertCloseButton, showAlert, alertMessage } =
 		useSelector((state) => state.utils);
 
@@ -23,7 +23,7 @@ const BaseLayout = () => {
 		};
 	}, [location.pathname.length]);
 
-	if (user)
+	if (user && loggedIn)
 		return (
 			<>
 				<LoadingOverlay
@@ -69,7 +69,7 @@ const BaseLayout = () => {
 				<Outlet />
 			</>
 		);
-	else return <FullScreenLoader />;
+	else if (fetchingUser) return <FullScreenLoader />;
 };
 
 export default BaseLayout;

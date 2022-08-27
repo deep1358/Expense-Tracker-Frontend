@@ -113,7 +113,7 @@ const AddOrUpdateExpense = () => {
 					form: values,
 					year: focusedExpense.year,
 					month: months[focusedExpense.month - 1],
-					id,
+					_id: id,
 					navigate,
 				})
 			);

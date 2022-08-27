@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import React, { memo, useEffect } from "react";
 import { Modal, Title, TextInput, Button, List } from "@mantine/core";
 import { useDispatch, useSelector } from "react-redux";
 import { X } from "tabler-icons-react";
@@ -16,14 +16,17 @@ const AddOrUpdateModal = ({
 }) => {
 	const dispatch = useDispatch();
 
-	const { creatingCategory, updatingCategory } = useSelector(
-		(state) => state.user
-	);
+	const {
+		creatingCategory,
+		updatingCategory,
+		user: { categories },
+	} = useSelector((state) => state.user);
 
 	// get current seconds since epoch to use as a unique id
 	const getCurrentSeconds = () => Math.floor(Date.now() / 1000);
 
 	const AddOrUpdateCategory = (values) => {
+		// debugger;
 		if (
 			!/^[a-zA-Z]([a-zA-Z _-]*([a-zA-Z]))?$/.test(values.newCategory.trim())
 		)
@@ -37,19 +40,25 @@ const AddOrUpdateModal = ({
 			dispatch(
 				createCategory([
 					values.newCategory.trim(),
+					categories,
 					setEditOrUploadModalOpened,
 				])
 			);
-		else
+		else {
 			dispatch(
 				updateCategory([
 					oldCategory,
 					values.newCategory,
+					categories,
 					setEditOrUploadModalOpened,
 				])
 			);
-		setIsUpdating(false);
+		}
 	};
+
+	useEffect(() => {
+		if (!editOrUploadModalOpened) setIsUpdating(false);
+	}, [editOrUploadModalOpened]);
 
 	return (
 		<Modal

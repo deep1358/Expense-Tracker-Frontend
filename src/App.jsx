@@ -13,57 +13,75 @@ import YearWiseExpense from "./Pages/YearWiseExpense/YearWiseExpense";
 import MonthWiseExpense from "./Pages/MonthWiseExpense.jsx/MonthWiseExpense";
 import DurationLayout from "./Layout/DurationLayout";
 import Error404 from "./Pages/404/404";
+import Error500 from "./Pages/500/500";
 import Visualization from "./Pages/Visualization/Visualization";
+import { Auth } from "./firebase";
+import { MakeUnAuthenticated } from "./store/user";
 
 function App() {
-  const dispatch = useDispatch();
+	const dispatch = useDispatch();
 
-  const [currentMonth] = useState(new Date().getMonth());
-  const [currentYear] = useState(new Date().getFullYear());
+	const [currentMonth] = useState(new Date().getMonth());
+	const [currentYear] = useState(new Date().getFullYear());
 
-  const { months } = useSelector((state) => state.utils);
+	const { months } = useSelector((state) => state.utils);
 
-  useEffect(() => {
-    dispatch(fetchUser());
-  }, []);
+	useEffect(() => {
+		if (window.location.pathname !== "/serverDown") {
+			Auth.onAuthStateChanged((user) => {
+				if (user) dispatch(fetchUser(user.email));
+				else dispatch(MakeUnAuthenticated());
+			});
+		}
+	}, []);
 
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route element={<ProtectedRoute />}>
-          <Route path="/" element={<BaseLayout />}>
-            <Route
-              path="/"
-              element={
-                <Navigate
-                  to={`/years/${currentYear}/${months[currentMonth]}`}
-                />
-              }
-            />
-            <Route path="/addExpense" element={<AddOrUpdateExpense />} />
-            <Route path="/updateExpense/:id" element={<AddOrUpdateExpense />} />
-            <Route path="/visualization" element={<Visualization />} />
-            <Route path="/categories" element={<Categories />} />
-            <Route path="/" element={<DurationLayout />}>
-              <Route
-                path="/"
-                element={
-                  <Navigate
-                    to={`/years/${currentYear}/${months[currentMonth]}`}
-                  />
-                }
-              />
-              <Route path="/years" element={<YearWiseExpense />} />
-              <Route path="/years/:year" element={<MonthWiseExpense />} />
-              <Route path="/years/:year/:month" element={<DayWiseExpense />} />
-            </Route>
-          </Route>
-        </Route>
-        <Route path="/login" element={<Login />} />
-        <Route path="*" element={<Error404 />} />
-      </Routes>
-    </BrowserRouter>
-  );
+	return (
+		<BrowserRouter>
+			<Routes>
+				<Route element={<ProtectedRoute />}>
+					<Route path="/" element={<BaseLayout />}>
+						<Route
+							path="/"
+							element={
+								<Navigate
+									to={`/years/${currentYear}/${months[currentMonth]}`}
+								/>
+							}
+						/>
+						<Route path="/addExpense" element={<AddOrUpdateExpense />} />
+						<Route
+							path="/updateExpense/:id"
+							element={<AddOrUpdateExpense />}
+						/>
+						<Route path="/visualization" element={<Visualization />} />
+						<Route path="/categories" element={<Categories />} />
+						<Route path="/" element={<DurationLayout />}>
+							<Route
+								path="/"
+								element={
+									<Navigate
+										to={`/years/${currentYear}/${months[currentMonth]}`}
+									/>
+								}
+							/>
+							<Route path="/years" element={<YearWiseExpense />} />
+							<Route
+								path="/years/:year"
+								element={<MonthWiseExpense />}
+							/>
+							<Route
+								path="/years/:year/:month"
+								element={<DayWiseExpense />}
+							/>
+						</Route>
+					</Route>
+				</Route>
+				<Route path="/login" element={<Login />} />
+				<Route path="/serverDown" element={<Error500 />} />
+				<Route path="*" element={<Error404 />} />
+			</Routes>
+		</BrowserRouter>
+	);
 }
 
 export default App;
