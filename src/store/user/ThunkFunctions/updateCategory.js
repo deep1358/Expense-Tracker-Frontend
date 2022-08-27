@@ -9,24 +9,28 @@ const getCurrentSeconds = () => Math.floor(Date.now() / 1000);
 
 export const updateCategory = createAsyncThunk(
 	"user/updateCategory",
-	async ([oldValue, newValue, setModalOpened]) => {
+	async ([oldValue, newValue, categories, setModalOpened]) => {
 		try {
 			const res = await axios.patch("/category", {
 				oldValue,
 				newValue,
+				categories,
 			});
+
 			setModalOpened(false);
+
 			showNotification({
 				id: `updateCategory-${getCurrentSeconds()}`,
 				message: "Category updated successfully",
 				color: "teal",
 				icon: <Check size={15} />,
 			});
+
 			return res.data.categories;
 		} catch (err) {
 			showNotification({
 				id: `updateCategory-${getCurrentSeconds()}`,
-				message: err.response.data.message || "Error updating category",
+				message: err?.response?.data?.message || "Error updating category",
 				color: "red",
 				icon: <X size={15} />,
 			});
