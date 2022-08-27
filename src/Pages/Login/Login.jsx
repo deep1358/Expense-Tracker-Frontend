@@ -40,10 +40,9 @@ const Login = () => {
 	const smallerScreen = useMediaQuery("(max-width: 370px)");
 
 	const handleLogin = () => {
+		dispatch(toggleLoadingOverlay(true));
 		signInWithPopup(Auth, googleAuthProvider)
 			.then((result) => {
-				dispatch(toggleLoadingOverlay(true));
-
 				// This gives you a Google Access Token. You can use it to access the Google API.
 				const credential = GoogleAuthProvider.credentialFromResult(result);
 				const token = credential.accessToken;
@@ -61,13 +60,12 @@ const Login = () => {
 
 				showNotification({
 					id: `login-${getCurrentSeconds()}`,
-					message:
-						errorMessage ||
-						err?.response?.data?.message ||
-						"Error in login",
+					message: "Error in login",
 					color: "red",
 					icon: <X size={15} />,
 				});
+
+				dispatch(toggleLoadingOverlay(false));
 
 				// The email of the user's account used.
 				const email = error.customData.email;
