@@ -17,6 +17,8 @@ import Error500 from "./Pages/500/500";
 import Visualization from "./Pages/Visualization/Visualization";
 import { Auth } from "./firebase";
 import { MakeUnAuthenticated } from "./store/user";
+import { LoadingOverlay } from "@mantine/core";
+import CustomLoader from "./Components/CustomLoader";
 
 function App() {
 	const dispatch = useDispatch();
@@ -35,8 +37,23 @@ function App() {
 		}
 	}, []);
 
+	const { loadingOverlay } = useSelector((state) => state.utils);
+
 	return (
 		<BrowserRouter>
+			<LoadingOverlay
+				style={{
+					position: "fixed",
+					width: "100vw",
+					height: "100vh",
+					zIndex: 9999,
+				}}
+				opacity={0.6}
+				color="#000"
+				loader={<CustomLoader />}
+				blur={2}
+				visible={loadingOverlay}
+			/>
 			<Routes>
 				<Route element={<ProtectedRoute />}>
 					<Route path="/" element={<BaseLayout />}>
