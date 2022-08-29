@@ -87,6 +87,16 @@ const ViewExpenseModal = ({
 					</Text>
 				</td>
 			</tr>
+			<tr>
+				<td>
+					<Text className={classes.Text}>Payment Mode: </Text>
+				</td>
+				<td>
+					<Text className={classes.Text}>
+						{focusedExpense.payment_mode}
+					</Text>
+				</td>
+			</tr>
 			{focusedExpense.note && (
 				<tr>
 					<td className={classes.td}>

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { forwardRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { addExpense } from "../../store/expense/ThunkFunctions/addExpense";
@@ -14,6 +14,9 @@ import {
 	Group,
 	Title,
 	Button,
+	Avatar,
+	Text,
+	Image,
 } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
 import { Calendar, CurrencyRupee } from "tabler-icons-react";
@@ -135,6 +138,91 @@ const AddOrUpdateExpense = () => {
 		form.reset();
 	};
 
+	const payment_mode = [
+		{
+			image: "/payment_mode/cash.png",
+			label: "Cash",
+			value: "Cash",
+		},
+		{
+			image: "/payment_mode/paytm.png",
+			label: "Paytm",
+			value: "Paytm",
+		},
+		{
+			image: "/payment_mode/gpay.svg",
+			label: "Google Pay",
+			value: "Google Pay",
+		},
+		{
+			image: "/payment_mode/amazon_pay.png",
+			label: "Amazon Pay",
+			value: "Amazon Pay",
+		},
+		{
+			image: "/payment_mode/paypal.png",
+			label: "Paypal",
+			value: "Paypal",
+		},
+		{
+			image: "/payment_mode/freecharge.png",
+			label: "Freecharge",
+			value: "Freecharge",
+		},
+		{
+			image: "/payment_mode/apple_pay.png",
+			label: "Apple Pay",
+			value: "Apple Pay",
+		},
+		{
+			image: "/payment_mode/phone_pe.jpg",
+			label: "Phone Pe",
+			value: "Phone Pe",
+		},
+		{
+			image: "/payment_mode/debit_card.jpg",
+			label: "Debit Card",
+			value: "Debit Card",
+		},
+		{
+			image: "/payment_mode/credit_card.png",
+			label: "Credit Card",
+			value: "Credit Card",
+		},
+		{
+			image: "/payment_mode/cheque.png",
+			label: "Cheque",
+			value: "Cheque",
+		},
+		{
+			image: "/payment_mode/bank_transfers.png",
+			label: "Bank Transfer",
+			value: "Bank Transfer",
+		},
+		{
+			image: "/payment_mode/net_banking.jpg",
+			label: "Net Banking",
+			value: "Net Banking",
+		},
+		{
+			image: "",
+			label: "Other",
+			value: "Other",
+		},
+	];
+
+	const SelectPaymentMode = forwardRef(({ image, label, ...others }, ref) => (
+		<div ref={ref} {...others}>
+			<Group noWrap>
+				{image && <Image width={35} src={image} alt={label} />}
+
+				<div>
+					<Text size="sm">{label}</Text>
+				</div>
+			</Group>
+		</div>
+	));
+
 	return (
 		<>
 			<Container size={420}>
@@ -180,6 +268,15 @@ const AddOrUpdateExpense = () => {
 								stepHoldInterval={100}
 								spellCheck={false}
 								mt="md"
+							/>
+							<Select
+								label="Choose Payment Mode"
+								placeholder="Pick one"
+								itemComponent={SelectPaymentMode}
+								data={payment_mode}
+								nothingFound="No results found"
+								mt="md"
+								defaultValue="Cash"
 							/>
 							<DatePicker
 								placeholder="Pick a date"
