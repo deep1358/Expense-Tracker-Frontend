@@ -9,8 +9,15 @@ const getCurrentSeconds = () => Math.floor(Date.now() / 1000);
 export const addExpense = createAsyncThunk(
 	"expense/addExpense",
 	async ({ form, year, month, navigate = null }) => {
+		const { category, amount, note, payment_mode, date } = form;
 		try {
-			const res = await axios.post("/expense", form);
+			const res = await axios.post("/expense", {
+				category,
+				amount,
+				note,
+				payment_mode,
+				date,
+			});
 			showNotification({
 				id: `addExpense-${getCurrentSeconds()}`,
 				message: "Expense added successfully",

@@ -4,7 +4,7 @@ import { Skeleton } from "@mantine/core";
 const UpdateExpenseSkeleton = () => {
 	return (
 		<>
-			{[...Array(5)].map((_, index) => (
+			{[...Array(6)].map((_, index) => (
 				<Skeleton
 					key={index}
 					height={45}

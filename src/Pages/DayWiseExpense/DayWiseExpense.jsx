@@ -3,11 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { getExpenses } from "../../store/expense/ThunkFunctions/getExpenses";
 import DayWiseExpenseTable from "../../Components/DayWiseExpense/DayWiseExpenseTable/DayWiseExpenseTable";
-import { Container, ScrollArea, Stack, Select } from "@mantine/core";
+import { Container, ScrollArea, Stack, Select, Group } from "@mantine/core";
 import { showAlert, toggleLoadingOverlay } from "../../store/utils";
 import DeleteExpenseConfirmModal from "../../Components/DayWiseExpense/DeleteExpenseConfirmModal/DeleteExpenseConfirmModal";
 import ViewExpenseModal from "../../Components/DayWiseExpense/ViewExpenseModal/ViewExpenseModal";
 import { checkMonthValidity } from "../../utils/CheckMonthValidity";
+import SelectPaymentMode from "../../Components/DayWiseExpense/SelectPaymentMode";
 
 const DayWiseExpense = () => {
 	const [sortedData, setSortedData] = useState([]);
@@ -15,6 +16,7 @@ const DayWiseExpense = () => {
 	const [reverseSortDirection, setReverseSortDirection] = useState(false);
 
 	const [categoryExpense, setCategoryExpense] = useState("All");
+	const [paymentModeExpense, setpaymentModeExpense] = useState("All");
 
 	const [deleteModalOpened, setDeleteModalOpened] = useState(false);
 	const [deleteExpenseID, setDeleteExpenseID] = useState("");
@@ -24,7 +26,7 @@ const DayWiseExpense = () => {
 
 	const { expenses, deletingExpense } = useSelector((state) => state.expense);
 	const { user } = useSelector((state) => state.user);
-	const { months } = useSelector((state) => state.utils);
+	const { months, payment_modes } = useSelector((state) => state.utils);
 
 	const dispatch = useDispatch();
 	const { year, month } = useParams();
@@ -51,17 +53,37 @@ const DayWiseExpense = () => {
 
 	useEffect(() => {
 		filterData();
-	}, [categoryExpense]);
+	}, [categoryExpense, paymentModeExpense]);
 
 	const handleCategoryExpenseChange = (value) => {
 		setCategoryExpense(value);
 	};
 
+	const handlePaymentModeExpenseChange = (value) => {
+		setpaymentModeExpense(value);
+	};
+
 	function filterData(data = expenses) {
-		if (categoryExpense === "All") return setSortedData(data);
-		setSortedData(
-			data.filter((expense) => expense.category === categoryExpense)
-		);
+		if (categoryExpense === "All" && paymentModeExpense === "All")
+			return setSortedData(data);
+		else if (categoryExpense === "All")
+			return setSortedData(
+				data.filter(
+					(expense) => expense.payment_mode === paymentModeExpense
+				)
+			);
+		else if (paymentModeExpense === "All")
+			return setSortedData(
+				data.filter((expense) => expense.category === categoryExpense)
+			);
+		else
+			return setSortedData(
+				data.filter(
+					(expense) =>
+						expense.category === categoryExpense &&
+						expense.payment_mode === paymentModeExpense
+				)
+			);
 	}
 
 	function sortData(data, payload) {
@@ -105,15 +127,28 @@ const DayWiseExpense = () => {
 			/>
 			<Container style={{ marginTop: "-2vh" }}>
 				<Stack align="flex-end">
-					{expenses?.length > 0 && (
-						<Select
-							size="xs"
-							data={["All", ...user?.categories]}
-							label="Filter By Category"
-							value={categoryExpense}
-							onChange={handleCategoryExpenseChange}
-						/>
-					)}
+					<Group position="right">
+						{expenses?.length > 0 && (
+							<>
+								<Select
+									size="xs"
+									data={["All", ...user?.categories]}
+									label="Filter By Category"
+									value={categoryExpense}
+									onChange={handleCategoryExpenseChange}
+								/>
+								<Select
+									size="xs"
+									data={["All", ...payment_modes]}
+									label="Filter By Payment Mode"
+									value={paymentModeExpense}
+									itemComponent={SelectPaymentMode}
+									a="b"
+									onChange={handlePaymentModeExpenseChange}
+								/>
+							</>
+						)}
+					</Group>
 					<ScrollArea sx={{ height: "calc(75vh - 70px)", width: "100%" }}>
 						<DayWiseExpenseTable
 							sortedData={sortedData}

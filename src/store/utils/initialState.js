@@ -1,4 +1,75 @@
 export const initialState = {
+	payment_modes: [
+		{
+			image: "/payment_mode/cash.png",
+			label: "Cash",
+			value: "Cash",
+		},
+		{
+			image: "/payment_mode/paytm.png",
+			label: "Paytm",
+			value: "Paytm",
+		},
+		{
+			image: "/payment_mode/gpay.svg",
+			label: "Google Pay",
+			value: "Google Pay",
+		},
+		{
+			image: "/payment_mode/amazon_pay.png",
+			label: "Amazon Pay",
+			value: "Amazon Pay",
+		},
+		{
+			image: "/payment_mode/paypal.png",
+			label: "Paypal",
+			value: "Paypal",
+		},
+		{
+			image: "/payment_mode/freecharge.png",
+			label: "Freecharge",
+			value: "Freecharge",
+		},
+		{
+			image: "/payment_mode/apple_pay.png",
+			label: "Apple Pay",
+			value: "Apple Pay",
+		},
+		{
+			image: "/payment_mode/phone_pe.png",
+			label: "Phone Pe",
+			value: "Phone Pe",
+		},
+		{
+			image: "/payment_mode/debit_card.png",
+			label: "Debit Card",
+			value: "Debit Card",
+		},
+		{
+			image: "/payment_mode/credit_card.png",
+			label: "Credit Card",
+			value: "Credit Card",
+		},
+		{
+			image: "/payment_mode/cheque.png",
+			label: "Cheque",
+			value: "Cheque",
+		},
+		{
+			image: "/payment_mode/bank_transfer.png",
+			label: "Bank Transfer",
+			value: "Bank Transfer",
+		},
+		{
+			image: "/payment_mode/net_banking.png",
+			label: "Net Banking",
+			value: "Net Banking",
+		},
+		{
+			label: "Other",
+			value: "Other",
+		},
+	],
 	_30DaysMonths: [
 		"January",
 		"March",

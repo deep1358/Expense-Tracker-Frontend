@@ -1,10 +1,9 @@
-import { forwardRef, useEffect } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { addExpense } from "../../store/expense/ThunkFunctions/addExpense";
 import { getExpense } from "../../store/expense/ThunkFunctions/getExpense";
 import { updateExpense } from "../../store/expense/ThunkFunctions/updateExpense";
-import { setFocusedExpense } from "../../store/expense/index";
 import {
 	Paper,
 	Textarea,
@@ -14,9 +13,7 @@ import {
 	Group,
 	Title,
 	Button,
-	Avatar,
-	Text,
-	Image,
+	TextInput,
 } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
 import { Calendar, CurrencyRupee } from "tabler-icons-react";
@@ -24,13 +21,14 @@ import { useForm } from "@mantine/form";
 import { useMediaQuery } from "@mantine/hooks";
 import { toggleLoadingOverlay } from "../../store/utils";
 import UpdateExpenseSkeleton from "../../Components/AddOrUpdateExpense/UpdateExpenseSkeleton";
+import SelectPaymentMode from "../../Components/AddOrUpdateExpense/SelectPaymentMode";
 
 const AddOrUpdateExpense = () => {
 	const { user } = useSelector((state) => state.user);
 	const { creatingExpense, focusedExpense, updatingExpense, gettingExpense } =
 		useSelector((state) => state.expense);
 
-	const { months } = useSelector((state) => state.utils);
+	const { months, payment_modes } = useSelector((state) => state.utils);
 
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
@@ -43,6 +41,8 @@ const AddOrUpdateExpense = () => {
 		initialValues: {
 			category: "",
 			amount: 1,
+			payment_mode: "Cash",
+			payment_mode_name: "",
 			date: new Date(),
 			note: "",
 		},
@@ -52,18 +52,32 @@ const AddOrUpdateExpense = () => {
 				values.amount < 0 || isNaN(values.amount) || values.amount === null
 					? "Amount must be greater than 0"
 					: undefined,
+			payment_mode:
+				values.payment_mode === "" ? "Payment mode is required" : undefined,
 			date: values.date ? undefined : "Date is required",
+			payment_mode_name:
+				values.payment_mode_name === "" && values.payment_mode === "Other"
+					? "Payment mode name is required"
+					: undefined,
 		}),
 	});
 
 	useEffect(() => {
 		if (user) {
-			if (id !== undefined) {
+			if (id) {
 				dispatch(getExpense(id));
 				if (Object.keys(focusedExpense)?.length > 0) {
 					form.setValues({
 						category: focusedExpense.category,
 						amount: +focusedExpense.amount,
+						payment_mode: focusedExpense.payment_mode.includes("Other")
+							? "Other"
+							: focusedExpense.payment_mode,
+						payment_mode_name: focusedExpense.payment_mode.includes(
+							"Other"
+						)
+							? focusedExpense.payment_mode.split("(")[1].split(")")[0]
+							: "",
 						date: new Date(
 							focusedExpense.year,
 							focusedExpense.month - 1,
@@ -76,23 +90,20 @@ const AddOrUpdateExpense = () => {
 				form.setValues({
 					category: "",
 					amount: 1,
+					payment_mode: "Cash",
+					payment_mode_name: "",
 					date: new Date(),
 					note: "",
 				});
 		}
-	}, [user, Object.values(focusedExpense).length]);
-
-	// Clear focused expense on unmount
-	useEffect(() => {
-		return () => dispatch(setFocusedExpense({}));
-	}, []);
+	}, [user, Object.values(focusedExpense).length, id]);
 
 	useEffect(() => {
 		dispatch(toggleLoadingOverlay(creatingExpense || updatingExpense));
 	}, [creatingExpense, updatingExpense]);
 
 	const handleSaveOrUpdate = (values) => {
-		if (id === undefined) {
+		if (!id) {
 			const year = form?.values?.date.getFullYear();
 			const month = form?.values?.date.getMonth();
 			const day = form?.values?.date.getDate();
@@ -101,6 +112,10 @@ const AddOrUpdateExpense = () => {
 				addExpense({
 					form: {
 						...values,
+						payment_mode:
+							values.payment_mode === "Other"
+								? `Other (${values.payment_mode_name})`
+								: values.payment_mode,
 						date: new Date(year, month, day + 1)
 							.toISOString()
 							.substring(0, 10),
@@ -113,7 +128,13 @@ const AddOrUpdateExpense = () => {
 		} else
 			dispatch(
 				updateExpense({
-					form: values,
+					form: {
+						...values,
+						payment_mode:
+							values.payment_mode === "Other"
+								? `Other (${values.payment_mode_name})`
+								: values.payment_mode,
+					},
 					year: focusedExpense.year,
 					month: months[focusedExpense.month - 1],
 					_id: id,
@@ -138,96 +159,11 @@ const AddOrUpdateExpense = () => {
 		form.reset();
 	};
 
-	const payment_mode = [
-		{
-			image: "/payment_mode/cash.png",
-			label: "Cash",
-			value: "Cash",
-		},
-		{
-			image: "/payment_mode/paytm.png",
-			label: "Paytm",
-			value: "Paytm",
-		},
-		{
-			image: "/payment_mode/gpay.svg",
-			label: "Google Pay",
-			value: "Google Pay",
-		},
-		{
-			image: "/payment_mode/amazon_pay.png",
-			label: "Amazon Pay",
-			value: "Amazon Pay",
-		},
-		{
-			image: "/payment_mode/paypal.png",
-			label: "Paypal",
-			value: "Paypal",
-		},
-		{
-			image: "/payment_mode/freecharge.png",
-			label: "Freecharge",
-			value: "Freecharge",
-		},
-		{
-			image: "/payment_mode/apple_pay.png",
-			label: "Apple Pay",
-			value: "Apple Pay",
-		},
-		{
-			image: "/payment_mode/phone_pe.jpg",
-			label: "Phone Pe",
-			value: "Phone Pe",
-		},
-		{
-			image: "/payment_mode/debit_card.jpg",
-			label: "Debit Card",
-			value: "Debit Card",
-		},
-		{
-			image: "/payment_mode/credit_card.png",
-			label: "Credit Card",
-			value: "Credit Card",
-		},
-		{
-			image: "/payment_mode/cheque.png",
-			label: "Cheque",
-			value: "Cheque",
-		},
-		{
-			image: "/payment_mode/bank_transfers.png",
-			label: "Bank Transfer",
-			value: "Bank Transfer",
-		},
-		{
-			image: "/payment_mode/net_banking.jpg",
-			label: "Net Banking",
-			value: "Net Banking",
-		},
-		{
-			image: "",
-			label: "Other",
-			value: "Other",
-		},
-	];
-
-	const SelectPaymentMode = forwardRef(({ image, label, ...others }, ref) => (
-		<div ref={ref} {...others}>
-			<Group noWrap>
-				{image && <Image width={35} src={image} alt={label} />}
-
-				<div>
-					<Text size="sm">{label}</Text>
-				</div>
-			</Group>
-		</div>
-	));
-
 	return (
 		<>
 			<Container size={420}>
 				<Title align="center">
-					{id === undefined ? "Add Expense" : "Update Expense"}
+					{!id ? "Add Expense" : "Update Expense"}
 				</Title>
 				<Paper
 					withBorder
@@ -238,7 +174,7 @@ const AddOrUpdateExpense = () => {
 					radius="md"
 					mx="auto"
 				>
-					{id !== undefined && gettingExpense ? (
+					{id && gettingExpense ? (
 						<UpdateExpenseSkeleton />
 					) : (
 						<form onSubmit={form.onSubmit(handleSaveOrUpdate)}>
@@ -249,7 +185,7 @@ const AddOrUpdateExpense = () => {
 								placeholder="Pick one"
 								{...form.getInputProps("category")}
 								required
-								autoFocus={id === undefined}
+								autoFocus={id}
 							/>
 							<NumberInput
 								name="amount"
@@ -273,16 +209,26 @@ const AddOrUpdateExpense = () => {
 								label="Choose Payment Mode"
 								placeholder="Pick one"
 								itemComponent={SelectPaymentMode}
-								data={payment_mode}
-								nothingFound="No results found"
+								{...form.getInputProps("payment_mode")}
+								data={payment_modes}
 								mt="md"
 								defaultValue="Cash"
+								required
 							/>
+							{form.values.payment_mode === "Other" && (
+								<TextInput
+									label="Payment Mode Name"
+									placeholder="Enter payment mode name"
+									{...form.getInputProps("payment_mode_name")}
+									mt="md"
+									required={form.values.payment_mode === "Other"}
+								/>
+							)}
 							<DatePicker
 								placeholder="Pick a date"
 								label="Date"
 								{...form.getInputProps("date")}
-								disabled={id !== undefined}
+								disabled={id}
 								required
 								icon={<Calendar size={16} />}
 								mt="md"
@@ -297,7 +243,7 @@ const AddOrUpdateExpense = () => {
 							<Group position="apart" mt="lg">
 								<Button
 									style={
-										id === undefined && matches
+										!id && matches
 											? { width: "47%" }
 											: { width: "100%" }
 									}
@@ -307,7 +253,7 @@ const AddOrUpdateExpense = () => {
 										? "Saving..."
 										: "Save"}
 								</Button>
-								{id === undefined && (
+								{!id && (
 									<Button
 										style={
 											matches ? { width: "47%" } : { width: "100%" }

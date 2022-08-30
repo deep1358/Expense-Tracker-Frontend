@@ -1,5 +1,5 @@
-import React, { memo, useEffect } from "react";
-import { Modal, Group, Text, Button, Title, Table } from "@mantine/core";
+import React, { memo, useEffect, useState } from "react";
+import { Modal, Group, Text, Button, Title, Table, Image } from "@mantine/core";
 import { useDispatch, useSelector } from "react-redux";
 import { getExpense } from "../../../store/expense/ThunkFunctions/getExpense";
 import { useNavigate } from "react-router-dom";
@@ -22,10 +22,21 @@ const ViewExpenseModal = ({
 	const { focusedExpense, gettingExpense } = useSelector(
 		(state) => state.expense
 	);
+	const { payment_modes } = useSelector((state) => state.utils);
+
+	const [paymentModeIcon, setPaymentModeIcon] = useState("");
 
 	useEffect(() => {
 		if (viewExpenseID) dispatch(getExpense(viewExpenseID));
 	}, [focusedExpense.length, viewExpenseID]);
+
+	useEffect(() => {
+		setPaymentModeIcon(
+			payment_modes.filter(
+				(mode) => mode.value === focusedExpense.payment_mode
+			)[0]?.image
+		);
+	}, [focusedExpense]);
 
 	// Clear focused expense on unmount
 	useEffect(() => {
@@ -92,9 +103,14 @@ const ViewExpenseModal = ({
 					<Text className={classes.Text}>Payment Mode: </Text>
 				</td>
 				<td>
-					<Text className={classes.Text}>
-						{focusedExpense.payment_mode}
-					</Text>
+					<Group>
+						{paymentModeIcon && (
+							<Image width={40} src={paymentModeIcon} />
+						)}
+						<Text className={classes.Text}>
+							{focusedExpense.payment_mode}
+						</Text>
+					</Group>
 				</td>
 			</tr>
 			{focusedExpense.note && (
