@@ -71,7 +71,6 @@ const BarOrAreaChart = ({ data = [], name, chartType = 'bar' }) => {
           shade: 'dark',
           type: 'horizontal',
           shadeIntensity: 0.2,
-          gradientToColors: undefined,
           inverseColors: true,
           opacityFrom: 0.85,
           opacityTo: 0.85,

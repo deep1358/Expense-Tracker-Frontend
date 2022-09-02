@@ -9,11 +9,13 @@ const getCurrentSeconds = () => Math.floor(Date.now() / 1000);
 export const updateExpense = createAsyncThunk(
 	"expense/updateExpense",
 	async ({ form, year, month, _id, navigate }) => {
+		const { category, amount, note, payment_mode } = form;
 		try {
 			await axios.patch("/expense", {
-				category: form.category,
-				amount: form.amount,
-				note: form.note,
+				category,
+				amount,
+				note,
+				payment_mode,
 				_id,
 			});
 			showNotification({
