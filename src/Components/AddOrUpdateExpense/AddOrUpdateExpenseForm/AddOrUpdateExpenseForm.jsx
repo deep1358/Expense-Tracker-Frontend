@@ -153,7 +153,9 @@ const AddOrUpdateExpenseForm = ({ id }) => {
 						values.payment_mode === "Other"
 							? `Other (${values.payment_mode_name})`
 							: values.payment_mode,
-					date: new Date(year, month, day).toISOString().substring(0, 10),
+					date: new Date(year, month, day + 1)
+						.toISOString()
+						.substring(0, 10),
 				},
 			})
 		);

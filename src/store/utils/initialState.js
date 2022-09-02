@@ -41,6 +41,16 @@ export const initialState = {
 			value: "Phone Pe",
 		},
 		{
+			image: "/payment_mode/whatsapp_pay.png",
+			label: "WhatsApp Pay",
+			value: "WhatsApp Pay",
+		},
+		{
+			image: "/payment_mode/mobikwik.png",
+			label: "Mobikwik",
+			value: "Mobikwik",
+		},
+		{
 			image: "/payment_mode/debit_card.png",
 			label: "Debit Card",
 			value: "Debit Card",
