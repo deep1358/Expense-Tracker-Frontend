@@ -3,22 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { getExpenses } from "../../store/expense/ThunkFunctions/getExpenses";
 import DayWiseExpenseTable from "../../Components/DayWiseExpense/DayWiseExpenseTable/DayWiseExpenseTable";
-import {
-	Container,
-	ScrollArea,
-	Stack,
-	Group,
-	Menu,
-	UnstyledButton,
-	Image,
-	Text,
-} from "@mantine/core";
+import { Container, ScrollArea, Stack } from "@mantine/core";
 import { showAlert, toggleLoadingOverlay } from "../../store/utils";
 import DeleteExpenseConfirmModal from "../../Components/DayWiseExpense/DeleteExpenseConfirmModal/DeleteExpenseConfirmModal";
 import ViewExpenseModal from "../../Components/DayWiseExpense/ViewExpenseModal/ViewExpenseModal";
 import { checkMonthValidity } from "../../utils/CheckMonthValidity";
-import { Selector } from "tabler-icons-react";
-import { useStyles } from "./DayWiseExpense.style";
+import FilterButtons from "../../Components/DayWiseExpense/FilterButtons/FilterButtons";
 
 const DayWiseExpense = () => {
 	const [sortedData, setSortedData] = useState([]);
@@ -36,14 +26,8 @@ const DayWiseExpense = () => {
 	const [viewModalOpened, setViewModalOpened] = useState(false);
 	const [viewExpenseID, setViewExpenseID] = useState("");
 
-	const [_categoryOpened, setCategoryOpened] = useState(false);
-	const [paymentModeOpened, setPaymentModeOpened] = useState(false);
-
-	const { classes } = useStyles({ paymentModeOpened });
-
 	const { expenses, deletingExpense } = useSelector((state) => state.expense);
-	const { user } = useSelector((state) => state.user);
-	const { months, payment_modes } = useSelector((state) => state.utils);
+	const { months } = useSelector((state) => state.utils);
 
 	const dispatch = useDispatch();
 	const { year, month } = useParams();
@@ -119,26 +103,6 @@ const DayWiseExpense = () => {
 		);
 	}
 
-	const categoryItems = ["All", ...user?.categories].map((item) => (
-		<Menu.Item onClick={() => setCategoryExpense(item)} key={item}>
-			<Text className={classes.label}>{item}</Text>
-		</Menu.Item>
-	));
-
-	const paymentModeItems = [{ label: "All" }, ...payment_modes].map((item) => (
-		<Menu.Item
-			icon={
-				item.image && (
-					<Image src={item.image} fit="contain" width={20} height={20} />
-				)
-			}
-			onClick={() => setPaymentModeExpense(item)}
-			key={item.label}
-		>
-			<Text className={classes.label}>{item.label}</Text>
-		</Menu.Item>
-	));
-
 	return (
 		<>
 			<DeleteExpenseConfirmModal
@@ -156,78 +120,12 @@ const DayWiseExpense = () => {
 			/>
 			<Container style={{ marginTop: "-2vh" }}>
 				<Stack align="flex-end">
-					<Group position="right">
-						{expenses?.length > 0 && (
-							<>
-								<Stack spacing={2}>
-									<Text className={classes.placeHolder}>
-										Filter by Category
-									</Text>
-									<Menu
-										onOpen={() => setCategoryOpened(true)}
-										onClose={() => setCategoryOpened(false)}
-										radius="sm"
-										width="target"
-									>
-										<Menu.Target>
-											<UnstyledButton className={classes.control}>
-												<Text className={classes.label}>
-													{categoryExpense}
-												</Text>
-												<Selector size={16} />
-											</UnstyledButton>
-										</Menu.Target>
-										<Menu.Dropdown>
-											<ScrollArea
-												style={{
-													height: 40 * categoryItems.length + 1,
-													maxHeight: 250,
-													minHeight: "fit-content",
-												}}
-											>
-												{categoryItems}
-											</ScrollArea>
-										</Menu.Dropdown>
-									</Menu>
-								</Stack>
-								<Stack spacing={2}>
-									<Text className={classes.placeHolder}>
-										Filter by Payment mode
-									</Text>
-									<Menu
-										onOpen={() => setPaymentModeOpened(true)}
-										onClose={() => setPaymentModeOpened(false)}
-										radius="sm"
-										width="target"
-									>
-										<Menu.Target>
-											<UnstyledButton className={classes.control}>
-												<Group spacing="xs">
-													{paymentModeExpense.image && (
-														<Image
-															src={paymentModeExpense.image}
-															width={25}
-															height={25}
-															fit="contain"
-														/>
-													)}
-													<Text className={classes.label}>
-														{paymentModeExpense.label}
-													</Text>
-												</Group>
-												<Selector size={16} />
-											</UnstyledButton>
-										</Menu.Target>
-										<Menu.Dropdown>
-											<ScrollArea style={{ height: 250 }}>
-												{paymentModeItems}
-											</ScrollArea>
-										</Menu.Dropdown>
-									</Menu>
-								</Stack>
-							</>
-						)}
-					</Group>
+					<FilterButtons
+						categoryExpense={categoryExpense}
+						setCategoryExpense={setCategoryExpense}
+						paymentModeExpense={paymentModeExpense}
+						setPaymentModeExpense={setPaymentModeExpense}
+					/>
 					<ScrollArea sx={{ height: "calc(75vh - 70px)", width: "100%" }}>
 						<DayWiseExpenseTable
 							sortedData={sortedData}
