@@ -7,7 +7,7 @@ import { LoadingOverlay, Alert, Center, Title } from "@mantine/core";
 import CustomLoader from "../../CustomLoader";
 import { AlertCircle } from "tabler-icons-react";
 import YearWiseFilterDrawer from "./YearWiseFilterDrawer/YearWiseFilterDrawer";
-import MonthWiseFilter from "../MonthWiseExpenseForChart/MonthWiseFilter/MonthWiseFilter";
+import FilteredChips from "../FilteredChips";
 
 const YearWiseExpenseForChart = ({
 	chartCategories,
@@ -75,7 +75,7 @@ const YearWiseExpenseForChart = ({
 				</Title>
 			</Center>
 
-			<MonthWiseFilter
+			<FilteredChips
 				appliedFilters={appliedFilters}
 				handleAppliedFilters={handleAppliedFilters}
 			/>

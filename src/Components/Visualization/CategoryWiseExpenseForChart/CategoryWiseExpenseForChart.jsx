@@ -8,7 +8,7 @@ import BarOrAreaChart from "../BarOrAreaChart/BarOrAreaChart";
 import DonutChart from "../DonutChart/DonutChart";
 import CustomLoader from "../../CustomLoader";
 import CategoryWiseFilterDrawer from "./CategoryWiseFilterDrawer/CategoryWiseFilterDrawer";
-import CategoryWiseFilter from "./CategoryWiseFilter/CategoryWiseFilter";
+import FilteredChips from "../FilteredChips";
 
 const CategoryWiseExpenseForChart = ({
 	yearWiseExpense,
@@ -85,7 +85,7 @@ const CategoryWiseExpenseForChart = ({
 				</Title>
 			</Center>
 
-			<CategoryWiseFilter
+			<FilteredChips
 				appliedFilters={appliedFilters}
 				handleAppliedFilters={handleAppliedFilters}
 			/>

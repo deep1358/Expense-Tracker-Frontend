@@ -1,8 +1,12 @@
 import { Group } from "@mantine/core";
 import React from "react";
-import RemovableChip from "../../RemovableChip/RemovableChip";
+import RemovableChip from "./RemovableChip/RemovableChip";
 
-const CategoryWiseFilter = ({ appliedFilters, handleAppliedFilters }) => {
+const FilteredChips = ({
+	appliedFilters,
+	handleAppliedFilters,
+	nonRemoveTypes = [],
+}) => {
 	const removeChip = (type) => {
 		handleAppliedFilters("All", type);
 	};
@@ -16,6 +20,7 @@ const CategoryWiseFilter = ({ appliedFilters, handleAppliedFilters }) => {
 					)
 					.map((filter, index) => (
 						<RemovableChip
+							remove={!nonRemoveTypes.includes(filter[0])}
 							key={index}
 							data={filter}
 							removeChip={removeChip}
@@ -26,4 +31,4 @@ const CategoryWiseFilter = ({ appliedFilters, handleAppliedFilters }) => {
 	);
 };
 
-export default CategoryWiseFilter;
+export default FilteredChips;
