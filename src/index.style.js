@@ -5,13 +5,10 @@ export const styles = (theme) => ({
 		boxSizing: "border-box",
 		fontFamily: "Poppins, serif !important",
 	},
-	".apexcharts-zoomin-icon,.apexcharts-zoomout-icon,.apexcharts-zoom-icon,.apexcharts-pan-icon,.apexcharts-reset-icon":
+	".apexcharts-zoomin-icon,.apexcharts-menu-icon,.apexcharts-zoomout-icon,.apexcharts-zoom-icon,.apexcharts-pan-icon,.apexcharts-reset-icon":
 		{
 			display: "none",
 		},
-	".apexcharts-toolbar": {
-		zIndex: "1 !important",
-	},
 	body: {
 		...theme.fn.fontStyles(),
 		backgroundColor: theme.colors.dark[7],
