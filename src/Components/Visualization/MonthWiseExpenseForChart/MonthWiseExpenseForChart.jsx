@@ -81,7 +81,9 @@ const MonthWiseExpenseForChart = ({
 			/>
 
 			{gettingMonthWiseExpenseForChart ? (
-				<LoadingOverlay loader={<CustomLoader />} visible blur={2} />
+				<div style={{ height: 250 }}>
+					<LoadingOverlay loader={<CustomLoader />} visible blur={2} />
+				</div>
 			) : monthWiseExpenseForChartError ? (
 				<Alert
 					mt={50}

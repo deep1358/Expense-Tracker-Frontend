@@ -97,7 +97,9 @@ const PaymentModeWiseExpenseForChart = ({
 			/>
 
 			{gettingPaymentModeWiseExpenseForChart ? (
-				<LoadingOverlay loader={<CustomLoader />} visible blur={2} />
+				<div style={{ height: 250 }}>
+					<LoadingOverlay loader={<CustomLoader />} visible blur={2} />
+				</div>
 			) : paymentModeWiseExpenseForChartError ? (
 				<Alert
 					mt={50}
