@@ -7,12 +7,18 @@ import { useStyles } from "../FilterButtons.style";
 const CategoryFilterButton = ({ categoryExpense, setCategoryExpense }) => {
 	const [categoryOpened, setCategoryOpened] = useState(false);
 
-	const { classes } = useStyles({ opened: categoryOpened });
+	const { classes, cx } = useStyles({ opened: categoryOpened });
 
 	const { user } = useSelector((state) => state.user);
 
 	const categoryItems = ["All", ...user?.categories].map((item) => (
-		<Menu.Item onClick={() => setCategoryExpense(item)} key={item}>
+		<Menu.Item
+			onClick={() => setCategoryExpense(item)}
+			key={item}
+			className={cx({
+				[classes.active]: categoryExpense === item,
+			})}
+		>
 			<Text className={classes.label}>{item}</Text>
 		</Menu.Item>
 	));

@@ -1,12 +1,12 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "../../../axios";
 
-export const getCategoryWiseExpenseForChart = createAsyncThunk(
-	"expense/getCategoryWiseExpenseForChart",
-	async ([year, month, day, payment_mode]) => {
+export const getPaymentModeWiseExpenseForChart = createAsyncThunk(
+	"expense/getPaymentModeWiseExpenseForChart",
+	async ([year, month, day, category]) => {
 		try {
 			const res = await axios.get(
-				`/expense/chart/category?year=${year}&month=${month}&day=${day}&payment_mode=${payment_mode}`
+				`/expense/chart/payment_mode?year=${year}&month=${month}&day=${day}&category=${category}`
 			);
 			return { expenses: res.data, errorMessage: "" };
 		} catch (err) {

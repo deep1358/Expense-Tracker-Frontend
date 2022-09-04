@@ -5,8 +5,11 @@ import CategoryWiseExpenseForChart from "../../Components/Visualization/Category
 import DayWiseExpenseForChart from "../../Components/Visualization/DayWiseExpenseForChart/DayWiseExpenseForChart";
 import MonthWiseExpenseForChart from "../../Components/Visualization/MonthWiseExpenseForChart/MonthWiseExpenseForChart";
 import YearWiseExpenseForChart from "../../Components/Visualization/YearWiseExpenseForChart/YearWiseExpenseForChart";
-import { Container, SimpleGrid, Paper } from "@mantine/core";
+import { Container, Paper } from "@mantine/core";
 import FilterIcon from "../../Components/Visualization/FilterIcon";
+import PaymentModeWiseExpenseForChart from "../../Components/Visualization/PaymentModeWiseExpense/PaymentModeWiseExpenseForChart";
+import { Grid } from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
 
 const Visualization = () => {
 	const { user } = useSelector((state) => state.user);
@@ -20,21 +23,15 @@ const Visualization = () => {
 
 	const [categoryWiseFilterOpened, setCategoryWiseFilterOpened] =
 		useState(false);
+	const [paymentModeWiseFilterOpened, setPaymentModeWiseFilterOpened] =
+		useState(false);
 	const [dayWiseFilterOpened, setDayWiseFilterOpened] = useState(false);
 	const [monthWiseFilterOpened, setMonthWiseFilterOpened] = useState(false);
 	const [yearWiseFilterOpened, setYearWiseFilterOpened] = useState(false);
 
+	const mediumScreen = useMediaQuery("(max-width: 900px)");
+
 	const charts = [
-		{
-			opened: setCategoryWiseFilterOpened,
-			chart: (
-				<CategoryWiseExpenseForChart
-					yearWiseExpense={yearWiseExpense}
-					categoryWiseFilterOpened={categoryWiseFilterOpened}
-					setCategoryWiseFilterOpened={setCategoryWiseFilterOpened}
-				/>
-			),
-		},
 		{
 			opened: setDayWiseFilterOpened,
 			chart: (
@@ -45,6 +42,30 @@ const Visualization = () => {
 					setDayWiseFilterOpened={setDayWiseFilterOpened}
 				/>
 			),
+			span: 12,
+		},
+		{
+			opened: setCategoryWiseFilterOpened,
+			chart: (
+				<CategoryWiseExpenseForChart
+					yearWiseExpense={yearWiseExpense}
+					categoryWiseFilterOpened={categoryWiseFilterOpened}
+					setCategoryWiseFilterOpened={setCategoryWiseFilterOpened}
+				/>
+			),
+			span: mediumScreen ? 12 : 6,
+		},
+		{
+			opened: setPaymentModeWiseFilterOpened,
+			chart: (
+				<PaymentModeWiseExpenseForChart
+					chartCategories={chartCategories}
+					yearWiseExpense={yearWiseExpense}
+					paymentModeWiseFilterOpened={paymentModeWiseFilterOpened}
+					setPaymentModeWiseFilterOpened={setPaymentModeWiseFilterOpened}
+				/>
+			),
+			span: mediumScreen ? 12 : 6,
 		},
 		{
 			opened: setMonthWiseFilterOpened,
@@ -56,6 +77,7 @@ const Visualization = () => {
 					setMonthWiseFilterOpened={setMonthWiseFilterOpened}
 				/>
 			),
+			span: mediumScreen ? 12 : 6,
 		},
 		{
 			opened: setYearWiseFilterOpened,
@@ -67,28 +89,30 @@ const Visualization = () => {
 					setYearWiseFilterOpened={setYearWiseFilterOpened}
 				/>
 			),
+			span: mediumScreen ? 12 : 6,
 		},
 	];
 
 	return (
 		<Container size={1440}>
-			<SimpleGrid mb={10} breakpoints={[{ minWidth: 1000, cols: 2 }]}>
-				{charts.map(({ opened, chart }, index) => (
-					<Paper
-						style={{
-							position: "relative",
-						}}
-						withBorder
-						shadow="md"
-						size="md"
-						radius="md"
-						key={index}
-					>
-						<FilterIcon setOpened={opened} />
-						{chart}
-					</Paper>
+			<Grid mb={10} columns={12}>
+				{charts.map(({ opened, chart, span }, index) => (
+					<Grid.Col span={span} key={index}>
+						<Paper
+							style={{
+								position: "relative",
+							}}
+							withBorder
+							shadow="md"
+							size="md"
+							radius="md"
+						>
+							<FilterIcon setOpened={opened} />
+							{chart}
+						</Paper>
+					</Grid.Col>
 				))}
-			</SimpleGrid>
+			</Grid>
 		</Container>
 	);
 };

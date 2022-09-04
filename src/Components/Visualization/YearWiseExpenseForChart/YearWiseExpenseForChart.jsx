@@ -28,15 +28,19 @@ const YearWiseExpenseForChart = ({
 		month: "All",
 		day: "All",
 		category: "All",
+		payment_mode: "All",
 		chartType: "bar",
 	});
 
-	const { month, day, category, chartType } = appliedFilters;
+	const { month, day, category, chartType, payment_mode } = appliedFilters;
 
 	const { user } = useSelector((state) => state.user);
 
 	useEffect(() => {
-		if (user) dispatch(getYearWiseExpenseForChart([month, day, category]));
+		if (user)
+			dispatch(
+				getYearWiseExpenseForChart([month, day, category, payment_mode])
+			);
 	}, []);
 
 	const handleAppliedFilters = (value, type) => {
@@ -52,6 +56,7 @@ const YearWiseExpenseForChart = ({
 					: months.indexOf(month) + 1,
 				type === "day" ? value : day,
 				type === "category" ? value : category,
+				type === "payment_mode" ? value : payment_mode,
 			])
 		);
 	};
@@ -63,6 +68,7 @@ const YearWiseExpenseForChart = ({
 				month={month}
 				day={day}
 				category={category}
+				payment_mode={payment_mode}
 				chartType={chartType}
 				yearWiseFilterOpened={yearWiseFilterOpened}
 				setYearWiseFilterOpened={setYearWiseFilterOpened}

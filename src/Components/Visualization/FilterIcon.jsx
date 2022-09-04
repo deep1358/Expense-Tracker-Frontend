@@ -9,13 +9,13 @@ const FilterIcon = ({ setOpened }) => {
 	return (
 		<Tooltip label="Filter">
 			<ActionIcon
+				onClick={() => setOpened((pre) => !pre)}
 				style={{ position: "absolute", right: 0 }}
 				radius="xl"
 				size="xl"
 				variant="subtle"
 			>
 				<Filter
-					onClick={() => setOpened((pre) => !pre)}
 					style={{ cursor: "pointer" }}
 					size={smallerScreen ? 20 : 25}
 				/>

@@ -1,6 +1,7 @@
 import { Drawer, Group, Select } from "@mantine/core";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import SelectPaymentMode from "../../SelectPaymentMode/SelectPaymentMode";
 
 const YearWiseFilterDrawer = ({
 	yearWiseFilterOpened,
@@ -8,6 +9,7 @@ const YearWiseFilterDrawer = ({
 	month,
 	day,
 	category,
+	payment_mode,
 	chartType,
 	chartCategories,
 	handleAppliedFilters,
@@ -49,6 +51,7 @@ const YearWiseFilterDrawer = ({
 
 	return (
 		<Drawer
+			position="right"
 			opened={yearWiseFilterOpened}
 			onClose={() => setYearWiseFilterOpened(false)}
 			title="Category Wise Expense Filters"
@@ -58,6 +61,7 @@ const YearWiseFilterDrawer = ({
 		>
 			<Group>
 				<Select
+					data-autofocus
 					size="xs"
 					data={["All", ...yearWiseMonths]}
 					label="Select a Month"
@@ -80,6 +84,10 @@ const YearWiseFilterDrawer = ({
 					style={{ width: "100%" }}
 					value={category}
 					onChange={(value) => handleAppliedFilters(value, "category")}
+				/>
+				<SelectPaymentMode
+					payment_mode={payment_mode}
+					handleAppliedFilters={handleAppliedFilters}
 				/>
 				<Select
 					size="xs"

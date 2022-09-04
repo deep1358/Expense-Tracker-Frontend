@@ -1,29 +1,29 @@
 import { Drawer, Group, Select } from "@mantine/core";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import SelectPaymentMode from "../../SelectPaymentMode/SelectPaymentMode";
 
-const CategoryWiseFilterDrawer = ({
+const PaymentModeWiseFilterDrawer = ({
 	yearWiseExpense,
-	categoryWiseFilterOpened,
-	setCategoryWiseFilterOpened,
+	paymentModeWiseFilterOpened,
+	setPaymentModeWiseFilterOpened,
 	day,
 	month,
 	year,
-	payment_mode,
+	category,
 	chartType,
 	handleAppliedFilters,
+	chartCategories,
 }) => {
 	const { months, fixedDays, _30DaysMonths, _31DaysMonths } = useSelector(
 		(state) => state.utils
 	);
 
-	const [categoryWiseDays, setCategoryWiseDays] = useState([]);
-	const [categoryWiseMonths, setCategoryWiseMonths] = useState(months);
-	const [categoryWiseYears, setCategoryWiseYears] = useState([]);
+	const [paymentModeWiseDays, setPaymentModeWiseDays] = useState([]);
+	const [paymentModeWiseMonths, setPaymentModeWiseMonths] = useState(months);
+	const [paymentModeWiseYears, setPaymentModeWiseYears] = useState([]);
 
 	useEffect(() => {
-		if (year === "All" && month === "All") setCategoryWiseDays(fixedDays);
+		if (year === "All" && month === "All") setPaymentModeWiseDays(fixedDays);
 		else if (month !== "All") {
 			const tempYear = year === "All" ? 2020 : +year;
 			const daysCount = new Date(
@@ -31,7 +31,7 @@ const CategoryWiseFilterDrawer = ({
 				months.indexOf(month) + 1,
 				0
 			).getDate();
-			setCategoryWiseDays(
+			setPaymentModeWiseDays(
 				Array.from(Array(daysCount).keys())
 					.map((i) => i + 1)
 					.map((i) => i.toString())
@@ -41,20 +41,22 @@ const CategoryWiseFilterDrawer = ({
 	}, [month, year]);
 
 	useEffect(() => {
-		if (+day === 31) setCategoryWiseMonths(_31DaysMonths);
-		else if (+day === 30) setCategoryWiseMonths(_30DaysMonths);
+		if (+day === 31) setPaymentModeWiseMonths(_31DaysMonths);
+		else if (+day === 30) setPaymentModeWiseMonths(_30DaysMonths);
 		else if (+day === 29) {
 			const tempYear = isNaN(+year) ? 2020 : +year;
-			if (leapYear(tempYear)) setCategoryWiseMonths(months);
-			else setCategoryWiseMonths(_30DaysMonths);
-		} else setCategoryWiseMonths(months);
+			if (leapYear(tempYear)) setPaymentModeWiseMonths(months);
+			else setPaymentModeWiseMonths(_30DaysMonths);
+		} else setPaymentModeWiseMonths(months);
 	}, [day, year]);
 
 	useEffect(() => {
-		setCategoryWiseYears(Object.keys(yearWiseExpense).sort((a, b) => b - a));
+		setPaymentModeWiseYears(
+			Object.keys(yearWiseExpense).sort((a, b) => b - a)
+		);
 		if (day === "29" && month === "February")
-			setCategoryWiseYears(
-				categoryWiseYears.filter((year) => leapYear(+year))
+			setPaymentModeWiseYears(
+				paymentModeWiseYears.filter((year) => leapYear(+year))
 			);
 	}, [Object.keys(yearWiseExpense).length, month, day]);
 
@@ -64,9 +66,9 @@ const CategoryWiseFilterDrawer = ({
 	return (
 		<Drawer
 			position="right"
-			opened={categoryWiseFilterOpened}
-			onClose={() => setCategoryWiseFilterOpened(false)}
-			title="Category Wise Expense Filters"
+			opened={paymentModeWiseFilterOpened}
+			onClose={() => setPaymentModeWiseFilterOpened(false)}
+			title="PaymentMode Wise Expense Filters"
 			padding="xl"
 			size={350}
 			style={{ zIndex: 1000, opacity: 0.95 }}
@@ -76,7 +78,7 @@ const CategoryWiseFilterDrawer = ({
 					data-autofocus
 					size="xs"
 					style={{ width: "100%" }}
-					data={["All", ...categoryWiseYears]}
+					data={["All", ...paymentModeWiseYears]}
 					label="Select a Year"
 					value={year}
 					onChange={(value) => handleAppliedFilters(value, "year")}
@@ -84,7 +86,7 @@ const CategoryWiseFilterDrawer = ({
 				<Select
 					size="xs"
 					style={{ width: "100%" }}
-					data={["All", ...categoryWiseMonths]}
+					data={["All", ...paymentModeWiseMonths]}
 					label="Select a Month"
 					value={month}
 					onChange={(value) => handleAppliedFilters(value, "month")}
@@ -92,14 +94,18 @@ const CategoryWiseFilterDrawer = ({
 				<Select
 					size="xs"
 					style={{ width: "100%" }}
-					data={["All", ...categoryWiseDays]}
+					data={["All", ...paymentModeWiseDays]}
 					label="Select a Day"
 					value={day}
 					onChange={(value) => handleAppliedFilters(value, "day")}
 				/>
-				<SelectPaymentMode
-					payment_mode={payment_mode}
-					handleAppliedFilters={handleAppliedFilters}
+				<Select
+					size="xs"
+					style={{ width: "100%" }}
+					data={["All", ...chartCategories]}
+					label="Select a Category"
+					value={category}
+					onChange={(value) => handleAppliedFilters(value, "category")}
 				/>
 				<Select
 					size="xs"
@@ -114,4 +120,4 @@ const CategoryWiseFilterDrawer = ({
 	);
 };
 
-export default CategoryWiseFilterDrawer;
+export default PaymentModeWiseFilterDrawer;

@@ -1,6 +1,7 @@
 import { Drawer, Group, Select } from "@mantine/core";
 import React from "react";
 import { useSelector } from "react-redux";
+import SelectPaymentMode from "../../SelectPaymentMode/SelectPaymentMode";
 
 const DayWiseFilterDrawer = ({
 	yearWiseExpense,
@@ -10,6 +11,7 @@ const DayWiseFilterDrawer = ({
 	month,
 	year,
 	category,
+	payment_mode,
 	handleAppliedFilters,
 }) => {
 	const { currentYear } = useSelector((state) => state.expense);
@@ -18,6 +20,7 @@ const DayWiseFilterDrawer = ({
 
 	return (
 		<Drawer
+			position="right"
 			opened={dayWiseFilterOpened}
 			onClose={() => setDayWiseFilterOpened(false)}
 			title="Day Wise Expense Filters"
@@ -27,7 +30,8 @@ const DayWiseFilterDrawer = ({
 		>
 			<Group>
 				<Select
-					size="sm"
+					data-autofocus
+					size="xs"
 					style={{ width: "100%" }}
 					data={Object.keys(yearWiseExpense)?.sort((a, b) => b - a)}
 					label="Select a Year"
@@ -41,7 +45,7 @@ const DayWiseFilterDrawer = ({
 					onChange={(value) => handleAppliedFilters(value, "year")}
 				/>
 				<Select
-					size="sm"
+					size="xs"
 					style={{ width: "100%" }}
 					data={months}
 					label="Select a Month"
@@ -49,12 +53,16 @@ const DayWiseFilterDrawer = ({
 					onChange={(value) => handleAppliedFilters(value, "month")}
 				/>
 				<Select
-					size="sm"
+					size="xs"
 					style={{ width: "100%" }}
 					data={["All", ...chartCategories]}
 					label="Select a Category"
 					value={category}
 					onChange={(value) => handleAppliedFilters(value, "category")}
+				/>
+				<SelectPaymentMode
+					payment_mode={payment_mode}
+					handleAppliedFilters={handleAppliedFilters}
 				/>
 			</Group>
 		</Drawer>

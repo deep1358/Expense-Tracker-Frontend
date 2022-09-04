@@ -29,13 +29,17 @@ const MonthWiseExpenseForChart = ({
 		year: "All",
 		day: "All",
 		category: "All",
+		payment_mode: "All",
 		chartType: "bar",
 	});
 
-	const { year, day, category, chartType } = appliedFilters;
+	const { year, day, category, chartType, payment_mode } = appliedFilters;
 
 	useEffect(() => {
-		if (user) dispatch(getMonthWiseExpenseForChart([year, day, category]));
+		if (user)
+			dispatch(
+				getMonthWiseExpenseForChart([year, day, category, payment_mode])
+			);
 	}, []);
 
 	const handleAppliedFilters = (value, type) => {
@@ -45,6 +49,7 @@ const MonthWiseExpenseForChart = ({
 				type === "year" ? value : year,
 				type === "day" ? value : day,
 				type === "category" ? value : category,
+				type === "payment_mode" ? value : payment_mode,
 			])
 		);
 	};
@@ -60,6 +65,7 @@ const MonthWiseExpenseForChart = ({
 				year={year}
 				day={day}
 				category={category}
+				payment_mode={payment_mode}
 				chartType={chartType}
 			/>
 

@@ -34,14 +34,20 @@ const DayWiseExpenseForChart = ({
 		month: "",
 		year: "",
 		category: "All",
+		payment_mode: "All",
 	});
 
-	const { year, month, category } = appliedFilters;
+	const { year, month, category, payment_mode } = appliedFilters;
 
 	useEffect(() => {
 		if (user)
 			dispatch(
-				getDayWiseExpenseForChart([currentYear, currentMonth, category])
+				getDayWiseExpenseForChart([
+					currentYear,
+					currentMonth,
+					category,
+					payment_mode,
+				])
 			);
 	}, []);
 
@@ -62,11 +68,12 @@ const DayWiseExpenseForChart = ({
 			getDayWiseExpenseForChart([
 				type === "year" ? value : year || currentYear,
 				type === "month"
-					? months.indexOf(month) === -1
+					? months.indexOf(value) === -1
 						? "All"
-						: months.indexOf(month)
+						: months.indexOf(value) + 1
 					: months.indexOf(month) + 1,
 				type === "category" ? value : category,
+				type === "payment_mode" ? value : payment_mode,
 			])
 		);
 	};
@@ -82,11 +89,12 @@ const DayWiseExpenseForChart = ({
 				month={month}
 				year={year}
 				category={category}
+				payment_mode={payment_mode}
 				chartCategories={chartCategories}
 				handleAppliedFilters={handleAppliedFilters}
 			/>
 
-			<Center style={{ width: smallerScreen ? "82%" : "100%" }}>
+			<Center style={{ width: smallerScreen ? "96%" : "100%" }}>
 				<Title mt={4} mb={2} ml={1} order={4}>
 					Day Wise Expense
 				</Title>

@@ -3,24 +3,25 @@ import { useDispatch, useSelector } from "react-redux";
 import { LoadingOverlay, Alert, Center, Title } from "@mantine/core";
 import { AlertCircle } from "tabler-icons-react";
 import { useMediaQuery } from "@mantine/hooks";
-import { getCategoryWiseExpenseForChart } from "../../../store/expense/ThunkFunctions/getCategoryWiseExpenseForChart";
+import { getPaymentModeWiseExpenseForChart } from "../../../store/expense/ThunkFunctions/getPaymentModeWiseExpenseForChart";
 import BarOrAreaChart from "../BarOrAreaChart/BarOrAreaChart";
 import DonutChart from "../DonutChart/DonutChart";
 import CustomLoader from "../../CustomLoader";
-import CategoryWiseFilterDrawer from "./CategoryWiseFilterDrawer/CategoryWiseFilterDrawer";
+import PaymentModeWiseFilterDrawer from "./PaymentModeWiseFilterDrawer/PaymentModeWiseFilterDrawer";
 import FilteredChips from "../FilteredChips";
 
-const CategoryWiseExpenseForChart = ({
+const PaymentModeWiseExpenseForChart = ({
 	yearWiseExpense,
-	categoryWiseFilterOpened,
-	setCategoryWiseFilterOpened,
+	paymentModeWiseFilterOpened,
+	setPaymentModeWiseFilterOpened,
+	chartCategories,
 }) => {
 	const dispatch = useDispatch();
 
 	const {
-		categoryWiseExpenseForChart,
-		gettingCategoryWiseExpenseForChart,
-		categoryWiseExpenseForChartError,
+		paymentModeWiseExpenseForChart,
+		gettingPaymentModeWiseExpenseForChart,
+		paymentModeWiseExpenseForChartError,
 	} = useSelector((state) => state.expense);
 
 	const { months } = useSelector((state) => state.utils);
@@ -31,20 +32,20 @@ const CategoryWiseExpenseForChart = ({
 		month: "All",
 		year: "All",
 		day: "All",
-		payment_mode: "All",
+		category: "All",
 		chartType: "bar",
 	});
 
-	const { year, month, day, payment_mode, chartType } = appliedFilters;
+	const { year, month, day, category, chartType } = appliedFilters;
 
 	useEffect(() => {
 		if (user)
 			dispatch(
-				getCategoryWiseExpenseForChart([
+				getPaymentModeWiseExpenseForChart([
 					year || "All",
 					months.indexOf(month) === -1 ? "All" : months.indexOf(month) + 1,
 					day || "All",
-					payment_mode || "All",
+					category || "All",
 				])
 			);
 	}, []);
@@ -52,7 +53,7 @@ const CategoryWiseExpenseForChart = ({
 	const handleAppliedFilters = (value, type) => {
 		setAppliedFilters({ ...appliedFilters, [type]: value });
 		dispatch(
-			getCategoryWiseExpenseForChart([
+			getPaymentModeWiseExpenseForChart([
 				type === "year" ? value : year,
 				type === "month"
 					? months.indexOf(value) === -1
@@ -62,7 +63,7 @@ const CategoryWiseExpenseForChart = ({
 					? "All"
 					: months.indexOf(month) + 1,
 				type === "day" ? value : day,
-				type === "payment_mode" ? value : payment_mode,
+				type === "category" ? value : category,
 			])
 		);
 	};
@@ -71,21 +72,22 @@ const CategoryWiseExpenseForChart = ({
 
 	return (
 		<>
-			<CategoryWiseFilterDrawer
-				categoryWiseFilterOpened={categoryWiseFilterOpened}
-				setCategoryWiseFilterOpened={setCategoryWiseFilterOpened}
+			<PaymentModeWiseFilterDrawer
+				paymentModeWiseFilterOpened={paymentModeWiseFilterOpened}
+				setPaymentModeWiseFilterOpened={setPaymentModeWiseFilterOpened}
 				yearWiseExpense={yearWiseExpense}
 				month={month}
 				year={year}
 				day={day}
-				payment_mode={payment_mode}
+				category={category}
 				chartType={chartType}
 				handleAppliedFilters={handleAppliedFilters}
+				chartCategories={chartCategories}
 			/>
 
 			<Center style={{ width: smallerScreen ? "86%" : "100%" }}>
 				<Title mt={4} mb={2} ml={1} order={4}>
-					Category Wise Expense
+					PaymentMode Wise Expense
 				</Title>
 			</Center>
 
@@ -94,25 +96,28 @@ const CategoryWiseExpenseForChart = ({
 				handleAppliedFilters={handleAppliedFilters}
 			/>
 
-			{gettingCategoryWiseExpenseForChart ? (
+			{gettingPaymentModeWiseExpenseForChart ? (
 				<LoadingOverlay loader={<CustomLoader />} visible blur={2} />
-			) : categoryWiseExpenseForChartError ? (
+			) : paymentModeWiseExpenseForChartError ? (
 				<Alert
 					mt={50}
 					icon={<AlertCircle size={16} />}
 					title="Error!"
 					color="red"
 				>
-					{categoryWiseExpenseForChartError}
+					{paymentModeWiseExpenseForChartError}
 				</Alert>
 			) : (
-				categoryWiseExpenseForChart &&
+				paymentModeWiseExpenseForChart &&
 				(chartType === "donut" ? (
-					<DonutChart data={categoryWiseExpenseForChart} name="category" />
+					<DonutChart
+						data={paymentModeWiseExpenseForChart}
+						name="payment_mode"
+					/>
 				) : (
 					<BarOrAreaChart
-						data={categoryWiseExpenseForChart}
-						name="category"
+						data={paymentModeWiseExpenseForChart}
+						name="payment_mode"
 					/>
 				))
 			)}
@@ -120,4 +125,4 @@ const CategoryWiseExpenseForChart = ({
 	);
 };
 
-export default memo(CategoryWiseExpenseForChart);
+export default memo(PaymentModeWiseExpenseForChart);
