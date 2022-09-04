@@ -159,7 +159,6 @@ const AddOrUpdateExpenseForm = ({ id }) => {
 				},
 			})
 		);
-		form.reset();
 	};
 
 	const setFormPaymentModeValue = (mode) => {
