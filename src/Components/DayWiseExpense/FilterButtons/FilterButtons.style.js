@@ -26,4 +26,12 @@ export const useStyles = createStyles((theme, { opened }) => ({
 	placeHolder: {
 		fontSize: "12px",
 	},
+
+	active: {
+		background: theme.colors.blue[8],
+
+		"&:hover": {
+			backgroundColor: theme.colors.blue[8],
+		},
+	},
 }));

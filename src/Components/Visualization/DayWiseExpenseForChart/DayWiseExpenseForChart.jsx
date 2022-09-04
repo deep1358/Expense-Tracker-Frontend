@@ -1,127 +1,130 @@
-import React, { memo, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { getDayWiseExpenseForChart } from '../../../store/expense/ThunkFunctions/getDayWiseExpenseForChart';
-import { getYearWiseExpense } from '../../../store/expense/ThunkFunctions/getYearWiseExpense';
-import BarOrAreaChart from '../BarOrAreaChart/BarOrAreaChart';
-import { Select, Group, LoadingOverlay, Alert, Title, Center } from '@mantine/core';
-import CustomLoader from '../../CustomLoader';
-import { AlertCircle } from 'tabler-icons-react';
+import React, { memo, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getDayWiseExpenseForChart } from "../../../store/expense/ThunkFunctions/getDayWiseExpenseForChart";
+import { getYearWiseExpense } from "../../../store/expense/ThunkFunctions/getYearWiseExpense";
+import BarOrAreaChart from "../BarOrAreaChart/BarOrAreaChart";
+import { LoadingOverlay, Alert, Title, Center } from "@mantine/core";
+import CustomLoader from "../../CustomLoader";
+import { AlertCircle } from "tabler-icons-react";
+import DayWiseFilterDrawer from "./DayWiseFilterDrawer/DayWiseFilterDrawer";
+import { useMediaQuery } from "@mantine/hooks";
+import FilteredChips from "../FilteredChips";
 
-const DayWiseExpenseForChart = ({ yearWiseExpense, chartCategories }) => {
-  const dispatch = useDispatch();
+const DayWiseExpenseForChart = ({
+	yearWiseExpense,
+	chartCategories,
+	dayWiseFilterOpened,
+	setDayWiseFilterOpened,
+}) => {
+	const dispatch = useDispatch();
 
-  const {
-    dayWiseExpenseForChart,
-    gettingDayWiseExpenseForChart,
-    dayWiseExpenseForChartError,
-    currentMonth,
-    currentYear
-  } = useSelector((state) => state.expense);
+	const {
+		dayWiseExpenseForChart,
+		gettingDayWiseExpenseForChart,
+		dayWiseExpenseForChartError,
+		currentMonth,
+		currentYear,
+	} = useSelector((state) => state.expense);
 
-  const { months } = useSelector((state) => state.utils);
+	const { months } = useSelector((state) => state.utils);
 
-  const { user } = useSelector((state) => state.user);
+	const { user } = useSelector((state) => state.user);
 
-  const [dayWiseExpenseYear, setDayWiseExpenseYear] = useState('');
-  const [dayWiseExpenseMonth, setDayWiseExpenseMonth] = useState('');
-  const [dayWiseExpenseCategory, setDayWiseExpenseCategory] = useState('All');
+	const [appliedFilters, setAppliedFilters] = useState({
+		month: "",
+		year: "",
+		category: "All",
+		payment_mode: "All",
+	});
 
-  useEffect(() => {
-    if (user)
-      dispatch(getDayWiseExpenseForChart([currentYear, currentMonth, dayWiseExpenseCategory]));
-  }, [user]);
+	const { year, month, category, payment_mode } = appliedFilters;
 
-  useEffect(() => {
-    if (user) {
-      setDayWiseExpenseMonth(months[currentMonth - 1]);
-      dispatch(getYearWiseExpense());
-    }
-  }, [user, Object(yearWiseExpense).length]);
+	useEffect(() => {
+		if (user)
+			dispatch(
+				getDayWiseExpenseForChart([
+					currentYear,
+					currentMonth,
+					category,
+					payment_mode,
+				])
+			);
+	}, []);
 
-  const handleDayWiseExpenseYearChange = (value) => {
-    setDayWiseExpenseYear(value);
-    dispatch(
-      getDayWiseExpenseForChart([
-        value,
-        months.indexOf(dayWiseExpenseMonth) === -1
-          ? 'All'
-          : months.indexOf(dayWiseExpenseMonth) + 1,
-        dayWiseExpenseCategory
-      ])
-    );
-  };
+	useEffect(() => {
+		if (user) {
+			setAppliedFilters({
+				...appliedFilters,
+				month: months[currentMonth - 1],
+				year: currentYear,
+			});
+			dispatch(getYearWiseExpense());
+		}
+	}, [Object(yearWiseExpense).length]);
 
-  const handleDayWiseExpenseMonthChange = (value) => {
-    setDayWiseExpenseMonth(value);
-    dispatch(
-      getDayWiseExpenseForChart([
-        dayWiseExpenseYear || currentYear,
-        months.indexOf(value) === -1 ? 'All' : months.indexOf(value) + 1,
-        dayWiseExpenseCategory
-      ])
-    );
-  };
+	const handleAppliedFilters = (value, type) => {
+		setAppliedFilters({ ...appliedFilters, [type]: value });
+		dispatch(
+			getDayWiseExpenseForChart([
+				type === "year" ? value : year || currentYear,
+				type === "month"
+					? months.indexOf(value) === -1
+						? "All"
+						: months.indexOf(value) + 1
+					: months.indexOf(month) + 1,
+				type === "category" ? value : category,
+				type === "payment_mode" ? value : payment_mode,
+			])
+		);
+	};
 
-  const handleDayWiseExpenseCategoryChange = (value) => {
-    setDayWiseExpenseCategory(value);
-    dispatch(
-      getDayWiseExpenseForChart([
-        dayWiseExpenseYear || currentYear,
-        months.indexOf(dayWiseExpenseMonth) === -1
-          ? 'All'
-          : months.indexOf(dayWiseExpenseMonth) + 1,
-        value
-      ])
-    );
-  };
+	const smallerScreen = useMediaQuery("(max-width: 400px)");
 
-  return (
-    <>
-      <Center style={{ width: '100%' }}>
-        <Title mb={10} order={2}>
-          Day Wise Expense
-        </Title>
-      </Center>
-      <Group>
-        <Select
-          size="xs"
-          data={Object.keys(yearWiseExpense)?.sort((a, b) => b - a)}
-          label="Select a Year"
-          value={
-            !dayWiseExpenseYear
-              ? currentYear !== new Date().getFullYear()
-                ? currentYear
-                : `${new Date().getFullYear()}`
-              : dayWiseExpenseYear
-          }
-          onChange={handleDayWiseExpenseYearChange}
-        />
-        <Select
-          size="xs"
-          data={months}
-          label="Select a Month"
-          value={dayWiseExpenseMonth}
-          onChange={handleDayWiseExpenseMonthChange}
-        />
-        <Select
-          size="xs"
-          data={['All', ...chartCategories]}
-          label="Select a Category"
-          value={dayWiseExpenseCategory}
-          onChange={handleDayWiseExpenseCategoryChange}
-        />
-      </Group>
-      {gettingDayWiseExpenseForChart ? (
-        <LoadingOverlay loader={<CustomLoader />} visible blur={2} />
-      ) : dayWiseExpenseForChartError ? (
-        <Alert mt={50} icon={<AlertCircle size={16} />} title="Error!" color="red">
-          {dayWiseExpenseForChartError}
-        </Alert>
-      ) : (
-        <BarOrAreaChart name="day" data={dayWiseExpenseForChart} chartType="area" />
-      )}
-    </>
-  );
+	return (
+		<>
+			<DayWiseFilterDrawer
+				dayWiseFilterOpened={dayWiseFilterOpened}
+				setDayWiseFilterOpened={setDayWiseFilterOpened}
+				yearWiseExpense={yearWiseExpense}
+				month={month}
+				year={year}
+				category={category}
+				payment_mode={payment_mode}
+				chartCategories={chartCategories}
+				handleAppliedFilters={handleAppliedFilters}
+			/>
+
+			<Center style={{ width: smallerScreen ? "96%" : "100%" }}>
+				<Title mt={4} mb={2} ml={1} order={4}>
+					Day Wise Expense
+				</Title>
+			</Center>
+
+			<FilteredChips
+				nonRemoveTypes={["month", "year"]}
+				appliedFilters={appliedFilters}
+				handleAppliedFilters={handleAppliedFilters}
+			/>
+			{gettingDayWiseExpenseForChart ? (
+				<LoadingOverlay loader={<CustomLoader />} visible blur={2} />
+			) : dayWiseExpenseForChartError ? (
+				<Alert
+					mt={50}
+					icon={<AlertCircle size={16} />}
+					title="Error!"
+					color="red"
+				>
+					{dayWiseExpenseForChartError}
+				</Alert>
+			) : (
+				<BarOrAreaChart
+					name="day"
+					data={dayWiseExpenseForChart}
+					chartType="area"
+				/>
+			)}
+		</>
+	);
 };
 
 export default memo(DayWiseExpenseForChart);

@@ -1,114 +1,106 @@
-import React, { useEffect, useState, memo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { getMonthWiseExpenseForChart } from '../../../store/expense/ThunkFunctions/getMonthWiseExpenseForChart';
-import BarOrAreaChart from '../BarOrAreaChart/BarOrAreaChart';
-import DonutChart from '../DonutChart/DonutChart';
-import { Select, Group, LoadingOverlay, Alert, Center, Title } from '@mantine/core';
-import CustomLoader from '../../CustomLoader';
-import { AlertCircle } from 'tabler-icons-react';
+import React, { useEffect, useState, memo } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getMonthWiseExpenseForChart } from "../../../store/expense/ThunkFunctions/getMonthWiseExpenseForChart";
+import BarOrAreaChart from "../BarOrAreaChart/BarOrAreaChart";
+import DonutChart from "../DonutChart/DonutChart";
+import { LoadingOverlay, Alert, Center, Title } from "@mantine/core";
+import CustomLoader from "../../CustomLoader";
+import { AlertCircle } from "tabler-icons-react";
+import MonthWiseFilterDrawer from "./MonthWiseFilterDrawer/MonthWiseFilterDrawer";
+import FilteredChips from "../FilteredChips";
 
-const MonthWiseExpenseForChart = ({ chartCategories, yearWiseExpense }) => {
-  const dispatch = useDispatch();
+const MonthWiseExpenseForChart = ({
+	chartCategories,
+	yearWiseExpense,
+	setMonthWiseFilterOpened,
+	monthWiseFilterOpened,
+}) => {
+	const dispatch = useDispatch();
 
-  const {
-    monthWiseExpenseForChart,
-    gettingMonthWiseExpenseForChart,
-    monthWiseExpenseForChartError
-  } = useSelector((state) => state.expense);
+	const {
+		monthWiseExpenseForChart,
+		gettingMonthWiseExpenseForChart,
+		monthWiseExpenseForChartError,
+	} = useSelector((state) => state.expense);
 
-  const { fixedDays } = useSelector((state) => state.utils);
+	const { user } = useSelector((state) => state.user);
 
-  const { user } = useSelector((state) => state.user);
+	const [appliedFilters, setAppliedFilters] = useState({
+		year: "All",
+		day: "All",
+		category: "All",
+		payment_mode: "All",
+		chartType: "bar",
+	});
 
-  const [monthWiseExpenseYear, setMonthWiseExpenseYear] = useState('All');
-  const [monthWiseExpenseDay, setMonthWiseExpenseDay] = useState('All');
-  const [monthWiseExpenseCategory, setMonthWiseExpenseCategory] = useState('All');
+	const { year, day, category, chartType, payment_mode } = appliedFilters;
 
-  const [chartType, setChartType] = useState('bar');
+	useEffect(() => {
+		if (user)
+			dispatch(
+				getMonthWiseExpenseForChart([year, day, category, payment_mode])
+			);
+	}, []);
 
-  const handleMonthWiseExpenseYearChange = (value) => {
-    setMonthWiseExpenseYear(value);
-    dispatch(getMonthWiseExpenseForChart([value, monthWiseExpenseDay, monthWiseExpenseCategory]));
-  };
+	const handleAppliedFilters = (value, type) => {
+		setAppliedFilters({ ...appliedFilters, [type]: value });
+		dispatch(
+			getMonthWiseExpenseForChart([
+				type === "year" ? value : year,
+				type === "day" ? value : day,
+				type === "category" ? value : category,
+				type === "payment_mode" ? value : payment_mode,
+			])
+		);
+	};
 
-  const handleMonthWiseExpenseDayChange = (value) => {
-    setMonthWiseExpenseDay(value);
-    dispatch(getMonthWiseExpenseForChart([monthWiseExpenseYear, value, monthWiseExpenseCategory]));
-  };
+	return (
+		<>
+			<MonthWiseFilterDrawer
+				monthWiseFilterOpened={monthWiseFilterOpened}
+				setMonthWiseFilterOpened={setMonthWiseFilterOpened}
+				yearWiseExpense={yearWiseExpense}
+				handleAppliedFilters={handleAppliedFilters}
+				chartCategories={chartCategories}
+				year={year}
+				day={day}
+				category={category}
+				payment_mode={payment_mode}
+				chartType={chartType}
+			/>
 
-  useEffect(() => {
-    if (user)
-      dispatch(
-        getMonthWiseExpenseForChart([
-          monthWiseExpenseYear,
-          monthWiseExpenseDay,
-          monthWiseExpenseCategory
-        ])
-      );
-  }, [user]);
+			<Center style={{ width: "100%" }}>
+				<Title mt={2} order={4}>
+					Month Wise Expense
+				</Title>
+			</Center>
 
-  const handleMonthWiseExpenseCategoryChange = (value) => {
-    setMonthWiseExpenseCategory(value);
-    dispatch(getMonthWiseExpenseForChart([monthWiseExpenseYear, monthWiseExpenseDay, value]));
-  };
+			<FilteredChips
+				appliedFilters={appliedFilters}
+				handleAppliedFilters={handleAppliedFilters}
+			/>
 
-  const handleChartTypeChange = (value) => {
-    setChartType(value);
-  };
-
-  return (
-    <>
-      <Center style={{ width: '100%' }}>
-        <Title mb={10} order={2}>
-          Month Wise Expense
-        </Title>
-      </Center>
-      <Group>
-        <Select
-          size="xs"
-          data={['All', ...Object.keys(yearWiseExpense)?.sort((a, b) => b - a)]}
-          label="Select a Year"
-          value={monthWiseExpenseYear}
-          onChange={handleMonthWiseExpenseYearChange}
-        />
-        <Select
-          size="xs"
-          data={['All', ...fixedDays]}
-          label="Select a Day"
-          value={monthWiseExpenseDay}
-          onChange={handleMonthWiseExpenseDayChange}
-        />
-        <Select
-          size="xs"
-          data={['All', ...chartCategories]}
-          label="Select a Category"
-          value={monthWiseExpenseCategory}
-          onChange={handleMonthWiseExpenseCategoryChange}
-        />
-        <Select
-          size="xs"
-          data={['bar', 'donut']}
-          label="Select a Chart Type"
-          value={chartType}
-          onChange={handleChartTypeChange}
-        />
-      </Group>
-      {gettingMonthWiseExpenseForChart ? (
-        <LoadingOverlay loader={<CustomLoader />} visible blur={2} />
-      ) : monthWiseExpenseForChartError ? (
-        <Alert mt={50} icon={<AlertCircle size={16} />} title="Error!" color="red">
-          {monthWiseExpenseForChartError}
-        </Alert>
-      ) : (
-        monthWiseExpenseForChart &&
-        (chartType === 'donut' ? (
-          <DonutChart data={monthWiseExpenseForChart} name="month" />
-        ) : (
-          <BarOrAreaChart data={monthWiseExpenseForChart} name="month" />
-        ))
-      )}
-    </>
-  );
+			{gettingMonthWiseExpenseForChart ? (
+				<LoadingOverlay loader={<CustomLoader />} visible blur={2} />
+			) : monthWiseExpenseForChartError ? (
+				<Alert
+					mt={50}
+					icon={<AlertCircle size={16} />}
+					title="Error!"
+					color="red"
+				>
+					{monthWiseExpenseForChartError}
+				</Alert>
+			) : (
+				monthWiseExpenseForChart &&
+				(chartType === "donut" ? (
+					<DonutChart data={monthWiseExpenseForChart} name="month" />
+				) : (
+					<BarOrAreaChart data={monthWiseExpenseForChart} name="month" />
+				))
+			)}
+		</>
+	);
 };
 
 export default memo(MonthWiseExpenseForChart);

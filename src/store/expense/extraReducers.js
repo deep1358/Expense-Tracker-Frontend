@@ -9,6 +9,7 @@ import { getCategoryWiseExpenseForChart } from "./ThunkFunctions/getCategoryWise
 import { getDayWiseExpenseForChart } from "./ThunkFunctions/getDayWiseExpenseForChart";
 import { getMonthWiseExpenseForChart } from "./ThunkFunctions/getMonthWiseExpenseForChart";
 import { getYearWiseExpenseForChart } from "./ThunkFunctions/getYearWiseExpenseForChart";
+import { getPaymentModeWiseExpenseForChart } from "./ThunkFunctions/getPaymentModeWiseExpenseForChart";
 
 export const extraReducers = {
 	[getExpenses.pending]: (state) => {
@@ -124,6 +125,20 @@ export const extraReducers = {
 	},
 	[getCategoryWiseExpenseForChart.rejected]: (state, action) => {
 		state.gettingCategoryWiseExpenseForChart = false;
+		state.error = action.error;
+	},
+
+	[getPaymentModeWiseExpenseForChart.pending]: (state) => {
+		state.gettingPaymentModeWiseExpenseForChart = true;
+	},
+	[getPaymentModeWiseExpenseForChart.fulfilled]: (state, action) => {
+		const { expenses, errorMessage } = action.payload;
+		state.gettingPaymentModeWiseExpenseForChart = false;
+		state.paymentModeWiseExpenseForChartError = errorMessage;
+		state.paymentModeWiseExpenseForChart = expenses;
+	},
+	[getPaymentModeWiseExpenseForChart.rejected]: (state, action) => {
+		state.gettingPaymentModeWiseExpenseForChart = false;
 		state.error = action.error;
 	},
 

@@ -18,7 +18,7 @@ const SelectPaymentMode = ({ payment_mode, setFormPaymentModeValue }) => {
 	const [paymentModeOpened, setPaymentModeOpened] = useState(false);
 	const [paymentModeExpense, setPaymentModeExpense] = useState({ label: "" });
 
-	const { classes } = useStyles({ paymentModeOpened });
+	const { classes, cx } = useStyles({ paymentModeOpened });
 
 	const paymentModeItems = payment_modes.map((item) => (
 		<Menu.Item
@@ -31,6 +31,9 @@ const SelectPaymentMode = ({ payment_mode, setFormPaymentModeValue }) => {
 				setFormPaymentModeValue(item.label);
 				setPaymentModeExpense(item);
 			}}
+			className={cx({
+				[classes.active]: paymentModeExpense?.label === item.label,
+			})}
 			key={item.label}
 		>
 			<Text>{item.label}</Text>
