@@ -106,7 +106,14 @@ const DayWiseExpenseForChart = ({
 				handleAppliedFilters={handleAppliedFilters}
 			/>
 			{gettingDayWiseExpenseForChart ? (
-				<LoadingOverlay loader={<CustomLoader />} visible blur={2} />
+				<div style={{ height: 250 }}>
+					<LoadingOverlay
+						style={{ zIndex: 10 }}
+						loader={<CustomLoader />}
+						visible
+						blur={2}
+					/>
+				</div>
 			) : dayWiseExpenseForChartError ? (
 				<Alert
 					mt={50}

@@ -95,7 +95,9 @@ const CategoryWiseExpenseForChart = ({
 			/>
 
 			{gettingCategoryWiseExpenseForChart ? (
-				<LoadingOverlay loader={<CustomLoader />} visible blur={2} />
+				<div style={{ height: 250 }}>
+					<LoadingOverlay loader={<CustomLoader />} visible blur={2} />
+				</div>
 			) : categoryWiseExpenseForChartError ? (
 				<Alert
 					mt={50}
