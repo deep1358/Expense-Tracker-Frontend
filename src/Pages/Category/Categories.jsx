@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { TextInput, Button, Container, ScrollArea, Stack } from "@mantine/core";
-import { useForm } from "@mantine/form";
 import { toggleLoadingOverlay } from "../../store/utils";
 import { Search, Plus } from "tabler-icons-react";
 import DeleteCategoryConfirmModal from "../../Components/Category/DeleteCategoryConfirmModal/DeleteCategoryConfirmModal";
-import AddOrUpdateModal from "../../Components/Category/AddOrUpdateModal/AddOrUpdateModal";
 import CategoryTable from "../../Components/Category/CategoryTable/CategoryTable";
 import { useMediaQuery } from "@mantine/hooks";
+import AddOrUpdateCategoryModal from "../../Components/AddOrUpdateCategoryModal/AddOrUpdateCategoryModal";
 
 const Categories = () => {
 	const [oldCategory, setOldCategory] = useState("");
@@ -26,17 +25,6 @@ const Categories = () => {
 		useSelector((state) => state.user);
 	const dispatch = useDispatch();
 
-	const categoryForm = useForm({
-		initialValues: {
-			newCategory: "",
-		},
-
-		validate: {
-			newCategory: (values) =>
-				values.newCategory === "" ? "Category is required" : undefined,
-		},
-	});
-
 	useEffect(() => {
 		dispatch(
 			toggleLoadingOverlay(
@@ -44,10 +32,6 @@ const Categories = () => {
 			)
 		);
 	}, [creatingCategory, updatingCategory, deletingCategory]);
-
-	useEffect(() => {
-		if (!editOrUploadModalOpened) categoryForm.reset();
-	}, [editOrUploadModalOpened]);
 
 	useEffect(() => {
 		setSortedData(user?.categories);
@@ -98,10 +82,9 @@ const Categories = () => {
 				selectDeleteCategory={selectDeleteCategory}
 			/>
 
-			<AddOrUpdateModal
-				editOrUploadModalOpened={editOrUploadModalOpened}
-				setEditOrUploadModalOpened={setEditOrUploadModalOpened}
-				categoryForm={categoryForm}
+			<AddOrUpdateCategoryModal
+				opened={editOrUploadModalOpened}
+				setOpened={setEditOrUploadModalOpened}
 				isUpdating={isUpdating}
 				setIsUpdating={setIsUpdating}
 				oldCategory={oldCategory}
@@ -128,7 +111,6 @@ const Categories = () => {
 					)}
 					<ScrollArea sx={{ height: "calc(75vh - 50px)", width: "100%" }}>
 						<CategoryTable
-							categoryForm={categoryForm}
 							setOldCategory={setOldCategory}
 							setIsUpdating={setIsUpdating}
 							setEditOrUploadModalOpened={setEditOrUploadModalOpened}
