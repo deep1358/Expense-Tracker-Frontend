@@ -22,7 +22,6 @@ import { useStyles } from "./CategoryTable.style";
 import { useSelector } from "react-redux";
 
 const CategoryTable = ({
-	categoryForm,
 	setOldCategory,
 	setIsUpdating,
 	setEditOrUploadModalOpened,
@@ -95,7 +94,6 @@ const CategoryTable = ({
 						</Button>
 						<Button
 							onClick={() => {
-								categoryForm.setValues({ newCategory: category });
 								setOldCategory(category);
 								setIsUpdating(true);
 								setEditOrUploadModalOpened(true);
@@ -119,7 +117,6 @@ const CategoryTable = ({
 						</ActionIcon>
 						<ActionIcon
 							onClick={() => {
-								categoryForm.setValues({ newCategory: category });
 								setOldCategory(category);
 								setIsUpdating(true);
 								setEditOrUploadModalOpened(true);

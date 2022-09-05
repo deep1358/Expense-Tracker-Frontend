@@ -20,7 +20,7 @@ export const useStyles = createStyles((theme, { opened }) => ({
 	},
 	label: {
 		fontWeight: 500,
-		fontSize: theme.fontSizes.xs,
+		fontSize: theme.fontSizes.sm,
 	},
 
 	placeHolder: {

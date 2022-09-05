@@ -3,16 +3,16 @@ import { Modal, Title, TextInput, Button, List } from "@mantine/core";
 import { useDispatch, useSelector } from "react-redux";
 import { X } from "tabler-icons-react";
 import { showNotification } from "@mantine/notifications";
-import { createCategory } from "../../../store/user/ThunkFunctions/createCategory";
-import { updateCategory } from "../../../store/user/ThunkFunctions/updateCategory";
+import { createCategory } from "../../store/user/ThunkFunctions/createCategory";
+import { updateCategory } from "../../store/user/ThunkFunctions/updateCategory";
+import { useForm } from "@mantine/form";
 
-const AddOrUpdateModal = ({
-	editOrUploadModalOpened,
-	setEditOrUploadModalOpened,
-	isUpdating,
-	categoryForm,
+const AddOrUpdateCategoryModal = ({
+	opened,
+	setOpened,
+	isUpdating = false,
 	oldCategory,
-	setIsUpdating,
+	setIsUpdating = () => {},
 }) => {
 	const dispatch = useDispatch();
 
@@ -22,11 +22,31 @@ const AddOrUpdateModal = ({
 		user: { categories },
 	} = useSelector((state) => state.user);
 
+	useEffect(() => {
+		if (!opened) categoryForm.reset();
+	}, [opened]);
+
+	useEffect(() => {
+		if (isUpdating) {
+			categoryForm.setFieldValue("newCategory", oldCategory);
+		}
+	}, [isUpdating]);
+
+	const categoryForm = useForm({
+		initialValues: {
+			newCategory: "",
+		},
+
+		validate: {
+			newCategory: (values) =>
+				values.newCategory === "" ? "Category is required" : undefined,
+		},
+	});
+
 	// get current seconds since epoch to use as a unique id
 	const getCurrentSeconds = () => Math.floor(Date.now() / 1000);
 
 	const AddOrUpdateCategory = (values) => {
-		// debugger;
 		if (
 			!/^[a-zA-Z]([a-zA-Z _-]*([a-zA-Z]))?$/.test(values.newCategory.trim())
 		)
@@ -36,35 +56,31 @@ const AddOrUpdateModal = ({
 				color: "red",
 				icon: <X size={15} />,
 			});
-		if (!isUpdating)
+		if (!isUpdating) {
 			dispatch(
-				createCategory([
-					values.newCategory.trim(),
-					categories,
-					setEditOrUploadModalOpened,
-				])
+				createCategory([values.newCategory.trim(), categories, setOpened])
 			);
-		else {
+		} else {
 			dispatch(
 				updateCategory([
 					oldCategory,
 					values.newCategory,
 					categories,
-					setEditOrUploadModalOpened,
+					setOpened,
 				])
 			);
 		}
 	};
 
 	useEffect(() => {
-		if (!editOrUploadModalOpened) setIsUpdating(false);
-	}, [editOrUploadModalOpened]);
+		if (!opened) setIsUpdating(false);
+	}, [opened]);
 
 	return (
 		<Modal
 			size="sm"
-			opened={editOrUploadModalOpened}
-			onClose={() => setEditOrUploadModalOpened(false)}
+			opened={opened}
+			onClose={() => setOpened(false)}
 			title={
 				<Title order={4}>
 					{isUpdating ? "Update Category" : "Add Category"}
@@ -124,4 +140,4 @@ const AddOrUpdateModal = ({
 	);
 };
 
-export default memo(AddOrUpdateModal);
+export default memo(AddOrUpdateCategoryModal);

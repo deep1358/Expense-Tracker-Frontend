@@ -1,5 +1,6 @@
-import { memo } from "react";
+import { memo, useState } from "react";
 import {
+	ActionIcon,
 	Button,
 	Group,
 	NumberInput,
@@ -13,15 +14,18 @@ import { useMediaQuery } from "@mantine/hooks";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { CurrencyRupee, Calendar } from "tabler-icons-react";
+import { CurrencyRupee, Calendar, Plus } from "tabler-icons-react";
 import { addExpense } from "../../../store/expense/ThunkFunctions/addExpense";
 import { getExpense } from "../../../store/expense/ThunkFunctions/getExpense";
 import { updateExpense } from "../../../store/expense/ThunkFunctions/updateExpense";
 import { toggleLoadingOverlay } from "../../../store/utils";
 import UpdateExpenseSkeleton from "../UpdateExpenseSkeleton";
 import SelectPaymentMode from "../SelectPaymentMode/SelectPaymentMode";
+import AddOrUpdateCategoryModal from "../../AddOrUpdateCategoryModal/AddOrUpdateCategoryModal";
 
 const AddOrUpdateExpenseForm = ({ id }) => {
+	const [openedAddCategoryModal, setOpenedAddCategoryModal] = useState(false);
+
 	const { user } = useSelector((state) => state.user);
 
 	const { creatingExpense, focusedExpense, updatingExpense, gettingExpense } =
@@ -168,81 +172,98 @@ const AddOrUpdateExpenseForm = ({ id }) => {
 	return id && gettingExpense ? (
 		<UpdateExpenseSkeleton />
 	) : (
-		<form onSubmit={form.onSubmit(handleSaveOrUpdate)}>
-			<Select
-				clearable
-				data={user?.categories || []}
-				label="Select a category"
-				placeholder="Pick one"
-				{...form.getInputProps("category")}
-				required
-				autoFocus={id}
+		<>
+			<AddOrUpdateCategoryModal
+				opened={openedAddCategoryModal}
+				setOpened={setOpenedAddCategoryModal}
 			/>
-			<NumberInput
-				name="amount"
-				label="Amount"
-				// parser={(value) => value.replace(/\₹\s?|(,*)/g, "")}
-				// formatter={(value) =>
-				//   !Number.isNaN(parseFloat(value))
-				//     ? `₹ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-				//     : "₹ "
-				// }
-				icon={<CurrencyRupee size={16} />}
-				min={1}
-				{...form.getInputProps("amount")}
-				required
-				stepHoldDelay={500}
-				stepHoldInterval={100}
-				spellCheck={false}
-				mt="md"
-			/>
-			<SelectPaymentMode
-				payment_mode={form.values.payment_mode}
-				setFormPaymentModeValue={setFormPaymentModeValue}
-			/>
-			{form.values.payment_mode === "Other" && (
-				<TextInput
-					label="Payment Mode Name"
-					placeholder="Enter payment mode name"
-					{...form.getInputProps("payment_mode_name")}
-					mt="md"
-					required={form.values.payment_mode === "Other"}
-				/>
-			)}
-			<DatePicker
-				placeholder="Pick a date"
-				label="Date"
-				{...form.getInputProps("date")}
-				disabled={id}
-				required
-				icon={<Calendar size={16} />}
-				mt="md"
-			/>
-			<Textarea
-				label="Note"
-				placeholder="Leave a note"
-				{...form.getInputProps("note")}
-				autosize
-				mt="md"
-			/>
-			<Group position="apart" mt="lg">
-				<Button
-					style={!id && matches ? { width: "47%" } : { width: "100%" }}
-					type="submit"
-				>
-					{creatingExpense || updatingExpense ? "Saving..." : "Save"}
-				</Button>
-				{!id && (
-					<Button
-						style={matches ? { width: "47%" } : { width: "100%" }}
-						onClick={form.onSubmit(handleAddMore)}
+			<form onSubmit={form.onSubmit(handleSaveOrUpdate)}>
+				<Group spacing={6} align="flex-end">
+					<Select
+						style={{ flex: 1 }}
+						data={user?.categories || []}
+						label="Select a category"
+						placeholder="Pick one"
+						{...form.getInputProps("category")}
+						required
+						autoFocus={id}
+						nothingFound="No category found"
+					/>
+					<ActionIcon
+						onClick={() => setOpenedAddCategoryModal(true)}
+						color="dark.4"
+						size={36}
 						variant="outline"
 					>
-						Add More
-					</Button>
+						<Plus color="grey" size={16} />
+					</ActionIcon>
+				</Group>
+				<NumberInput
+					name="amount"
+					label="Amount"
+					// parser={(value) => value.replace(/\₹\s?|(,*)/g, "")}
+					// formatter={(value) =>
+					//   !Number.isNaN(parseFloat(value))
+					//     ? `₹ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+					//     : "₹ "
+					// }
+					icon={<CurrencyRupee size={16} />}
+					min={1}
+					{...form.getInputProps("amount")}
+					required
+					stepHoldDelay={500}
+					stepHoldInterval={100}
+					spellCheck={false}
+					mt="md"
+				/>
+				<SelectPaymentMode
+					payment_mode={form.values.payment_mode}
+					setFormPaymentModeValue={setFormPaymentModeValue}
+				/>
+				{form.values.payment_mode === "Other" && (
+					<TextInput
+						label="Payment Mode Name"
+						placeholder="Enter payment mode name"
+						{...form.getInputProps("payment_mode_name")}
+						mt="md"
+						required={form.values.payment_mode === "Other"}
+					/>
 				)}
-			</Group>
-		</form>
+				<DatePicker
+					placeholder="Pick a date"
+					label="Date"
+					{...form.getInputProps("date")}
+					disabled={id}
+					required
+					icon={<Calendar size={16} />}
+					mt="md"
+				/>
+				<Textarea
+					label="Note"
+					placeholder="Leave a note"
+					{...form.getInputProps("note")}
+					autosize
+					mt="md"
+				/>
+				<Group position="apart" mt="lg">
+					<Button
+						style={!id && matches ? { width: "47%" } : { width: "100%" }}
+						type="submit"
+					>
+						{creatingExpense || updatingExpense ? "Saving..." : "Save"}
+					</Button>
+					{!id && (
+						<Button
+							style={matches ? { width: "47%" } : { width: "100%" }}
+							onClick={form.onSubmit(handleAddMore)}
+							variant="outline"
+						>
+							Add More
+						</Button>
+					)}
+				</Group>
+			</form>
+		</>
 	);
 };
 
