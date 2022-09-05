@@ -187,6 +187,7 @@ const AddOrUpdateExpenseForm = ({ id }) => {
 						{...form.getInputProps("category")}
 						required
 						autoFocus={id}
+						nothingFound="No category found"
 					/>
 					<ActionIcon
 						onClick={() => setOpenedAddCategoryModal(true)}
