@@ -8,7 +8,7 @@ import CustomLoader from "../../CustomLoader";
 import { AlertCircle } from "tabler-icons-react";
 import DayWiseFilterDrawer from "./DayWiseFilterDrawer/DayWiseFilterDrawer";
 import { useMediaQuery } from "@mantine/hooks";
-import FilteredChips from "../FilteredChips";
+import FilteredChips from "../../FilteredChips/FilteredChips";
 
 const DayWiseExpenseForChart = ({
 	yearWiseExpense,

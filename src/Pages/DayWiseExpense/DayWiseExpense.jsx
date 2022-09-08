@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { getExpenses } from "../../store/expense/ThunkFunctions/getExpenses";
@@ -8,17 +8,19 @@ import { showAlert, toggleLoadingOverlay } from "../../store/utils";
 import DeleteExpenseConfirmModal from "../../Components/DayWiseExpense/DeleteExpenseConfirmModal/DeleteExpenseConfirmModal";
 import ViewExpenseModal from "../../Components/DayWiseExpense/ViewExpenseModal/ViewExpenseModal";
 import { checkMonthValidity } from "../../utils/CheckMonthValidity";
-import FilterButtons from "../../Components/DayWiseExpense/FilterButtons/FilterButtons";
+import FilterBar from "../../Components/DayWiseExpense/FilterBar/FilterBar";
 
 const DayWiseExpense = () => {
 	const [sortedData, setSortedData] = useState([]);
 	const [sortBy, setSortBy] = useState(null);
 	const [reverseSortDirection, setReverseSortDirection] = useState(false);
 
-	const [categoryExpense, setCategoryExpense] = useState("All");
-	const [paymentModeExpense, setPaymentModeExpense] = useState({
-		label: "All",
+	const [appliedFilters, setAppliedFilters] = useState({
+		category: "All",
+		payment_mode: "All",
 	});
+
+	const { category, payment_mode } = appliedFilters;
 
 	const [deleteModalOpened, setDeleteModalOpened] = useState(false);
 	const [deleteExpenseID, setDeleteExpenseID] = useState("");
@@ -54,27 +56,32 @@ const DayWiseExpense = () => {
 
 	useEffect(() => {
 		filterData();
-	}, [categoryExpense, paymentModeExpense]);
+	}, [category, payment_mode]);
+
+	const handleAppliedFilters = (value, type) => {
+		setAppliedFilters({
+			...appliedFilters,
+			[type]: value,
+		});
+	};
 
 	function filterData(data = expenses) {
-		if (categoryExpense === "All" && paymentModeExpense.label === "All")
+		if (category === "All" && payment_mode === "All")
 			return setSortedData(data);
-		else if (categoryExpense === "All")
+		else if (category === "All")
 			return setSortedData(
-				data.filter(
-					(expense) => expense.payment_mode === paymentModeExpense.label
-				)
+				data.filter((expense) => expense.payment_mode === payment_mode)
 			);
-		else if (paymentModeExpense.label === "All")
+		else if (payment_mode === "All")
 			return setSortedData(
-				data.filter((expense) => expense.category === categoryExpense)
+				data.filter((expense) => expense.category === category)
 			);
 		else
 			return setSortedData(
 				data.filter(
 					(expense) =>
-						expense.category === categoryExpense &&
-						expense.payment_mode === paymentModeExpense.label
+						expense.category === category &&
+						expense.payment_mode === payment_mode
 				)
 			);
 	}
@@ -120,11 +127,9 @@ const DayWiseExpense = () => {
 			/>
 			<Container style={{ marginTop: "-2vh" }}>
 				<Stack align="flex-end">
-					<FilterButtons
-						categoryExpense={categoryExpense}
-						setCategoryExpense={setCategoryExpense}
-						paymentModeExpense={paymentModeExpense}
-						setPaymentModeExpense={setPaymentModeExpense}
+					<FilterBar
+						appliedFilters={appliedFilters}
+						handleAppliedFilters={handleAppliedFilters}
 					/>
 					<ScrollArea sx={{ height: "calc(75vh - 70px)", width: "100%" }}>
 						<DayWiseExpenseTable

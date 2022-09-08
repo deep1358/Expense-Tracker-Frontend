@@ -2,21 +2,25 @@ import { Menu, ScrollArea, Stack, Text, UnstyledButton } from "@mantine/core";
 import React, { useState, memo } from "react";
 import { useSelector } from "react-redux";
 import { Selector } from "tabler-icons-react";
-import { useStyles } from "../FilterButtons.style";
+import { useStyles } from "../../../../SelectPaymentMode/SelectPaymentMode.style";
 
-const CategoryFilterButton = ({ categoryExpense, setCategoryExpense }) => {
+const CategoryFilterButton = ({
+	forDrawer,
+	category,
+	handleAppliedFilters,
+}) => {
 	const [categoryOpened, setCategoryOpened] = useState(false);
-
-	const { classes, cx } = useStyles({ opened: categoryOpened });
 
 	const { user } = useSelector((state) => state.user);
 
+	const { classes, cx } = useStyles({ opened: categoryOpened });
+
 	const categoryItems = ["All", ...user?.categories].map((item) => (
 		<Menu.Item
-			onClick={() => setCategoryExpense(item)}
+			onClick={() => handleAppliedFilters(item, "category")}
 			key={item}
 			className={cx({
-				[classes.active]: categoryExpense === item,
+				[classes.active]: category === item,
 			})}
 		>
 			<Text className={classes.label}>{item}</Text>
@@ -24,7 +28,7 @@ const CategoryFilterButton = ({ categoryExpense, setCategoryExpense }) => {
 	));
 
 	return (
-		<Stack spacing={2}>
+		<Stack mb={forDrawer && 8} mt={forDrawer && 8} spacing={2}>
 			<Text className={classes.placeHolder}>Filter by Category</Text>
 			<Menu
 				onOpen={() => setCategoryOpened(true)}
@@ -32,19 +36,18 @@ const CategoryFilterButton = ({ categoryExpense, setCategoryExpense }) => {
 				radius="sm"
 				width="target"
 			>
-				<Menu.Target>
+				<Menu.Target style={{ width: forDrawer && "100%" }}>
 					<UnstyledButton className={classes.control}>
-						<Text className={classes.label}>{categoryExpense}</Text>
-						<Selector size={16} />
+						<Text className={classes.label}>{category}</Text>
+						<Selector size={12} color="gray" />
 					</UnstyledButton>
 				</Menu.Target>
 				<Menu.Dropdown>
 					<ScrollArea
-						style={{
+						styles={{
 							height: 40 * categoryItems.length + 1,
-							maxHeight: 250,
-							minHeight: "fit-content",
 						}}
+						className={classes.scrollArea}
 					>
 						{categoryItems}
 					</ScrollArea>

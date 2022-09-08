@@ -8,7 +8,7 @@ import BarOrAreaChart from "../BarOrAreaChart/BarOrAreaChart";
 import DonutChart from "../DonutChart/DonutChart";
 import CustomLoader from "../../CustomLoader";
 import PaymentModeWiseFilterDrawer from "./PaymentModeWiseFilterDrawer/PaymentModeWiseFilterDrawer";
-import FilteredChips from "../FilteredChips";
+import FilteredChips from "../../FilteredChips/FilteredChips";
 
 const PaymentModeWiseExpenseForChart = ({
 	yearWiseExpense,
