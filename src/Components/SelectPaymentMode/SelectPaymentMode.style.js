@@ -8,7 +8,7 @@ export const useStyles = createStyles(
 			justifyContent: "space-between",
 			alignItems: "center",
 			padding: "0 6px 0 12px",
-			height: "30px",
+			height: forDayWiseExpense ? 30 : 38,
 			fontSize: ".85rem",
 			borderRadius: theme.radius.sm,
 			border: `1px solid ${theme.colors.dark[4]}`,
@@ -21,11 +21,11 @@ export const useStyles = createStyles(
 		},
 		label: {
 			fontWeight: 500,
-			fontSize: theme.fontSizes.xs,
+			fontSize: forDayWiseExpense ? theme.fontSizes.xs : theme.fontSizes.sm,
 		},
 
 		placeHolder: {
-			fontSize: theme.fontSizes.xs,
+			fontSize: forDayWiseExpense ? theme.fontSizes.xs : theme.fontSizes.sm,
 		},
 
 		active: {

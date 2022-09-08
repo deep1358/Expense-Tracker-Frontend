@@ -74,7 +74,7 @@ const CategoryWiseFilterDrawer = ({
 			<Group style={{ width: "100%" }}>
 				<Select
 					data-autofocus
-					size="xs"
+					size="sm"
 					style={{ width: "100%" }}
 					data={["All", ...categoryWiseYears]}
 					label="Select a Year"
@@ -82,7 +82,7 @@ const CategoryWiseFilterDrawer = ({
 					onChange={(value) => handleAppliedFilters(value, "year")}
 				/>
 				<Select
-					size="xs"
+					size="sm"
 					style={{ width: "100%" }}
 					data={["All", ...categoryWiseMonths]}
 					label="Select a Month"
@@ -90,7 +90,7 @@ const CategoryWiseFilterDrawer = ({
 					onChange={(value) => handleAppliedFilters(value, "month")}
 				/>
 				<Select
-					size="xs"
+					size="sm"
 					style={{ width: "100%" }}
 					data={["All", ...categoryWiseDays]}
 					label="Select a Day"
@@ -102,7 +102,7 @@ const CategoryWiseFilterDrawer = ({
 					handleAppliedFilters={handleAppliedFilters}
 				/>
 				<Select
-					size="xs"
+					size="sm"
 					style={{ width: "100%" }}
 					data={["bar", "donut"]}
 					label="Select a Chart Type"

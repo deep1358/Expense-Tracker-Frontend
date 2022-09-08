@@ -13,7 +13,10 @@ const CategoryFilterButton = ({
 
 	const { user } = useSelector((state) => state.user);
 
-	const { classes, cx } = useStyles({ opened: categoryOpened });
+	const { classes, cx } = useStyles({
+		opened: categoryOpened,
+		forDayWiseExpense: !forDrawer,
+	});
 
 	const categoryItems = ["All", ...user?.categories].map((item) => (
 		<Menu.Item

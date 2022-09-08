@@ -76,7 +76,7 @@ const PaymentModeWiseFilterDrawer = ({
 			<Group style={{ width: "100%" }}>
 				<Select
 					data-autofocus
-					size="xs"
+					size="sm"
 					style={{ width: "100%" }}
 					data={["All", ...paymentModeWiseYears]}
 					label="Select a Year"
@@ -84,7 +84,7 @@ const PaymentModeWiseFilterDrawer = ({
 					onChange={(value) => handleAppliedFilters(value, "year")}
 				/>
 				<Select
-					size="xs"
+					size="sm"
 					style={{ width: "100%" }}
 					data={["All", ...paymentModeWiseMonths]}
 					label="Select a Month"
@@ -92,7 +92,7 @@ const PaymentModeWiseFilterDrawer = ({
 					onChange={(value) => handleAppliedFilters(value, "month")}
 				/>
 				<Select
-					size="xs"
+					size="sm"
 					style={{ width: "100%" }}
 					data={["All", ...paymentModeWiseDays]}
 					label="Select a Day"
@@ -100,7 +100,7 @@ const PaymentModeWiseFilterDrawer = ({
 					onChange={(value) => handleAppliedFilters(value, "day")}
 				/>
 				<Select
-					size="xs"
+					size="sm"
 					style={{ width: "100%" }}
 					data={["All", ...chartCategories]}
 					label="Select a Category"
@@ -108,7 +108,7 @@ const PaymentModeWiseFilterDrawer = ({
 					onChange={(value) => handleAppliedFilters(value, "category")}
 				/>
 				<Select
-					size="xs"
+					size="sm"
 					style={{ width: "100%" }}
 					data={["bar", "donut"]}
 					label="Select a Chart Type"

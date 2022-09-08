@@ -31,7 +31,7 @@ const DayWiseFilterDrawer = ({
 			<Group>
 				<Select
 					data-autofocus
-					size="xs"
+					size="sm"
 					style={{ width: "100%" }}
 					data={Object.keys(yearWiseExpense)?.sort((a, b) => b - a)}
 					label="Select a Year"
@@ -45,7 +45,7 @@ const DayWiseFilterDrawer = ({
 					onChange={(value) => handleAppliedFilters(value, "year")}
 				/>
 				<Select
-					size="xs"
+					size="sm"
 					style={{ width: "100%" }}
 					data={months}
 					label="Select a Month"
@@ -53,7 +53,7 @@ const DayWiseFilterDrawer = ({
 					onChange={(value) => handleAppliedFilters(value, "month")}
 				/>
 				<Select
-					size="xs"
+					size="sm"
 					style={{ width: "100%" }}
 					data={["All", ...chartCategories]}
 					label="Select a Category"
