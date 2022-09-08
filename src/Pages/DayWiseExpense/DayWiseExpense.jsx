@@ -9,6 +9,7 @@ import DeleteExpenseConfirmModal from "../../Components/DayWiseExpense/DeleteExp
 import ViewExpenseModal from "../../Components/DayWiseExpense/ViewExpenseModal/ViewExpenseModal";
 import { checkMonthValidity } from "../../utils/CheckMonthValidity";
 import FilterBar from "../../Components/DayWiseExpense/FilterBar/FilterBar";
+import { useMediaQuery } from "@mantine/hooks";
 
 const DayWiseExpense = () => {
 	const [sortedData, setSortedData] = useState([]);
@@ -57,6 +58,8 @@ const DayWiseExpense = () => {
 	useEffect(() => {
 		filterData();
 	}, [category, payment_mode]);
+
+	const smallerScreen = useMediaQuery("(max-width: 630px)");
 
 	const handleAppliedFilters = (value, type) => {
 		setAppliedFilters({
@@ -131,7 +134,12 @@ const DayWiseExpense = () => {
 						appliedFilters={appliedFilters}
 						handleAppliedFilters={handleAppliedFilters}
 					/>
-					<ScrollArea sx={{ height: "calc(75vh - 70px)", width: "100%" }}>
+					<ScrollArea
+						sx={{
+							height: `calc(${smallerScreen ? 83 : 78}vh - 70px)`,
+							width: "100%",
+						}}
+					>
 						<DayWiseExpenseTable
 							sortedData={sortedData}
 							setSortedData={setSortedData}
