@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { Skeleton } from "@mantine/core";
 
 const DayWiseExpenseTableSkeleton = () => {
@@ -13,4 +13,4 @@ const DayWiseExpenseTableSkeleton = () => {
 	));
 };
 
-export default DayWiseExpenseTableSkeleton;
+export default memo(DayWiseExpenseTableSkeleton);

@@ -7,39 +7,54 @@ import {
 	Text,
 	UnstyledButton,
 } from "@mantine/core";
-import React, { useState, memo } from "react";
+import React, { useState, memo, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Selector } from "tabler-icons-react";
-import { useStyles } from "../FilterButtons.style";
+import { useStyles } from "./SelectPaymentMode.style";
 
-const PaymentModeButton = ({ paymentModeExpense, setPaymentModeExpense }) => {
+const SelectPaymentMode = ({
+	forDayWiseExpense = false,
+	payment_mode,
+	handleAppliedFilters,
+}) => {
 	const { payment_modes } = useSelector((state) => state.utils);
 
 	const [paymentModeOpened, setPaymentModeOpened] = useState(false);
 
-	const { classes, cx } = useStyles({ paymentModeOpened });
+	const { classes, cx } = useStyles({ paymentModeOpened, forDayWiseExpense });
+
+	const [paymentMode, setPaymentMode] = useState({ label: "" });
 
 	const paymentModeItems = [{ label: "All" }, ...payment_modes].map((item) => (
 		<Menu.Item
 			icon={
-				item.image && (
+				item?.image && (
 					<Image src={item.image} fit="contain" width={20} height={20} />
 				)
 			}
-			onClick={() => setPaymentModeExpense(item)}
-			key={item.label}
+			onClick={() => handleAppliedFilters(item?.label, "payment_mode")}
 			className={cx({
-				[classes.active]: paymentModeExpense?.label === item.label,
+				[classes.active]: paymentMode?.label === item.label,
 			})}
+			key={item?.label}
 		>
-			<Text className={classes.label}>{item.label}</Text>
+			<Text className={classes.label}>{item?.label}</Text>
 		</Menu.Item>
 	));
 
+	useEffect(() => {
+		setPaymentMode(
+			[{ label: "All" }, ...payment_modes].filter(
+				(item) => item.label === payment_mode
+			)[0]
+		);
+	}, [payment_mode]);
+
 	return (
-		<Stack spacing={2}>
-			<Text className={classes.placeHolder}>Filter by Payment mode</Text>
+		<Stack style={{ width: !forDayWiseExpense && "100%" }} spacing={2}>
+			<Text className={classes.placeHolder}>Select a Payment Mode</Text>
 			<Menu
+				size="xs"
 				onOpen={() => setPaymentModeOpened(true)}
 				onClose={() => setPaymentModeOpened(false)}
 				radius="sm"
@@ -48,19 +63,17 @@ const PaymentModeButton = ({ paymentModeExpense, setPaymentModeExpense }) => {
 				<Menu.Target>
 					<UnstyledButton className={classes.control}>
 						<Group spacing="xs">
-							{paymentModeExpense.image && (
+							{paymentMode?.image && (
 								<Image
-									src={paymentModeExpense.image}
+									src={paymentMode.image}
 									width={25}
 									height={25}
 									fit="contain"
 								/>
 							)}
-							<Text className={classes.label}>
-								{paymentModeExpense.label}
-							</Text>
+							<Text className={classes.label}>{paymentMode?.label}</Text>
 						</Group>
-						<Selector size={16} />
+						<Selector size={12} color="gray" />
 					</UnstyledButton>
 				</Menu.Target>
 				<Menu.Dropdown>
@@ -73,4 +86,4 @@ const PaymentModeButton = ({ paymentModeExpense, setPaymentModeExpense }) => {
 	);
 };
 
-export default memo(PaymentModeButton);
+export default memo(SelectPaymentMode);

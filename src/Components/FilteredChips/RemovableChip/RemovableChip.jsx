@@ -1,5 +1,6 @@
 import { Image } from "@mantine/core";
 import { CloseButton, Group, Text } from "@mantine/core";
+import { memo } from "react";
 import { useSelector } from "react-redux";
 import useStyles from "./RemovableChip.style";
 
@@ -22,8 +23,8 @@ const RemovableChip = ({ data: [type, value], removeChip, remove = true }) => {
 				<Image
 					mr={5}
 					src={getPaymentModeImage(value)}
-					width={21}
-					height={21}
+					width={20}
+					height={20}
 				/>
 			)}
 			<Text color="grey" className={classes.data}>
@@ -46,4 +47,4 @@ const RemovableChip = ({ data: [type, value], removeChip, remove = true }) => {
 	);
 };
 
-export default RemovableChip;
+export default memo(RemovableChip);

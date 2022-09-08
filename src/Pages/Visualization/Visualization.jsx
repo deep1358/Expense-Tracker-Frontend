@@ -7,7 +7,7 @@ import MonthWiseExpenseForChart from "../../Components/Visualization/MonthWiseEx
 import YearWiseExpenseForChart from "../../Components/Visualization/YearWiseExpenseForChart/YearWiseExpenseForChart";
 import { Container, Paper } from "@mantine/core";
 import FilterIcon from "../../Components/Visualization/FilterIcon";
-import PaymentModeWiseExpenseForChart from "../../Components/Visualization/PaymentModeWiseExpense/PaymentModeWiseExpenseForChart";
+import PaymentModeWiseExpenseForChart from "../../Components/Visualization/PaymentModeWiseExpenseForChart/PaymentModeWiseExpenseForChart";
 import { Grid } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 

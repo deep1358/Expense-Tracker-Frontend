@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { Skeleton, Group } from "@mantine/core";
 
 const ViewExpenseModalSkeleton = () => {
@@ -15,4 +15,4 @@ const ViewExpenseModalSkeleton = () => {
 	);
 };
 
-export default ViewExpenseModalSkeleton;
+export default memo(ViewExpenseModalSkeleton);
