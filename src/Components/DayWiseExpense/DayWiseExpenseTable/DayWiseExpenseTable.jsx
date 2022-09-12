@@ -116,7 +116,18 @@ const DayWiseExpenseTable = ({
 	};
 
 	const rows = sortedData.map((expense, index) => (
-		<tr key={index}>
+		<tr
+			style={{ cursor: inBetweenScreen && "pointer" }}
+			onClick={(event) => {
+				// Not sure how to stop the event from bubbling up to the parent element as it's implemented in the Mantine
+				if (
+					inBetweenScreen &&
+					["div", "td"].includes(Object.entries(event.target)[0][1].type)
+				)
+					handleView(expense._id);
+			}}
+			key={index}
+		>
 			<td className={classes.td}>
 				<Text
 					weight={500}
@@ -174,14 +185,14 @@ const DayWiseExpenseTable = ({
 							</ActionIcon>
 						</Menu.Target>
 						<Menu.Dropdown>
-							<Menu.Item
+							{/* <Menu.Item
 								color="blue"
 								onClick={() => handleView(expense._id)}
 							>
 								<Group>
 									<Eye size={16} /> <Text size="xs">View</Text>
 								</Group>
-							</Menu.Item>
+							</Menu.Item> */}
 							<Menu.Item
 								color="blue"
 								onClick={() => handleUpdate(expense._id)}
