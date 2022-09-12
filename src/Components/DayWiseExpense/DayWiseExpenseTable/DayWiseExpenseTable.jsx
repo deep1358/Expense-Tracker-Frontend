@@ -120,10 +120,9 @@ const DayWiseExpenseTable = ({
 			style={{ cursor: inBetweenScreen && "pointer" }}
 			onClick={(event) => {
 				// Not sure how to stop the event from bubbling up to the parent element as it's implemented in the Mantine
-
 				if (
 					inBetweenScreen &&
-					Object.entries(event.target)[0][1].type === "div"
+					["div", "td"].includes(Object.entries(event.target)[0][1].type)
 				)
 					handleView(expense._id);
 			}}
