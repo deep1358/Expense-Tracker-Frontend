@@ -4,6 +4,7 @@ import { deleteUser } from "./ThunkFunctions/deleteUser";
 import { fetchUser } from "./ThunkFunctions/fetchUser";
 import { updateCategory } from "./ThunkFunctions/updateCategory";
 import { createUser } from "./ThunkFunctions/createUser";
+import { createPaymentMode } from "./ThunkFunctions/createPaymentMode";
 
 export const extraReducers = {
 	[fetchUser.pending]: (state) => {
@@ -107,4 +108,52 @@ export const extraReducers = {
 		state.error = action.payload;
 		state.updatingCategory = false;
 	},
+
+	[createPaymentMode.pending]: (state) => {
+		state.creatingPaymentMode = true;
+	},
+	[createPaymentMode.fulfilled]: (state, action) => {
+		if (action.payload?.isError) state.error = action.payload;
+		else {
+			state.user.payment_modes = action.payload;
+			state.error = null;
+		}
+		state.creatingPaymentMode = false;
+	},
+	[createPaymentMode.rejected]: (state, action) => {
+		state.error = action.payload;
+		state.creatingPaymentMode = false;
+	},
+
+	// [deleteCategory.pending]: (state) => {
+	// 	state.deletingCategory = true;
+	// },
+	// [deleteCategory.fulfilled]: (state, action) => {
+	// 	if (action.payload?.isError) state.error = action.payload;
+	// 	else {
+	// 		state.user.categories = action.payload;
+	// 		state.error = null;
+	// 	}
+	// 	state.deletingCategory = false;
+	// },
+	// [deleteCategory.rejected]: (state, action) => {
+	// 	state.error = action.payload;
+	// 	state.deletingCategory = false;
+	// },
+
+	// [updateCategory.pending]: (state) => {
+	// 	state.updatingCategory = true;
+	// },
+	// [updateCategory.fulfilled]: (state, action) => {
+	// 	if (action.payload?.isError) state.error = action.payload;
+	// 	else {
+	// 		state.user.categories = action.payload;
+	// 		state.error = null;
+	// 	}
+	// 	state.updatingCategory = false;
+	// },
+	// [updateCategory.rejected]: (state, action) => {
+	// 	state.error = action.payload;
+	// 	state.updatingCategory = false;
+	// },
 };

@@ -13,6 +13,7 @@ import { Selector } from "tabler-icons-react";
 import { useStyles } from "./SelectPaymentMode.style";
 
 const SelectPaymentMode = ({
+	forAddOrUpdateExpenseForm = false,
 	forDayWiseExpense = false,
 	payment_mode,
 	handleAppliedFilters,
@@ -51,7 +52,12 @@ const SelectPaymentMode = ({
 	}, [payment_mode]);
 
 	return (
-		<Stack style={{ width: !forDayWiseExpense && "100%" }} spacing={2}>
+		<Stack
+			style={{
+				width: !forDayWiseExpense && "100%",
+			}}
+			spacing={2}
+		>
 			<Text className={classes.placeHolder}>Select a Payment Mode</Text>
 			<Menu
 				size="xs"

@@ -3,17 +3,19 @@ import { Modal, Group, Alert, Text, Button, Title } from "@mantine/core";
 import { AlertCircle } from "tabler-icons-react";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteCategory } from "../../../store/user/ThunkFunctions/deleteCategory";
-import useStyles from "./DeleteCategoryConfirmModal.style";
+import useStyles from "./DeleteConfirmModal.style";
 
 const DeleteCategoryConfirmModal = ({
 	deleteModalOpened,
 	setDeleteModalOpened,
-	selectDeleteCategory,
-	setSelectDeleteCategory,
+	selectDeleteItem,
+	setSelectDeleteItem,
+	type,
 }) => {
 	const dispatch = useDispatch();
 	const {
 		deletingCategory,
+		deletingPaymentMode,
 		user: { categories },
 	} = useSelector((state) => state.user);
 
@@ -24,7 +26,7 @@ const DeleteCategoryConfirmModal = ({
 			size="md"
 			opened={deleteModalOpened}
 			onClose={() => setDeleteModalOpened(false)}
-			title={<Title order={4}>Delete Category</Title>}
+			title={<Title order={4}>Delete {type}</Title>}
 		>
 			<Group className={classes.deleteModalGroup}>
 				<Alert
@@ -36,29 +38,29 @@ const DeleteCategoryConfirmModal = ({
 				</Alert>
 
 				<Text>
-					Once you delete this category, all expense related to this
-					category will also be deleted.
+					Once you delete this {type}, all expense related to this {type}{" "}
+					will also be deleted.
 				</Text>
 
 				<Button
 					fullWidth
 					color="red"
 					onClick={() => {
-						if (selectDeleteCategory !== "") {
+						if (selectDeleteItem !== "") {
 							dispatch(
 								deleteCategory([
-									selectDeleteCategory,
+									selectDeleteItem,
 									categories,
 									setDeleteModalOpened,
 								])
 							);
-							setSelectDeleteCategory("");
+							setSelectDeleteItem("");
 						}
 					}}
 				>
-					{deletingCategory
+					{deletingCategory || deletingPaymentMode
 						? "Deleting..."
-						: `Delete ${selectDeleteCategory}`}
+						: `Delete ${selectDeleteItem}`}
 				</Button>
 			</Group>
 		</Modal>

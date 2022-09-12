@@ -3,91 +3,92 @@ import { useDispatch, useSelector } from "react-redux";
 import { TextInput, Button, Container, ScrollArea, Stack } from "@mantine/core";
 import { toggleLoadingOverlay } from "../../store/utils";
 import { Search, Plus } from "tabler-icons-react";
-import DeleteCategoryConfirmModal from "../../Components/Category/DeleteCategoryConfirmModal/DeleteCategoryConfirmModal";
-import CategoryTable from "../../Components/Category/CategoryTable/CategoryTable";
+import DeleteCategoryConfirmModal from "../../Components/PaymentModeOrCategory/DeleteConfirmModal/DeleteConfirmModal";
+import CategoryTable from "../../Components/PaymentModeOrCategory/PaymentModeOrCategoryTable/PaymentModeOrCategoryTable";
 import { useMediaQuery } from "@mantine/hooks";
-import AddOrUpdateCategoryModal from "../../Components/AddOrUpdateCategoryModal/AddOrUpdateCategoryModal";
+import AddOrUpdateModal from "../../Components/AddOrUpdateModal/AddOrUpdateModal";
+import PaymentModeOrCategory from "../../Components/PaymentModeOrCategory/PaymentModeOrCategory";
 
 const Categories = () => {
-	const [oldCategory, setOldCategory] = useState("");
-	const [isUpdating, setIsUpdating] = useState(false);
-	const [editOrUploadModalOpened, setEditOrUploadModalOpened] =
-		useState(false);
-	const [deleteModalOpened, setDeleteModalOpened] = useState(false);
-	const [selectDeleteCategory, setSelectDeleteCategory] = useState("");
+	// const [oldCategory, setOldCategory] = useState("");
+	// const [isUpdating, setIsUpdating] = useState(false);
+	// const [editOrUploadModalOpened, setEditOrUploadModalOpened] =
+	// 	useState(false);
+	// const [deleteModalOpened, setDeleteModalOpened] = useState(false);
+	// const [selectDeleteCategory, setSelectDeleteCategory] = useState("");
 
-	const [search, setSearch] = useState("");
-	const [sortedData, setSortedData] = useState([]);
-	const [sortBy, setSortBy] = useState(null);
-	const [reverseSortDirection, setReverseSortDirection] = useState(false);
+	// const [search, setSearch] = useState("");
+	// const [sortedData, setSortedData] = useState([]);
+	// const [sortBy, setSortBy] = useState(null);
+	// const [reverseSortDirection, setReverseSortDirection] = useState(false);
 
-	const { user, creatingCategory, deletingCategory, updatingCategory } =
-		useSelector((state) => state.user);
-	const dispatch = useDispatch();
+	const { user } = useSelector((state) => state.user);
+	// const dispatch = useDispatch();
 
-	useEffect(() => {
-		dispatch(
-			toggleLoadingOverlay(
-				creatingCategory || deletingCategory || updatingCategory
-			)
-		);
-	}, [creatingCategory, updatingCategory, deletingCategory]);
+	// useEffect(() => {
+	// 	dispatch(toggleLoadingOverlay(deletingCategory));
+	// }, [deletingCategory]);
 
-	useEffect(() => {
-		setSortedData(user?.categories);
-	}, [user]);
+	// useEffect(() => {
+	// 	setSortedData(user?.categories);
+	// }, [user]);
 
-	function filterData(data, search) {
-		const query = search.toLowerCase().trim();
-		return data.filter((item) => item.toLowerCase().includes(query));
-	}
+	// function filterData(data, search) {
+	// 	const query = search.toLowerCase().trim();
+	// 	return data.filter((item) => item.toLowerCase().includes(query));
+	// }
 
-	function sortData(data, payload) {
-		if (!payload.sortBy) {
-			return filterData(data, payload.search);
-		}
+	// function sortData(data, payload) {
+	// 	if (!payload.sortBy) {
+	// 		return filterData(data, payload.search);
+	// 	}
 
-		return filterData(
-			[...data].sort((a, b) => {
-				if (payload.reversed) {
-					return b.localeCompare(a);
-				}
+	// 	return filterData(
+	// 		[...data].sort((a, b) => {
+	// 			if (payload.reversed) {
+	// 				return b.localeCompare(a);
+	// 			}
 
-				return a.localeCompare(b);
-			}),
-			payload.search
-		);
-	}
+	// 			return a.localeCompare(b);
+	// 		}),
+	// 		payload.search
+	// 	);
+	// }
 
-	const handleSearchChange = (event) => {
-		const { value } = event.currentTarget;
-		setSearch(value);
-		setSortedData(
-			sortData(user?.categories, {
-				sortBy,
-				reversed: reverseSortDirection,
-				search: value,
-			})
-		);
-	};
+	// const handleSearchChange = (event) => {
+	// 	const { value } = event.currentTarget;
+	// 	setSearch(value);
+	// 	setSortedData(
+	// 		sortData(user?.categories, {
+	// 			sortBy,
+	// 			reversed: reverseSortDirection,
+	// 			search: value,
+	// 		})
+	// 	);
+	// };
 
-	const smallerScreen = useMediaQuery("(max-width: 530px)");
+	// const smallerScreen = useMediaQuery("(max-width: 530px)");
 
 	return (
 		<>
-			<DeleteCategoryConfirmModal
+			<PaymentModeOrCategory
+				type="category"
+				data={user?.categories || [s]}
+			/>
+			{/* <DeleteCategoryConfirmModal
 				deleteModalOpened={deleteModalOpened}
 				setDeleteModalOpened={setDeleteModalOpened}
 				setSelectDeleteCategory={setSelectDeleteCategory}
 				selectDeleteCategory={selectDeleteCategory}
 			/>
 
-			<AddOrUpdateCategoryModal
+			<AddOrUpdateModal
 				opened={editOrUploadModalOpened}
 				setOpened={setEditOrUploadModalOpened}
 				isUpdating={isUpdating}
 				setIsUpdating={setIsUpdating}
-				oldCategory={oldCategory}
+				oldValue={oldCategory}
+				type="category"
 			/>
 
 			<Container size={smallerScreen ? "100vw" : "sm"}>
@@ -127,7 +128,7 @@ const Categories = () => {
 						/>
 					</ScrollArea>
 				</Stack>
-			</Container>
+					</Container> */}
 		</>
 	);
 };

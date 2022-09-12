@@ -21,10 +21,11 @@ import { updateExpense } from "../../../store/expense/ThunkFunctions/updateExpen
 import { toggleLoadingOverlay } from "../../../store/utils";
 import UpdateExpenseSkeleton from "../UpdateExpenseSkeleton";
 import SelectPaymentMode from "../SelectPaymentMode/SelectPaymentMode";
-import AddOrUpdateCategoryModal from "../../AddOrUpdateCategoryModal/AddOrUpdateCategoryModal";
+import AddOrUpdateModal from "../../AddOrUpdateModal/AddOrUpdateModal";
 
 const AddOrUpdateExpenseForm = ({ id }) => {
-	const [openedAddCategoryModal, setOpenedAddCategoryModal] = useState(false);
+	const [openedAddModal, setOpenedAddModal] = useState(false);
+	const [type, setType] = useState("");
 
 	const { user } = useSelector((state) => state.user);
 
@@ -173,9 +174,10 @@ const AddOrUpdateExpenseForm = ({ id }) => {
 		<UpdateExpenseSkeleton />
 	) : (
 		<>
-			<AddOrUpdateCategoryModal
-				opened={openedAddCategoryModal}
-				setOpened={setOpenedAddCategoryModal}
+			<AddOrUpdateModal
+				opened={openedAddModal}
+				setOpened={setOpenedAddModal}
+				type={type}
 			/>
 			<form onSubmit={form.onSubmit(handleSaveOrUpdate)}>
 				<Group spacing={6} align="flex-end">
@@ -190,7 +192,10 @@ const AddOrUpdateExpenseForm = ({ id }) => {
 						nothingFound="No category found"
 					/>
 					<ActionIcon
-						onClick={() => setOpenedAddCategoryModal(true)}
+						onClick={() => {
+							setType("category");
+							setOpenedAddModal(true);
+						}}
 						color="dark.4"
 						size={36}
 						variant="outline"
@@ -216,10 +221,24 @@ const AddOrUpdateExpenseForm = ({ id }) => {
 					spellCheck={false}
 					mt="md"
 				/>
-				<SelectPaymentMode
-					payment_mode={form.values.payment_mode}
-					setFormPaymentModeValue={setFormPaymentModeValue}
-				/>
+				<Group spacing={6} align="flex-end">
+					<SelectPaymentMode
+						forAddOrUpdateExpenseForm={true}
+						payment_mode={form.values.payment_mode}
+						setFormPaymentModeValue={setFormPaymentModeValue}
+					/>
+					<ActionIcon
+						onClick={() => {
+							setType("payment_mode");
+							setOpenedAddModal(true);
+						}}
+						color="dark.4"
+						size={38}
+						variant="outline"
+					>
+						<Plus color="grey" size={16} />
+					</ActionIcon>
+				</Group>
 				{form.values.payment_mode === "Other" && (
 					<TextInput
 						label="Payment Mode Name"
