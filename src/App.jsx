@@ -9,6 +9,7 @@ import ProtectedRoute from "./Components/ProtectedRoute";
 import DayWiseExpense from "./Pages/DayWiseExpense/DayWiseExpense";
 import AddOrUpdateExpense from "./Pages/AddOrUpdateExpense/AddOrUpdateExpense";
 import Categories from "./Pages/Category/Categories";
+import PaymentModes from "./Pages/PaymentMode/PaymentModes";
 import YearWiseExpense from "./Pages/YearWiseExpense/YearWiseExpense";
 import MonthWiseExpense from "./Pages/MonthWiseExpense.jsx/MonthWiseExpense";
 import DurationLayout from "./Layout/DurationLayout";
@@ -73,6 +74,7 @@ function App() {
 						/>
 						<Route path="/visualization" element={<Visualization />} />
 						<Route path="/categories" element={<Categories />} />
+						<Route path="/payment_modes" element={<PaymentModes />} />
 						<Route path="/" element={<DurationLayout />}>
 							<Route
 								path="/"

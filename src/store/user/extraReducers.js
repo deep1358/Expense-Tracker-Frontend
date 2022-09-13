@@ -5,6 +5,8 @@ import { fetchUser } from "./ThunkFunctions/fetchUser";
 import { updateCategory } from "./ThunkFunctions/updateCategory";
 import { createUser } from "./ThunkFunctions/createUser";
 import { createPaymentMode } from "./ThunkFunctions/createPaymentMode";
+import { deletePaymentMode } from "./ThunkFunctions/deletePaymentMode";
+import { updatePaymentMode } from "./ThunkFunctions/updatePaymentMode";
 
 export const extraReducers = {
 	[fetchUser.pending]: (state) => {
@@ -125,35 +127,35 @@ export const extraReducers = {
 		state.creatingPaymentMode = false;
 	},
 
-	// [deleteCategory.pending]: (state) => {
-	// 	state.deletingCategory = true;
-	// },
-	// [deleteCategory.fulfilled]: (state, action) => {
-	// 	if (action.payload?.isError) state.error = action.payload;
-	// 	else {
-	// 		state.user.categories = action.payload;
-	// 		state.error = null;
-	// 	}
-	// 	state.deletingCategory = false;
-	// },
-	// [deleteCategory.rejected]: (state, action) => {
-	// 	state.error = action.payload;
-	// 	state.deletingCategory = false;
-	// },
+	[deletePaymentMode.pending]: (state) => {
+		state.deletingPaymentMode = true;
+	},
+	[deletePaymentMode.fulfilled]: (state, action) => {
+		if (action.payload?.isError) state.error = action.payload;
+		else {
+			state.user.payment_modes = action.payload;
+			state.error = null;
+		}
+		state.deletingPaymentMode = false;
+	},
+	[deletePaymentMode.rejected]: (state, action) => {
+		state.error = action.payload;
+		state.deletingPaymentMode = false;
+	},
 
-	// [updateCategory.pending]: (state) => {
-	// 	state.updatingCategory = true;
-	// },
-	// [updateCategory.fulfilled]: (state, action) => {
-	// 	if (action.payload?.isError) state.error = action.payload;
-	// 	else {
-	// 		state.user.categories = action.payload;
-	// 		state.error = null;
-	// 	}
-	// 	state.updatingCategory = false;
-	// },
-	// [updateCategory.rejected]: (state, action) => {
-	// 	state.error = action.payload;
-	// 	state.updatingCategory = false;
-	// },
+	[updatePaymentMode.pending]: (state) => {
+		state.updatingPaymentMode = true;
+	},
+	[updatePaymentMode.fulfilled]: (state, action) => {
+		if (action.payload?.isError) state.error = action.payload;
+		else {
+			state.user.payment_modes = action.payload;
+			state.error = null;
+		}
+		state.updatingPaymentMode = false;
+	},
+	[updatePaymentMode.rejected]: (state, action) => {
+		state.error = action.payload;
+		state.updatingPaymentMode = false;
+	},
 };

@@ -37,6 +37,7 @@ const PaymentModeOrCategoryTable = ({
 	setReverseSortDirection,
 	type,
 	data,
+	title,
 }) => {
 	const smallerScreen = useMediaQuery("(max-width: 530px)");
 
@@ -70,7 +71,7 @@ const PaymentModeOrCategoryTable = ({
 				reversed={reverseSortDirection}
 				onSort={() => setSorting(type)}
 			>
-				{type} Name
+				{title} Name
 			</Th>
 			<th className={classes.th}>
 				<Text weight={500} size={smallerScreen ? 18 : "sm"}>

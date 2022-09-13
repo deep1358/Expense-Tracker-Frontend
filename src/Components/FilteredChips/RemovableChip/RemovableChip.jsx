@@ -19,14 +19,15 @@ const RemovableChip = ({ data: [type, value], removeChip, remove = true }) => {
 			align="center"
 			position="apart"
 		>
-			{type === "payment_mode" && value !== "All" && value !== "Other" && (
-				<Image
-					mr={5}
-					src={getPaymentModeImage(value)}
-					width={20}
-					height={20}
-				/>
-			)}
+			{type === "payment_mode" &&
+				payment_modes.find((mode) => mode.label === value) && (
+					<Image
+						mr={5}
+						src={getPaymentModeImage(value)}
+						width={20}
+						height={20}
+					/>
+				)}
 			<Text color="grey" className={classes.data}>
 				{value === "Other"
 					? `${type}: ${value}`

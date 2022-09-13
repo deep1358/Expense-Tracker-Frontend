@@ -6,7 +6,6 @@ import {
 	NumberInput,
 	Select,
 	Textarea,
-	TextInput,
 } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
 import { useForm } from "@mantine/form";
@@ -20,7 +19,7 @@ import { getExpense } from "../../../store/expense/ThunkFunctions/getExpense";
 import { updateExpense } from "../../../store/expense/ThunkFunctions/updateExpense";
 import { toggleLoadingOverlay } from "../../../store/utils";
 import UpdateExpenseSkeleton from "../UpdateExpenseSkeleton";
-import SelectPaymentMode from "../SelectPaymentMode/SelectPaymentMode";
+import SelectPaymentMode from "../../SelectPaymentMode/SelectPaymentMode";
 import AddOrUpdateModal from "../../AddOrUpdateModal/AddOrUpdateModal";
 
 const AddOrUpdateExpenseForm = ({ id }) => {
@@ -44,7 +43,6 @@ const AddOrUpdateExpenseForm = ({ id }) => {
 			category: "",
 			amount: 1,
 			payment_mode: "Cash",
-			payment_mode_name: "",
 			date: new Date(),
 			note: "",
 		},
@@ -57,10 +55,6 @@ const AddOrUpdateExpenseForm = ({ id }) => {
 			payment_mode:
 				values.payment_mode === "" ? "Payment mode is required" : undefined,
 			date: values.date ? undefined : "Date is required",
-			payment_mode_name:
-				values.payment_mode_name === "" && values.payment_mode === "Other"
-					? "Payment mode name is required"
-					: undefined,
 		}),
 	});
 
@@ -75,11 +69,6 @@ const AddOrUpdateExpenseForm = ({ id }) => {
 						payment_mode: focusedExpense.payment_mode.includes("Other")
 							? "Other"
 							: focusedExpense.payment_mode,
-						payment_mode_name: focusedExpense.payment_mode.includes(
-							"Other"
-						)
-							? focusedExpense.payment_mode.split("(")[1].split(")")[0]
-							: "",
 						date: new Date(
 							focusedExpense.year,
 							focusedExpense.month - 1,
@@ -93,7 +82,6 @@ const AddOrUpdateExpenseForm = ({ id }) => {
 					category: "",
 					amount: 1,
 					payment_mode: "Cash",
-					payment_mode_name: "",
 					date: new Date(),
 					note: "",
 				});
@@ -114,10 +102,6 @@ const AddOrUpdateExpenseForm = ({ id }) => {
 				addExpense({
 					form: {
 						...values,
-						payment_mode:
-							values.payment_mode === "Other"
-								? `Other (${values.payment_mode_name})`
-								: values.payment_mode,
 						date: new Date(year, month, day + 1)
 							.toISOString()
 							.substring(0, 10),
@@ -130,13 +114,7 @@ const AddOrUpdateExpenseForm = ({ id }) => {
 		} else
 			dispatch(
 				updateExpense({
-					form: {
-						...values,
-						payment_mode:
-							values.payment_mode === "Other"
-								? `Other (${values.payment_mode_name})`
-								: values.payment_mode,
-					},
+					form: form.values,
 					year: focusedExpense.year,
 					month: months[focusedExpense.month - 1],
 					_id: id,
@@ -154,10 +132,6 @@ const AddOrUpdateExpenseForm = ({ id }) => {
 			addExpense({
 				form: {
 					...values,
-					payment_mode:
-						values.payment_mode === "Other"
-							? `Other (${values.payment_mode_name})`
-							: values.payment_mode,
 					date: new Date(year, month, day + 1)
 						.toISOString()
 						.substring(0, 10),
@@ -184,7 +158,7 @@ const AddOrUpdateExpenseForm = ({ id }) => {
 					<Select
 						style={{ flex: 1 }}
 						data={user?.categories || []}
-						label="Select a category"
+						label="Category"
 						placeholder="Pick one"
 						{...form.getInputProps("category")}
 						required
@@ -225,7 +199,7 @@ const AddOrUpdateExpenseForm = ({ id }) => {
 					<SelectPaymentMode
 						forAddOrUpdateExpenseForm={true}
 						payment_mode={form.values.payment_mode}
-						setFormPaymentModeValue={setFormPaymentModeValue}
+						handleAppliedFilters={setFormPaymentModeValue}
 					/>
 					<ActionIcon
 						onClick={() => {
@@ -233,21 +207,12 @@ const AddOrUpdateExpenseForm = ({ id }) => {
 							setOpenedAddModal(true);
 						}}
 						color="dark.4"
-						size={38}
+						size={36}
 						variant="outline"
 					>
 						<Plus color="grey" size={16} />
 					</ActionIcon>
 				</Group>
-				{form.values.payment_mode === "Other" && (
-					<TextInput
-						label="Payment Mode Name"
-						placeholder="Enter payment mode name"
-						{...form.getInputProps("payment_mode_name")}
-						mt="md"
-						required={form.values.payment_mode === "Other"}
-					/>
-				)}
 				<DatePicker
 					placeholder="Pick a date"
 					label="Date"

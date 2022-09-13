@@ -11,22 +11,32 @@ import React, { useState, memo, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Selector } from "tabler-icons-react";
 import { useStyles } from "./SelectPaymentMode.style";
+import { ConvertPaymentModesToLabeledFormat } from "../../utils/ConvertPaymentModesToLabeledFormat";
 
 const SelectPaymentMode = ({
-	forAddOrUpdateExpenseForm = false,
 	forDayWiseExpense = false,
 	payment_mode,
 	handleAppliedFilters,
+	forAddOrUpdateExpenseForm,
 }) => {
 	const { payment_modes } = useSelector((state) => state.utils);
+	const {
+		user: { payment_modes: user_payment_modes },
+	} = useSelector((state) => state.user);
 
 	const [paymentModeOpened, setPaymentModeOpened] = useState(false);
 
-	const { classes, cx } = useStyles({ paymentModeOpened, forDayWiseExpense });
+	const { classes, cx } = useStyles({
+		opened: paymentModeOpened,
+		forDayWiseExpense,
+		forAddOrUpdateExpenseForm,
+	});
 
 	const [paymentMode, setPaymentMode] = useState({ label: "" });
 
-	const paymentModeItems = [{ label: "All" }, ...payment_modes].map((item) => (
+	const [paymentModes, setPaymentModes] = useState([]);
+
+	const paymentModeItems = paymentModes.map((item) => (
 		<Menu.Item
 			icon={
 				item?.image && (
@@ -44,19 +54,30 @@ const SelectPaymentMode = ({
 	));
 
 	useEffect(() => {
+		let changedPaymentModes = [];
+
+		if (!forAddOrUpdateExpenseForm) changedPaymentModes = [{ label: "All" }];
+
+		changedPaymentModes = [
+			...changedPaymentModes,
+			...ConvertPaymentModesToLabeledFormat(user_payment_modes),
+			...payment_modes,
+		];
+
+		setPaymentModes(changedPaymentModes);
 		setPaymentMode(
-			[{ label: "All" }, ...payment_modes].filter(
-				(item) => item.label === payment_mode
-			)[0]
+			changedPaymentModes.filter((item) => item?.label === payment_mode)[0]
 		);
-	}, [payment_mode]);
+	}, [payment_mode, user_payment_modes]);
 
 	return (
 		<Stack
 			style={{
 				width: !forDayWiseExpense && "100%",
+				flex: forAddOrUpdateExpenseForm && 1,
 			}}
 			spacing={2}
+			mt={forAddOrUpdateExpenseForm && "xl"}
 		>
 			<Text className={classes.placeHolder}>Select a Payment Mode</Text>
 			<Menu

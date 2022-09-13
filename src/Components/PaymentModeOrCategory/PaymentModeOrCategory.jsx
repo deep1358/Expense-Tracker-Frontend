@@ -1,9 +1,17 @@
-import { Button, Container, ScrollArea, Stack, TextInput } from "@mantine/core";
+import {
+	Button,
+	Container,
+	ScrollArea,
+	Stack,
+	TextInput,
+	Title,
+} from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Plus, Search } from "tabler-icons-react";
 import { toggleLoadingOverlay } from "../../store/utils";
+import { ConvertToTitleCase } from "../../utils/ConvertToTitleCase";
 import AddOrUpdateModal from "../AddOrUpdateModal/AddOrUpdateModal";
 import DeleteConfirmModal from "./DeleteConfirmModal/DeleteConfirmModal";
 import PaymentModeOrCategoryTable from "./PaymentModeOrCategoryTable/PaymentModeOrCategoryTable";
@@ -21,16 +29,24 @@ const PaymentModeOrCategory = ({ data, type }) => {
 	const [sortBy, setSortBy] = useState(null);
 	const [reverseSortDirection, setReverseSortDirection] = useState(false);
 
-	const { user, deletingCategory } = useSelector((state) => state.user);
+	const [title, setTitle] = useState("");
+
+	const { user, deletingCategory, deletingPaymentMode } = useSelector(
+		(state) => state.user
+	);
 	const dispatch = useDispatch();
 
 	useEffect(() => {
-		dispatch(toggleLoadingOverlay(deletingCategory));
-	}, [deletingCategory]);
+		dispatch(toggleLoadingOverlay(deletingCategory || deletingPaymentMode));
+	}, [deletingCategory, deletingPaymentMode]);
 
 	useEffect(() => {
 		setSortedData(data || []);
 	}, [user]);
+
+	useEffect(() => {
+		setTitle(ConvertToTitleCase(type));
+	}, [type]);
 
 	function filterData(data, search) {
 		const query = search.toLowerCase().trim();
@@ -76,6 +92,7 @@ const PaymentModeOrCategory = ({ data, type }) => {
 				setSelectDeleteItem={setSelectDeleteItem}
 				selectDeleteItem={selectDeleteItem}
 				type={type}
+				title={title}
 			/>
 
 			<AddOrUpdateModal
@@ -85,21 +102,24 @@ const PaymentModeOrCategory = ({ data, type }) => {
 				setIsUpdating={setIsUpdating}
 				oldValue={oldValue}
 				type={type}
+				title={title}
 			/>
 
 			<Container size={smallerScreen ? "100vw" : "sm"}>
+				<Title order={2}>{title}</Title>
+
 				<Stack align="flex-end">
 					<Button
 						size={smallerScreen ? "xs" : "sm"}
 						leftIcon={<Plus />}
 						onClick={() => setEditOrUploadModalOpened(true)}
 					>
-						{`ADD ${type}`}
+						{`ADD ${title}`}
 					</Button>
 					{data?.length > 0 && (
 						<TextInput
 							sx={{ width: "100%" }}
-							placeholder={`Search by ${type} Name`}
+							placeholder={`Search by ${title} Name`}
 							icon={<Search size={14} />}
 							value={search}
 							onChange={handleSearchChange}
@@ -123,6 +143,7 @@ const PaymentModeOrCategory = ({ data, type }) => {
 							setReverseSortDirection={setReverseSortDirection}
 							type={type}
 							data={data}
+							title={title}
 						/>
 					</ScrollArea>
 				</Stack>

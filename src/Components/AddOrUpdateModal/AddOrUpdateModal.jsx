@@ -8,6 +8,7 @@ import { updateCategory } from "../../store/user/ThunkFunctions/updateCategory";
 import { useForm } from "@mantine/form";
 import { createPaymentMode } from "../../store/user/ThunkFunctions/createPaymentMode";
 import { toggleLoadingOverlay } from "../../store/utils";
+import { updatePaymentMode } from "../../store/user/ThunkFunctions/updatePaymentMode";
 
 const AddOrUpdateModal = ({
 	opened,
@@ -15,6 +16,7 @@ const AddOrUpdateModal = ({
 	isUpdating = false,
 	oldValue,
 	type,
+	title,
 	setIsUpdating = () => {},
 }) => {
 	const dispatch = useDispatch();
@@ -100,17 +102,16 @@ const AddOrUpdateModal = ({
 						setOpened,
 					])
 				);
+			} else {
+				dispatch(
+					updatePaymentMode([
+						oldValue,
+						values.newValue,
+						payment_modes,
+						setOpened,
+					])
+				);
 			}
-			// else {
-			// 	dispatch(
-			// 		updatePaymentMode([
-			// 			oldValue,
-			// 			values.newValue,
-			// 			categories,
-			// 			setOpened,
-			// 		])
-			// 	);
-			// }
 		}
 	};
 
@@ -125,7 +126,7 @@ const AddOrUpdateModal = ({
 			onClose={() => setOpened(false)}
 			title={
 				<Title order={4}>
-					{isUpdating ? `Update ${type}` : `Add ${type}`}
+					{isUpdating ? `Update ${title}` : `Add ${title}`}
 				</Title>
 			}
 		>
@@ -133,7 +134,7 @@ const AddOrUpdateModal = ({
 				<TextInput
 					data-autofocus
 					placeholder="Add one"
-					label={type}
+					label={title}
 					required
 					{...form.getInputProps("newValue")}
 				/>
