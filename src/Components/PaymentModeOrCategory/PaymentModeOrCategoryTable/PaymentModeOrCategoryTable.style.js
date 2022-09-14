@@ -34,16 +34,21 @@ export const useStyles = createStyles((theme) => ({
 
 	control: {
 		width: "100%",
-		padding: `${theme.spacing.xs}px ${theme.spacing.md}px`,
+		padding: `${theme.spacing.xs}px ${theme.spacing.xl}px`,
 		textAlign: "center",
 
 		"&:hover": {
 			backgroundColor: theme.colors.dark[6],
 		},
+
+		"@media (max-width: 360px)": {
+			padding: `${theme.spacing.xs}px 6px`,
+		},
 	},
 
 	td: {
 		textAlign: "center",
+		padding: "8px 10px !important",
 
 		"@media (max-width: 530px)": {
 			fontSize: "0.8rem !important",

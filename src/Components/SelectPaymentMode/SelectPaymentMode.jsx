@@ -17,7 +17,7 @@ const SelectPaymentMode = ({
 	forDayWiseExpense = false,
 	payment_mode,
 	handleAppliedFilters,
-	forAddOrUpdateExpenseForm,
+	forAddOrUpdateExpenseForm = false,
 }) => {
 	const { payment_modes } = useSelector((state) => state.utils);
 	const {

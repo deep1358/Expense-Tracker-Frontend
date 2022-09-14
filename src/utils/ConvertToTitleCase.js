@@ -1,4 +1,4 @@
-// Split string by _, if it exists and then convert it to camel case
+// Split string by _, if it exists and then convert it to title case
 
 export const ConvertToTitleCase = (str) => {
 	return str

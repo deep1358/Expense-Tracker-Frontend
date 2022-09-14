@@ -19,7 +19,6 @@ import {
 	ChevronUp,
 } from "tabler-icons-react";
 import { useStyles } from "./PaymentModeOrCategoryTable.style";
-import { useSelector } from "react-redux";
 
 const PaymentModeOrCategoryTable = ({
 	setOldValue,
@@ -42,8 +41,6 @@ const PaymentModeOrCategoryTable = ({
 	const smallerScreen = useMediaQuery("(max-width: 530px)");
 
 	const { classes } = useStyles();
-
-	const { user } = useSelector((state) => state.user);
 
 	function Th({ children, reversed, sorted, onSort }) {
 		const { classes } = useStyles();
@@ -74,7 +71,7 @@ const PaymentModeOrCategoryTable = ({
 				{title} Name
 			</Th>
 			<th className={classes.th}>
-				<Text weight={500} size={smallerScreen ? 18 : "sm"}>
+				<Text weight={500} size="sm">
 					Actions
 				</Text>
 			</th>

@@ -41,32 +41,34 @@ const PaymentModeOrCategory = ({ data, type }) => {
 	}, [deletingCategory, deletingPaymentMode]);
 
 	useEffect(() => {
-		setSortedData(data || []);
-	}, [user]);
+		setSortedData(
+			sortData(data, { sortBy, reversed: reverseSortDirection, search })
+		);
+	}, [user, sortBy, reverseSortDirection, search]);
 
 	useEffect(() => {
 		setTitle(ConvertToTitleCase(type));
 	}, [type]);
 
-	function filterData(data, search) {
+	function filterData(data) {
 		const query = search.toLowerCase().trim();
 		return data.filter((item) => item.toLowerCase().includes(query));
 	}
 
-	function sortData(data, payload) {
-		if (!payload.sortBy) {
-			return filterData(data, payload.search);
+	function sortData(data, { sortBy, reversed, search }) {
+		if (!sortBy) {
+			return filterData(data, search);
 		}
 
 		return filterData(
 			[...data].sort((a, b) => {
-				if (payload.reversed) {
+				if (reversed) {
 					return b.localeCompare(a);
 				}
 
 				return a.localeCompare(b);
 			}),
-			payload.search
+			search
 		);
 	}
 
@@ -106,7 +108,9 @@ const PaymentModeOrCategory = ({ data, type }) => {
 			/>
 
 			<Container size={smallerScreen ? "100vw" : "sm"}>
-				<Title order={2}>{title}</Title>
+				<Title mb={20} order={2}>
+					{title}
+				</Title>
 
 				<Stack align="flex-end">
 					<Button
@@ -123,10 +127,9 @@ const PaymentModeOrCategory = ({ data, type }) => {
 							icon={<Search size={14} />}
 							value={search}
 							onChange={handleSearchChange}
-							mb="sm"
 						/>
 					)}
-					<ScrollArea sx={{ height: "calc(75vh - 50px)", width: "100%" }}>
+					<ScrollArea sx={{ height: "calc(72vh - 70px)", width: "100%" }}>
 						<PaymentModeOrCategoryTable
 							setOldValue={setOldValue}
 							setIsUpdating={setIsUpdating}
