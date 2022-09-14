@@ -1,12 +1,14 @@
 import { useSelector } from "react-redux";
 import PaymentModeOrCategory from "../../Components/PaymentModeOrCategory/PaymentModeOrCategory";
 
-const Categories = () => {
+const PaymentModes = () => {
 	const {
-		user: { categories },
+		user: { payment_modes },
 	} = useSelector((state) => state.user);
 
-	return <PaymentModeOrCategory type="category" data={categories || []} />;
+	return (
+		<PaymentModeOrCategory type="payment_mode" data={payment_modes || []} />
+	);
 };
 
-export default Categories;
+export default PaymentModes;

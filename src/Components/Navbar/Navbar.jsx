@@ -55,11 +55,6 @@ const Navbar = () => {
 			icon: CirclePlus,
 		},
 		{
-			label: "My Categories",
-			link: "/categories",
-			icon: Apps,
-		},
-		{
 			label: "Visualize your data",
 			link: "/visualization",
 			icon: ChartBar,

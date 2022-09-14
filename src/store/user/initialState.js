@@ -9,4 +9,8 @@ export const initialState = {
 	creatingCategory: false,
 	deletingCategory: false,
 	updatingCategory: false,
+	fetchingPaymentModes: false,
+	creatingPaymentMode: false,
+	deletingPaymentMode: false,
+	updatingPaymentMode: false,
 };

@@ -6,7 +6,6 @@ import {
 	NumberInput,
 	Select,
 	Textarea,
-	TextInput,
 } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
 import { useForm } from "@mantine/form";
@@ -20,11 +19,12 @@ import { getExpense } from "../../../store/expense/ThunkFunctions/getExpense";
 import { updateExpense } from "../../../store/expense/ThunkFunctions/updateExpense";
 import { toggleLoadingOverlay } from "../../../store/utils";
 import UpdateExpenseSkeleton from "../UpdateExpenseSkeleton";
-import SelectPaymentMode from "../SelectPaymentMode/SelectPaymentMode";
-import AddOrUpdateCategoryModal from "../../AddOrUpdateCategoryModal/AddOrUpdateCategoryModal";
+import SelectPaymentMode from "../../SelectPaymentMode/SelectPaymentMode";
+import AddOrUpdateModal from "../../AddOrUpdateModal/AddOrUpdateModal";
 
 const AddOrUpdateExpenseForm = ({ id }) => {
-	const [openedAddCategoryModal, setOpenedAddCategoryModal] = useState(false);
+	const [openedAddModal, setOpenedAddModal] = useState(false);
+	const [type, setType] = useState("");
 
 	const { user } = useSelector((state) => state.user);
 
@@ -43,7 +43,6 @@ const AddOrUpdateExpenseForm = ({ id }) => {
 			category: "",
 			amount: 1,
 			payment_mode: "Cash",
-			payment_mode_name: "",
 			date: new Date(),
 			note: "",
 		},
@@ -56,10 +55,6 @@ const AddOrUpdateExpenseForm = ({ id }) => {
 			payment_mode:
 				values.payment_mode === "" ? "Payment mode is required" : undefined,
 			date: values.date ? undefined : "Date is required",
-			payment_mode_name:
-				values.payment_mode_name === "" && values.payment_mode === "Other"
-					? "Payment mode name is required"
-					: undefined,
 		}),
 	});
 
@@ -74,11 +69,6 @@ const AddOrUpdateExpenseForm = ({ id }) => {
 						payment_mode: focusedExpense.payment_mode.includes("Other")
 							? "Other"
 							: focusedExpense.payment_mode,
-						payment_mode_name: focusedExpense.payment_mode.includes(
-							"Other"
-						)
-							? focusedExpense.payment_mode.split("(")[1].split(")")[0]
-							: "",
 						date: new Date(
 							focusedExpense.year,
 							focusedExpense.month - 1,
@@ -92,7 +82,6 @@ const AddOrUpdateExpenseForm = ({ id }) => {
 					category: "",
 					amount: 1,
 					payment_mode: "Cash",
-					payment_mode_name: "",
 					date: new Date(),
 					note: "",
 				});
@@ -113,10 +102,6 @@ const AddOrUpdateExpenseForm = ({ id }) => {
 				addExpense({
 					form: {
 						...values,
-						payment_mode:
-							values.payment_mode === "Other"
-								? `Other (${values.payment_mode_name})`
-								: values.payment_mode,
 						date: new Date(year, month, day + 1)
 							.toISOString()
 							.substring(0, 10),
@@ -129,13 +114,7 @@ const AddOrUpdateExpenseForm = ({ id }) => {
 		} else
 			dispatch(
 				updateExpense({
-					form: {
-						...values,
-						payment_mode:
-							values.payment_mode === "Other"
-								? `Other (${values.payment_mode_name})`
-								: values.payment_mode,
-					},
+					form: form.values,
 					year: focusedExpense.year,
 					month: months[focusedExpense.month - 1],
 					_id: id,
@@ -153,10 +132,6 @@ const AddOrUpdateExpenseForm = ({ id }) => {
 			addExpense({
 				form: {
 					...values,
-					payment_mode:
-						values.payment_mode === "Other"
-							? `Other (${values.payment_mode_name})`
-							: values.payment_mode,
 					date: new Date(year, month, day + 1)
 						.toISOString()
 						.substring(0, 10),
@@ -173,16 +148,17 @@ const AddOrUpdateExpenseForm = ({ id }) => {
 		<UpdateExpenseSkeleton />
 	) : (
 		<>
-			<AddOrUpdateCategoryModal
-				opened={openedAddCategoryModal}
-				setOpened={setOpenedAddCategoryModal}
+			<AddOrUpdateModal
+				opened={openedAddModal}
+				setOpened={setOpenedAddModal}
+				type={type}
 			/>
 			<form onSubmit={form.onSubmit(handleSaveOrUpdate)}>
 				<Group spacing={6} align="flex-end">
 					<Select
 						style={{ flex: 1 }}
 						data={user?.categories || []}
-						label="Select a category"
+						label="Category"
 						placeholder="Pick one"
 						{...form.getInputProps("category")}
 						required
@@ -190,7 +166,10 @@ const AddOrUpdateExpenseForm = ({ id }) => {
 						nothingFound="No category found"
 					/>
 					<ActionIcon
-						onClick={() => setOpenedAddCategoryModal(true)}
+						onClick={() => {
+							setType("category");
+							setOpenedAddModal(true);
+						}}
 						color="dark.4"
 						size={36}
 						variant="outline"
@@ -216,19 +195,24 @@ const AddOrUpdateExpenseForm = ({ id }) => {
 					spellCheck={false}
 					mt="md"
 				/>
-				<SelectPaymentMode
-					payment_mode={form.values.payment_mode}
-					setFormPaymentModeValue={setFormPaymentModeValue}
-				/>
-				{form.values.payment_mode === "Other" && (
-					<TextInput
-						label="Payment Mode Name"
-						placeholder="Enter payment mode name"
-						{...form.getInputProps("payment_mode_name")}
-						mt="md"
-						required={form.values.payment_mode === "Other"}
+				<Group spacing={6} align="flex-end">
+					<SelectPaymentMode
+						forAddOrUpdateExpenseForm={true}
+						payment_mode={form.values.payment_mode}
+						handleAppliedFilters={setFormPaymentModeValue}
 					/>
-				)}
+					<ActionIcon
+						onClick={() => {
+							setType("payment_mode");
+							setOpenedAddModal(true);
+						}}
+						color="dark.4"
+						size={36}
+						variant="outline"
+					>
+						<Plus color="grey" size={16} />
+					</ActionIcon>
+				</Group>
 				<DatePicker
 					placeholder="Pick a date"
 					label="Date"

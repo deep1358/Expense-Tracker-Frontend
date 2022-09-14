@@ -75,10 +75,6 @@ export const initialState = {
 			label: "Net Banking",
 			value: "Net Banking",
 		},
-		{
-			label: "Other",
-			value: "Other",
-		},
 	],
 	_30DaysMonths: [
 		"January",

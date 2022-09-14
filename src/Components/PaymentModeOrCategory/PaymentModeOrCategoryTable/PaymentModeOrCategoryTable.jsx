@@ -18,15 +18,14 @@ import {
 	ChevronDown,
 	ChevronUp,
 } from "tabler-icons-react";
-import { useStyles } from "./CategoryTable.style";
-import { useSelector } from "react-redux";
+import { useStyles } from "./PaymentModeOrCategoryTable.style";
 
-const CategoryTable = ({
-	setOldCategory,
+const PaymentModeOrCategoryTable = ({
+	setOldValue,
 	setIsUpdating,
 	setEditOrUploadModalOpened,
 	setDeleteModalOpened,
-	setSelectDeleteCategory,
+	setSelectDeleteItem,
 	sortedData,
 	setSortedData,
 	sortData,
@@ -35,12 +34,13 @@ const CategoryTable = ({
 	setSortBy,
 	reverseSortDirection,
 	setReverseSortDirection,
+	type,
+	data,
+	title,
 }) => {
 	const smallerScreen = useMediaQuery("(max-width: 530px)");
 
 	const { classes } = useStyles();
-
-	const { user } = useSelector((state) => state.user);
 
 	function Th({ children, reversed, sorted, onSort }) {
 		const { classes } = useStyles();
@@ -64,28 +64,28 @@ const CategoryTable = ({
 	const ths = (
 		<tr>
 			<Th
-				sorted={sortBy === "category"}
+				sorted={sortBy === type}
 				reversed={reverseSortDirection}
-				onSort={() => setSorting("category")}
+				onSort={() => setSorting(type)}
 			>
-				Category Name
+				{title} Name
 			</Th>
 			<th className={classes.th}>
-				<Text weight={500} size={smallerScreen ? 18 : "sm"}>
+				<Text weight={500} size="sm">
 					Actions
 				</Text>
 			</th>
 		</tr>
 	);
 
-	const rows = sortedData.map((category, index) => (
+	const rows = sortedData.map((item, index) => (
 		<tr key={index}>
-			<td className={classes.td}>{category}</td>
+			<td className={classes.td}>{item}</td>
 			<td className={classes.td}>
 				{!smallerScreen ? (
 					<>
 						<Button
-							onClick={() => DeleteCategory(category)}
+							onClick={() => DeleteItem(item)}
 							leftIcon={<Trash />}
 							variant="light"
 							color="red"
@@ -94,7 +94,7 @@ const CategoryTable = ({
 						</Button>
 						<Button
 							onClick={() => {
-								setOldCategory(category);
+								setOldValue(item);
 								setIsUpdating(true);
 								setEditOrUploadModalOpened(true);
 							}}
@@ -109,7 +109,7 @@ const CategoryTable = ({
 				) : (
 					<Group position="center">
 						<ActionIcon
-							onClick={() => DeleteCategory(category)}
+							onClick={() => DeleteItem(item)}
 							variant="light"
 							color="red"
 						>
@@ -117,7 +117,7 @@ const CategoryTable = ({
 						</ActionIcon>
 						<ActionIcon
 							onClick={() => {
-								setOldCategory(category);
+								setOldValue(item);
 								setIsUpdating(true);
 								setEditOrUploadModalOpened(true);
 							}}
@@ -132,18 +132,16 @@ const CategoryTable = ({
 		</tr>
 	));
 
-	const DeleteCategory = (category) => {
+	const DeleteItem = (item) => {
 		setDeleteModalOpened(true);
-		setSelectDeleteCategory(category);
+		setSelectDeleteItem(item);
 	};
 
 	const setSorting = (field) => {
 		const reversed = field === sortBy ? !reverseSortDirection : false;
 		setReverseSortDirection(reversed);
 		setSortBy(field);
-		setSortedData(
-			sortData(user?.categories, { sortBy: field, reversed, search })
-		);
+		setSortedData(sortData(data, { sortBy: field, reversed, search }));
 	};
 
 	return (
@@ -154,20 +152,20 @@ const CategoryTable = ({
 				fontSize="sm"
 			>
 				<thead className={classes.header}>{ths}</thead>
-				{user?.categories?.length > 0 && <tbody>{rows}</tbody>}
+				{data.length > 0 && <tbody>{rows}</tbody>}
 			</Table>
-			{(user?.categories?.length < 1 || rows?.length < 1) && (
+			{(data.length < 1 || rows?.length < 1) && (
 				<Stack mt="lg" align="center">
 					<Image
 						className={classes.noResultImage}
 						src="/no-result.svg"
 						alt="no-result"
 					/>
-					<Text color="grey">No Category found</Text>
+					<Text color="grey">No {type} found</Text>
 				</Stack>
 			)}
 		</>
 	);
 };
 
-export default memo(CategoryTable);
+export default memo(PaymentModeOrCategoryTable);

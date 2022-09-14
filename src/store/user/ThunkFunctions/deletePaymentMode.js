@@ -7,32 +7,27 @@ import { showNotification } from "@mantine/notifications";
 // get current seconds since epoch to use as a unique id
 const getCurrentSeconds = () => Math.floor(Date.now() / 1000);
 
-export const createCategory = createAsyncThunk(
-	"user/createCategory",
-	async ([categoryName, categories, setModalOpened]) => {
+export const deletePaymentMode = createAsyncThunk(
+	"user/deletePaymentMode",
+	async ([paymentModeName, payment_modes, setDeleteModalOpened]) => {
 		try {
-			const res = await axios.post("/category", {
-				categoryName,
-				categories,
-			});
+			await axios.delete(`/payment_mode/${paymentModeName}`);
 
-			setModalOpened(false);
+			setDeleteModalOpened(false);
 
 			showNotification({
-				id: `addCategory-${getCurrentSeconds()}`,
-				message: "Category added successfully",
+				id: `deletePaymentMode-${getCurrentSeconds()}`,
+				message: "Payment mode deleted successfully",
 				color: "teal",
 				icon: <Check size={15} />,
 			});
-
-			return res.data.categories;
+			return payment_modes.filter(
+				(payment_mode) => payment_mode !== paymentModeName
+			);
 		} catch (err) {
 			showNotification({
-				id: `addCategory-${getCurrentSeconds()}`,
-				message:
-					err?.response?.data?.message ||
-					err?.message ||
-					"Error adding category",
+				id: `deletePaymentMode-${getCurrentSeconds()}`,
+				message: err.response.data.message || "Error deleting payment mode",
 				color: "red",
 				icon: <X size={15} />,
 			});

@@ -6,12 +6,17 @@ import { showNotification } from "@mantine/notifications";
 import { createCategory } from "../../store/user/ThunkFunctions/createCategory";
 import { updateCategory } from "../../store/user/ThunkFunctions/updateCategory";
 import { useForm } from "@mantine/form";
+import { createPaymentMode } from "../../store/user/ThunkFunctions/createPaymentMode";
+import { toggleLoadingOverlay } from "../../store/utils";
+import { updatePaymentMode } from "../../store/user/ThunkFunctions/updatePaymentMode";
 
-const AddOrUpdateCategoryModal = ({
+const AddOrUpdateModal = ({
 	opened,
 	setOpened,
 	isUpdating = false,
-	oldCategory,
+	oldValue,
+	type,
+	title,
 	setIsUpdating = () => {},
 }) => {
 	const dispatch = useDispatch();
@@ -19,56 +24,94 @@ const AddOrUpdateCategoryModal = ({
 	const {
 		creatingCategory,
 		updatingCategory,
-		user: { categories },
+		creatingPaymentMode,
+		updatingPaymentMode,
+		user: { categories, payment_modes },
 	} = useSelector((state) => state.user);
 
 	useEffect(() => {
-		if (!opened) categoryForm.reset();
+		if (!opened) form.reset();
 	}, [opened]);
 
 	useEffect(() => {
+		dispatch(
+			toggleLoadingOverlay(
+				creatingCategory ||
+					updatingCategory ||
+					creatingPaymentMode ||
+					updatingPaymentMode
+			)
+		);
+	}, [
+		creatingCategory,
+		updatingCategory,
+		creatingPaymentMode,
+		updatingPaymentMode,
+	]);
+
+	useEffect(() => {
 		if (isUpdating) {
-			categoryForm.setFieldValue("newCategory", oldCategory);
+			form.setFieldValue("newValue", oldValue);
 		}
 	}, [isUpdating]);
 
-	const categoryForm = useForm({
+	const form = useForm({
 		initialValues: {
-			newCategory: "",
+			newValue: "",
 		},
 
 		validate: {
-			newCategory: (values) =>
-				values.newCategory === "" ? "Category is required" : undefined,
+			newValue: (values) =>
+				values.newValue === "" ? "This field is required" : undefined,
 		},
 	});
 
 	// get current seconds since epoch to use as a unique id
 	const getCurrentSeconds = () => Math.floor(Date.now() / 1000);
 
-	const AddOrUpdateCategory = (values) => {
-		if (
-			!/^[a-zA-Z]([a-zA-Z _-]*([a-zA-Z]))?$/.test(values.newCategory.trim())
-		)
+	const AddOrUpdate = (values) => {
+		if (!/^[a-zA-Z]([a-zA-Z _-]*([a-zA-Z]))?$/.test(values.newValue.trim()))
 			return showNotification({
-				id: `add-category-error-${getCurrentSeconds()}`,
-				message: "Category name is invalid",
+				id: `add-${type}-error-${getCurrentSeconds()}`,
+				message: `${type} name is invalid`,
 				color: "red",
 				icon: <X size={15} />,
 			});
-		if (!isUpdating) {
-			dispatch(
-				createCategory([values.newCategory.trim(), categories, setOpened])
-			);
-		} else {
-			dispatch(
-				updateCategory([
-					oldCategory,
-					values.newCategory,
-					categories,
-					setOpened,
-				])
-			);
+
+		if (type === "category") {
+			if (!isUpdating) {
+				dispatch(
+					createCategory([values.newValue.trim(), categories, setOpened])
+				);
+			} else {
+				dispatch(
+					updateCategory([
+						oldValue,
+						values.newValue,
+						categories,
+						setOpened,
+					])
+				);
+			}
+		} else if (type === "payment_mode") {
+			if (!isUpdating) {
+				dispatch(
+					createPaymentMode([
+						values.newValue.trim(),
+						payment_modes,
+						setOpened,
+					])
+				);
+			} else {
+				dispatch(
+					updatePaymentMode([
+						oldValue,
+						values.newValue,
+						payment_modes,
+						setOpened,
+					])
+				);
+			}
 		}
 	};
 
@@ -83,25 +126,30 @@ const AddOrUpdateCategoryModal = ({
 			onClose={() => setOpened(false)}
 			title={
 				<Title order={4}>
-					{isUpdating ? "Update Category" : "Add Category"}
+					{isUpdating ? `Update ${title}` : `Add ${title}`}
 				</Title>
 			}
 		>
-			<form onSubmit={categoryForm.onSubmit(AddOrUpdateCategory)}>
+			<form onSubmit={form.onSubmit(AddOrUpdate)}>
 				<TextInput
 					data-autofocus
 					placeholder="Add one"
-					label="Category"
+					label={title}
 					required
-					{...categoryForm.getInputProps("newCategory")}
+					{...form.getInputProps("newValue")}
 				/>
 				<Button fullWidth mt="xl" type="submit">
-					{creatingCategory || updatingCategory ? "Saving..." : "Save"}
+					{creatingCategory ||
+					updatingCategory ||
+					creatingPaymentMode ||
+					updatingPaymentMode
+						? "Saving..."
+						: "Save"}
 				</Button>
 			</form>
 			<List style={{ color: "grey" }} mt="lg" size="xs" listStyleType="disc">
 				<List.Item>
-					Category Name Rules:
+					Name Rules:
 					<List
 						style={{ color: "grey" }}
 						size="xs"
@@ -140,4 +188,4 @@ const AddOrUpdateCategoryModal = ({
 	);
 };
 
-export default memo(AddOrUpdateCategoryModal);
+export default memo(AddOrUpdateModal);
