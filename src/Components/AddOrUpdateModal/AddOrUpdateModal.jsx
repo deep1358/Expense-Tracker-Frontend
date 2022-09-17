@@ -1,4 +1,4 @@
-import React, { memo, useEffect } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { Modal, Title, TextInput, Button, List } from "@mantine/core";
 import { useDispatch, useSelector } from "react-redux";
 import { X } from "tabler-icons-react";
@@ -9,6 +9,7 @@ import { useForm } from "@mantine/form";
 import { createPaymentMode } from "../../store/user/ThunkFunctions/createPaymentMode";
 import { toggleLoadingOverlay } from "../../store/utils";
 import { updatePaymentMode } from "../../store/user/ThunkFunctions/updatePaymentMode";
+import { ConvertToTitleCase } from "../../utils/ConvertToTitleCase";
 
 const AddOrUpdateModal = ({
 	opened,
@@ -16,7 +17,6 @@ const AddOrUpdateModal = ({
 	isUpdating = false,
 	oldValue,
 	type,
-	title,
 	setIsUpdating = () => {},
 }) => {
 	const dispatch = useDispatch();
@@ -28,6 +28,12 @@ const AddOrUpdateModal = ({
 		updatingPaymentMode,
 		user: { categories, payment_modes },
 	} = useSelector((state) => state.user);
+
+	const [title, setTitle] = useState("");
+
+	useEffect(() => {
+		setTitle(ConvertToTitleCase(type));
+	}, [type]);
 
 	useEffect(() => {
 		if (!opened) form.reset();

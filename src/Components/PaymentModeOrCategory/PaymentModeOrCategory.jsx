@@ -29,12 +29,16 @@ const PaymentModeOrCategory = ({ data, type }) => {
 	const [sortBy, setSortBy] = useState(null);
 	const [reverseSortDirection, setReverseSortDirection] = useState(false);
 
-	const [title, setTitle] = useState("");
-
 	const { user, deletingCategory, deletingPaymentMode } = useSelector(
 		(state) => state.user
 	);
 	const dispatch = useDispatch();
+
+	const [title, setTitle] = useState("");
+
+	useEffect(() => {
+		setTitle(ConvertToTitleCase(type));
+	}, [type]);
 
 	useEffect(() => {
 		dispatch(toggleLoadingOverlay(deletingCategory || deletingPaymentMode));
@@ -45,10 +49,6 @@ const PaymentModeOrCategory = ({ data, type }) => {
 			sortData(data, { sortBy, reversed: reverseSortDirection, search })
 		);
 	}, [user, sortBy, reverseSortDirection, search]);
-
-	useEffect(() => {
-		setTitle(ConvertToTitleCase(type));
-	}, [type]);
 
 	function filterData(data) {
 		const query = search.toLowerCase().trim();
@@ -94,7 +94,6 @@ const PaymentModeOrCategory = ({ data, type }) => {
 				setSelectDeleteItem={setSelectDeleteItem}
 				selectDeleteItem={selectDeleteItem}
 				type={type}
-				title={title}
 			/>
 
 			<AddOrUpdateModal
@@ -104,7 +103,6 @@ const PaymentModeOrCategory = ({ data, type }) => {
 				setIsUpdating={setIsUpdating}
 				oldValue={oldValue}
 				type={type}
-				title={title}
 			/>
 
 			<Container size={smallerScreen ? "100vw" : "sm"}>
