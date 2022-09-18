@@ -8,7 +8,7 @@ const useStyles = createStyles((theme, remove) => ({
 	wrapper: {
 		padding: "2px 1px 2px 8px",
 		borderRadius: theme.radius.lg,
-		background: theme.colors.dark[5],
+		background: theme.colors.dark[6],
 		marginBottom: 5,
 	},
 }));

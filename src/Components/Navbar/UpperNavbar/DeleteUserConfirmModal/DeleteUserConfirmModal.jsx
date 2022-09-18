@@ -2,11 +2,8 @@ import React, { useState } from "react";
 import { Modal, Title, Group, Alert, Text, Input, Button } from "@mantine/core";
 import { AlertCircle } from "tabler-icons-react";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteUser } from "../../../store/user/ThunkFunctions/deleteUser";
+import { deleteUser } from "../../../../store/user/ThunkFunctions/deleteUser";
 import useStyles from "./DeleteUserConfirmModal.style";
-import { signOut } from "firebase/auth";
-import { Auth } from "../../../firebase";
-import { MakeUnAuthenticated } from "../../../store/user";
 
 const DeleteUserConfirmModal = ({
 	deleteConfirmBoxOpened,

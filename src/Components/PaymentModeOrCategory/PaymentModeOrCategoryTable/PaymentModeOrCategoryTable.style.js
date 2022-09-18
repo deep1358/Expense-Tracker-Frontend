@@ -22,7 +22,7 @@ export const useStyles = createStyles((theme) => ({
 		padding: "0 !important",
 		textAlign: "center !important",
 		minHeight: "40px",
-		backgroundColor: theme.colors.dark[5],
+		backgroundColor: theme.colors.dark[7],
 
 		"&:first-of-type": {
 			borderTopLeftRadius: "3px",
@@ -43,6 +43,12 @@ export const useStyles = createStyles((theme) => ({
 
 		"@media (max-width: 360px)": {
 			padding: `${theme.spacing.xs}px 6px`,
+		},
+	},
+
+	row: {
+		"&:hover": {
+			backgroundColor: `${theme.colors.dark[7]} !important`,
 		},
 	},
 

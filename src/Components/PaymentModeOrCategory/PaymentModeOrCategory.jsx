@@ -127,7 +127,7 @@ const PaymentModeOrCategory = ({ data, type }) => {
 							onChange={handleSearchChange}
 						/>
 					)}
-					<ScrollArea sx={{ height: "calc(72vh - 70px)", width: "100%" }}>
+					<ScrollArea sx={{ height: "calc(75vh - 70px)", width: "100%" }}>
 						<PaymentModeOrCategoryTable
 							setOldValue={setOldValue}
 							setIsUpdating={setIsUpdating}

@@ -79,7 +79,7 @@ const PaymentModeOrCategoryTable = ({
 	);
 
 	const rows = sortedData.map((item, index) => (
-		<tr key={index}>
+		<tr className={classes.row} key={index}>
 			<td className={classes.td}>{item}</td>
 			<td className={classes.td}>
 				{!smallerScreen ? (

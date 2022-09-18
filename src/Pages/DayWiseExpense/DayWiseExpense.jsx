@@ -136,7 +136,7 @@ const DayWiseExpense = () => {
 					/>
 					<ScrollArea
 						sx={{
-							height: `calc(${smallerScreen ? 83 : 78}vh - 70px)`,
+							height: `calc(${smallerScreen ? 83 : 80}vh - 50px)`,
 							width: "100%",
 						}}
 					>

@@ -1,27 +1,31 @@
 import React from "react";
-import { Menu, Avatar, Text, Group, Divider } from "@mantine/core";
+import {
+	Menu,
+	Avatar,
+	Text,
+	Group,
+	Divider,
+	Stack,
+	Title,
+} from "@mantine/core";
 import { useSelector } from "react-redux";
 import { useStyles } from "./AvatarMenu.style";
-import { Trash, Logout, Apps, Wallet } from "tabler-icons-react";
-import { useNavigate } from "react-router-dom";
+import { Trash, Logout } from "tabler-icons-react";
 
 const AvatarMenu = ({ deleteConfirmBoxToggleOpened, handleLogoutUser }) => {
 	const { user } = useSelector((state) => state.user);
 
 	const { classes } = useStyles();
 
-	const navigate = useNavigate();
-
 	return (
 		<Menu
 			icon={<Trash size={14} />}
-			width={220}
-			trigger="hover"
+			style={{ width: "fit-content" }}
 			className={classes.Menu}
 		>
 			<Menu.Target>
 				<Avatar
-					size="md"
+					size="sm"
 					referrerPolicy="no-referrer"
 					src={user.userAvatar}
 					alt="User Avatar"
@@ -30,19 +34,16 @@ const AvatarMenu = ({ deleteConfirmBoxToggleOpened, handleLogoutUser }) => {
 				/>
 			</Menu.Target>
 			<Menu.Dropdown>
-				<Menu.Item onClick={() => navigate("/categories")}>
-					<Group>
-						<Apps size={16} />
-						<Text>My Categories</Text>
-					</Group>
+				<Menu.Item
+					style={{
+						pointerEvents: "none",
+					}}
+				>
+					<Stack spacing={0}>
+						<Title order={6}>{user.userName}</Title>
+						<Text color="grey">{user.userEmail}</Text>
+					</Stack>
 				</Menu.Item>
-				<Menu.Item onClick={() => navigate("/payment_modes")}>
-					<Group>
-						<Wallet size={16} />
-						<Text>My Payment Modes</Text>
-					</Group>
-				</Menu.Item>
-				<Divider />
 				<Menu.Item
 					onClick={() => handleLogoutUser("Logged out successfully!")}
 				>
