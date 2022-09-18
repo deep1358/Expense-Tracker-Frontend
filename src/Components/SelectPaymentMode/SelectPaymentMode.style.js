@@ -13,10 +13,10 @@ export const useStyles = createStyles(
 			borderRadius: theme.radius.sm,
 			border: `1px solid ${theme.colors.dark[4]}`,
 			transition: "background-color 150ms ease",
-			backgroundColor: theme.colors.dark[opened ? 5 : 6],
+			backgroundColor: theme.colors.dark[opened ? 7 : 8],
 
 			"&:hover": {
-				backgroundColor: theme.colors.dark[5],
+				backgroundColor: theme.colors.dark[7],
 			},
 		},
 		label: {

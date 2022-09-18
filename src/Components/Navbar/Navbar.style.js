@@ -1,122 +1,14 @@
 import { createStyles } from "@mantine/core";
 
-const useStyles = createStyles((theme, _params, getRef) => {
-	const icon = getRef("icon");
+export const useStyles = createStyles((_theme, _params) => {
+	const { opened } = _params;
+
 	return {
-		root: {
-			position: "sticky",
-			zIndex: 2,
-			backgroundColor: theme.colors.dark[6],
-		},
-
-		header: {
-			display: "flex",
-			justifyContent: "space-between",
-			alignItems: "center",
-			height: "100%",
-			overflow: "hidden",
-		},
-
-		logo: {
-			width: "150px !important",
-			[theme.fn.smallerThan("xs")]: {
-				width: "120px !important",
-			},
-		},
-
-		links: {
-			"@media (max-width: 920px)": {
-				display: "none",
-			},
-		},
-
-		link: {
-			...theme.fn.focusStyles(),
-			display: "flex",
-			alignItems: "center",
-			justifyContent: "center",
-			textDecoration: "none",
-			fontSize: theme.fontSizes.sm,
-			"@media (min-width: 920px)": {
-				borderRadius: theme.radius.sm,
-			},
-			color: theme.colors.dark[1],
-			padding: `${theme.spacing.xs}px ${theme.spacing.sm}px`,
-			fontWeight: 500,
-
-			"&:hover": {
-				backgroundColor: theme.colors.dark[5],
-				color: theme.white,
-
-				[`& .${icon}`]: {
-					color: theme.white,
-				},
-			},
-		},
-
-		linkIcon: {
-			ref: icon,
-			color: theme.colors.dark[2],
-			marginRight: "5px",
-		},
-
-		linkActive: {
-			"&, &:hover": {
-				backgroundColor: theme.fn.rgba(
-					theme.colors[theme.primaryColor][9],
-					0.25
-				),
-				color: theme.colors[theme.primaryColor][4],
-				[`& .${icon}`]: {
-					color: theme.colors[theme.primaryColor][4],
-				},
-			},
-		},
-
-		Text: {
-			fontSize: "1.5rem",
-			[theme.fn.largerThan("xs")]: {
-				fontSize: "2rem",
-			},
-			"@media (max-width: 350px)": {
-				fontSize: "1.2rem",
-			},
-			fontFamily: "Rubik Moonrocks, cursive",
-		},
-
-		menu: {
-			[theme.fn.largerThan("md")]: {
-				display: "none",
-			},
-			cursor: "pointer",
-		},
-
-		burger: {
-			"@media (min-width: 920px)": {
-				display: "none",
-			},
-		},
-
-		dropdown: {
-			position: "absolute",
-			[theme.fn.smallerThan("xs")]: {
-				top: 60,
-			},
-			top: 70,
-			left: 0,
-			right: 0,
-			zIndex: 0,
-			borderTopRightRadius: 0,
-			borderTopLeftRadius: 0,
-			borderTopWidth: 0,
-			overflow: "hidden",
-			backgroundColor: theme.colors.dark[6],
-
-			"@media (min-width: 920px)": {
-				display: "none",
-			},
+		mainContent: {
+			flex: 1,
+			marginLeft: opened ? 210 : 50,
+			transition: "margin-left 0.3s",
+			marginTop: 20,
 		},
 	};
 });
-
-export default useStyles;

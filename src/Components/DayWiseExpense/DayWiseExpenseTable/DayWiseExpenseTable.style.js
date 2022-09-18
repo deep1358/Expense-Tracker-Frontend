@@ -22,7 +22,7 @@ export const useStyles = createStyles((theme) => ({
 		padding: "0 !important",
 		textAlign: "center",
 		minHeight: "40px",
-		backgroundColor: theme.colors.dark[5],
+		backgroundColor: theme.colors.dark[7],
 
 		"&:first-of-type": {
 			borderTopLeftRadius: "3px",
@@ -45,6 +45,12 @@ export const useStyles = createStyles((theme) => ({
 
 		"&:hover": {
 			backgroundColor: theme.colors.dark[6],
+		},
+	},
+
+	row: {
+		"&:hover": {
+			backgroundColor: `${theme.colors.dark[7]} !important`,
 		},
 	},
 

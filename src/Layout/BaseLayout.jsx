@@ -1,12 +1,11 @@
 import React, { useEffect } from "react";
 import { Outlet, useLocation } from "react-router-dom";
-import Navbar from "../Components/Navbar/Navbar";
 import { useDispatch, useSelector } from "react-redux";
-import { Alert, LoadingOverlay, Text } from "@mantine/core";
-import CustomLoader from "../Components/CustomLoader";
+import { Alert, Text } from "@mantine/core";
 import FullScreenLoader from "../Components/FullScreenLoader";
 import { AlertCircle } from "tabler-icons-react";
 import { removeAlert } from "../store/utils";
+import Navbar from "../Components/Navbar/Navbar";
 
 const BaseLayout = () => {
 	const { user, loggedIn, fetchingUser } = useSelector((state) => state.user);
@@ -27,7 +26,9 @@ const BaseLayout = () => {
 	if (user && loggedIn)
 		return (
 			<>
-				<Navbar />
+				<Navbar>
+					<Outlet />
+				</Navbar>
 				{showAlert && (
 					<Alert
 						style={{ width: "95vw", margin: "-20px auto 27px" }}
@@ -53,7 +54,6 @@ const BaseLayout = () => {
 						</Text>
 					</Alert>
 				)}
-				<Outlet />
 			</>
 		);
 	else if (fetchingUser) return <FullScreenLoader />;

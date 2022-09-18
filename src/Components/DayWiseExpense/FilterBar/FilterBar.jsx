@@ -69,6 +69,7 @@ const FilterBar = ({ appliedFilters, handleAppliedFilters }) => {
 								<ActionIcon
 									onClick={() => setDayWiseFilterOpened(true)}
 									variant="filled"
+									color="dark.6"
 								>
 									<Filter size={18} />
 								</ActionIcon>

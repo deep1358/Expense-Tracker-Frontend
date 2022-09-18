@@ -11,7 +11,7 @@ export const styles = (theme) => ({
 		},
 	body: {
 		...theme.fn.fontStyles(),
-		backgroundColor: theme.colors.dark[7],
+		backgroundColor: theme.colors.dark[8],
 		color: theme.colors.dark[0],
 		lineHeight: theme.lineHeight,
 	},
@@ -21,6 +21,13 @@ export const styles = (theme) => ({
 	".mantine-Paper-root a": {
 		textAlign: "center",
 		textDecoration: "none",
+	},
+	".mantine-Menu-dropdown ,.mantine-Input-input, .mantine-Select-dropdown, .mantine-Paper-root":
+		{
+			backgroundColor: theme.colors.dark[8],
+		},
+	".mantine-Notification-root": {
+		backgroundColor: theme.colors.dark[7],
 	},
 	a: {
 		textDecoration: "none",

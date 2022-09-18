@@ -20,7 +20,7 @@ export const createPaymentMode = createAsyncThunk(
 
 			showNotification({
 				id: `addPaymentMode-${getCurrentSeconds()}`,
-				message: "PaymentMode added successfully",
+				message: "Payment mode added successfully",
 				color: "teal",
 				icon: <Check size={15} />,
 			});

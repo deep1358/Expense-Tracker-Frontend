@@ -116,7 +116,7 @@ const DayWiseExpenseTable = ({
 	};
 
 	const rows = sortedData.map((expense, index) => (
-		<tr key={index}>
+		<tr key={index} className={classes.row}>
 			<td className={classes.td}>
 				<Text
 					weight={500}
@@ -169,7 +169,7 @@ const DayWiseExpenseTable = ({
 				) : (
 					<Menu width={120} size={25} className={classes.Menu}>
 						<Menu.Target>
-							<ActionIcon variant="filled" size={20}>
+							<ActionIcon variant="filled" color="dark.6" size={20}>
 								<DotsVertical size={16} />
 							</ActionIcon>
 						</Menu.Target>
