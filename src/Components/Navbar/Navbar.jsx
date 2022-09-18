@@ -6,7 +6,7 @@ import { useStyles } from "./Navbar.style";
 import UpperNavbar from "./UpperNavbar/UpperNavbar";
 
 const Navbar = ({ children }) => {
-	const [opened, setOpened] = useState();
+	const [opened, setOpened] = useState(false);
 
 	const smallerScreen = useMediaQuery("(max-width: 710px)");
 
@@ -20,40 +20,38 @@ const Navbar = ({ children }) => {
 	}, [smallerScreen]);
 
 	useEffect(() => {
-		const openedValue = localStorage.getItem("leftNavabarOpened");
-		if (openedValue) {
-			setOpened(JSON.parse(openedValue));
-		}
+		const openedValue = localStorage.getItem("leftNavbarOpened");
+		setOpened(JSON.parse(openedValue));
 	}, []);
 
 	useEffect(() => {
 		// Store the current value of the opened state in localStorage
-		localStorage.setItem("leftNavabarOpened", opened);
+		localStorage.setItem("leftNavbarOpened", opened);
 	}, [opened]);
 
 	return (
 		<>
 			<UpperNavbar opened={opened} setOpened={setOpened} />
-			{opened !== undefined &&
-				(smallerScreen ? (
-					<>
-						<LeftNavbar
-							smallerScreen={smallerScreen}
-							opened={opened}
-							setOpened={setOpened}
-						/>
-						<div style={{ marginTop: 20 }}>{children}</div>
-					</>
-				) : (
-					<Group align="flex-start">
-						<LeftNavbar
-							smallerScreen={smallerScreen}
-							opened={opened}
-							setOpened={setOpened}
-						/>
-						<div className={classes.mainContent}>{children}</div>
-					</Group>
-				))}
+
+			{smallerScreen ? (
+				<>
+					<LeftNavbar
+						smallerScreen={smallerScreen}
+						opened={opened}
+						setOpened={setOpened}
+					/>
+					<div style={{ marginTop: 20 }}>{children}</div>
+				</>
+			) : (
+				<Group align="flex-start">
+					<LeftNavbar
+						smallerScreen={smallerScreen}
+						opened={opened}
+						setOpened={setOpened}
+					/>
+					<div className={classes.mainContent}>{children}</div>
+				</Group>
+			)}
 		</>
 	);
 };
