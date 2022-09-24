@@ -3,17 +3,18 @@ import { createStyles } from "@mantine/core";
 export const useStyles = createStyles(
 	(theme, { opened, forDayWiseExpense, forAddOrUpdateExpenseForm }) => ({
 		control: {
-			width: forDayWiseExpense ? 180 : "100%",
+			width: "100%",
 			display: "flex",
 			justifyContent: "space-between",
 			alignItems: "center",
 			padding: "0 6px 0 12px",
-			height: forDayWiseExpense ? 30 : forAddOrUpdateExpenseForm ? 36 : 38,
+			height: forDayWiseExpense ? 36 : forAddOrUpdateExpenseForm ? 36 : 40,
 			fontSize: ".85rem",
 			borderRadius: theme.radius.sm,
 			border: `1px solid ${theme.colors.dark[4]}`,
 			transition: "background-color 150ms ease",
 			backgroundColor: theme.colors.dark[opened ? 7 : 8],
+			lineHeight: "34px",
 
 			"&:hover": {
 				backgroundColor: theme.colors.dark[7],
@@ -21,11 +22,11 @@ export const useStyles = createStyles(
 		},
 		label: {
 			fontWeight: 500,
-			fontSize: forDayWiseExpense ? theme.fontSizes.xs : theme.fontSizes.sm,
+			fontSize: forDayWiseExpense ? theme.fontSizes.sm : theme.fontSizes.sm,
 		},
 
 		placeHolder: {
-			fontSize: forDayWiseExpense ? theme.fontSizes.xs : theme.fontSizes.sm,
+			fontSize: forDayWiseExpense ? theme.fontSizes.sm : theme.fontSizes.sm,
 		},
 
 		active: {

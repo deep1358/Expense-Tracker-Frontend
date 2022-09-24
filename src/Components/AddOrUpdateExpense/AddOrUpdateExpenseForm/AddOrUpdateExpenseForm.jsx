@@ -200,6 +200,8 @@ const AddOrUpdateExpenseForm = ({ id }) => {
 						forAddOrUpdateExpenseForm={true}
 						payment_mode={form.values.payment_mode}
 						handleAppliedFilters={setFormPaymentModeValue}
+						mt="xl"
+						placeHolder="Select a payment mode"
 					/>
 					<ActionIcon
 						onClick={() => {

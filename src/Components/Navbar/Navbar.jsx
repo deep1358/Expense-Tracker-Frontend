@@ -8,7 +8,7 @@ import UpperNavbar from "./UpperNavbar/UpperNavbar";
 const Navbar = ({ children }) => {
 	const [opened, setOpened] = useState(false);
 
-	const smallerScreen = useMediaQuery("(max-width: 710px)");
+	const smallerScreen = useMediaQuery("(max-width: 775px)");
 
 	const { classes } = useStyles({ opened });
 

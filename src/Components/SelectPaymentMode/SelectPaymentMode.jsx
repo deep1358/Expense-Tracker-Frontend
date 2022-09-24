@@ -18,6 +18,9 @@ const SelectPaymentMode = ({
 	payment_mode,
 	handleAppliedFilters,
 	forAddOrUpdateExpenseForm = false,
+	mt = 2,
+	placeHolder = "Payment Mode",
+	width = "30%",
 }) => {
 	const { payment_modes } = useSelector((state) => state.utils);
 	const {
@@ -73,13 +76,13 @@ const SelectPaymentMode = ({
 	return (
 		<Stack
 			style={{
-				width: !forDayWiseExpense && "100%",
+				width,
 				flex: forAddOrUpdateExpenseForm && 1,
 			}}
 			spacing={2}
-			mt={forAddOrUpdateExpenseForm && "xl"}
+			mt={mt}
 		>
-			<Text className={classes.placeHolder}>Select a Payment Mode</Text>
+			<Text className={classes.placeHolder}>{placeHolder}</Text>
 			<Menu
 				size="xs"
 				onOpen={() => setPaymentModeOpened(true)}

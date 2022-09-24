@@ -1,11 +1,11 @@
 import React from "react";
 import { DEFAULT_THEME } from "@mantine/core";
 
-const CustomLoader = ({ color = "blue" }) => {
+const CustomLoader = ({ color = "blue", size = 54 }) => {
 	return (
 		<svg
-			width="54"
-			height="54"
+			width={`${size}px`}
+			height={`${size}px`}
 			viewBox="0 0 38 38"
 			xmlns="http://www.w3.org/2000/svg"
 			stroke={DEFAULT_THEME.colors[color][6]}

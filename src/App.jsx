@@ -12,10 +12,9 @@ import Categories from "./Pages/Category/Categories";
 import PaymentModes from "./Pages/PaymentMode/PaymentModes";
 import YearWiseExpense from "./Pages/YearWiseExpense/YearWiseExpense";
 import MonthWiseExpense from "./Pages/MonthWiseExpense.jsx/MonthWiseExpense";
-import DurationLayout from "./Layout/DurationLayout";
+import DurationLayout from "./Layout/DurationLayout/DurationLayout";
 import Error404 from "./Pages/404/404";
 import Error500 from "./Pages/500/500";
-import Visualization from "./Pages/Visualization/Visualization";
 import { Auth } from "./firebase";
 import { MakeUnAuthenticated, toggleFetchingUser } from "./store/user";
 import { LoadingOverlay } from "@mantine/core";
@@ -72,7 +71,6 @@ function App() {
 							path="/updateExpense/:id"
 							element={<AddOrUpdateExpense />}
 						/>
-						<Route path="/visualization" element={<Visualization />} />
 						<Route path="/categories" element={<Categories />} />
 						<Route path="/payment_modes" element={<PaymentModes />} />
 						<Route path="/" element={<DurationLayout />}>

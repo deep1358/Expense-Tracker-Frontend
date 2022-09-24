@@ -1,19 +1,15 @@
+import { Alert, Drawer, LoadingOverlay } from "@mantine/core";
 import React, { memo, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getYearWiseExpenseForChart } from "../../../store/expense/ThunkFunctions/getYearWiseExpenseForChart";
-import BarOrAreaChart from "../BarOrAreaChart/BarOrAreaChart";
-import DonutChart from "../DonutChart/DonutChart";
-import { LoadingOverlay, Alert, Center, Title } from "@mantine/core";
-import CustomLoader from "../../CustomLoader";
 import { AlertCircle } from "tabler-icons-react";
-import YearWiseFilterDrawer from "./YearWiseFilterDrawer/YearWiseFilterDrawer";
-import FilteredChips from "../../FilteredChips/FilteredChips";
+import { getYearWiseExpenseForChart } from "../../../store/expense/ThunkFunctions/getYearWiseExpenseForChart";
+import CustomLoader from "../../CustomLoader";
+import BarOrAreaChart from "../BarOrAreaChart";
+import { useStyles } from "../Charts.style";
+import DonutChart from "../DonutChart";
+import YearChartFilters from "./YearChartFilters";
 
-const YearWiseExpenseForChart = ({
-	chartCategories,
-	yearWiseFilterOpened,
-	setYearWiseFilterOpened,
-}) => {
+const YearChart = ({ yearWiseFilterOpened, setYearWiseFilterOpened }) => {
 	const dispatch = useDispatch();
 
 	const {
@@ -25,7 +21,7 @@ const YearWiseExpenseForChart = ({
 	const { months } = useSelector((state) => state.utils);
 
 	const [appliedFilters, setAppliedFilters] = useState({
-		month: "All",
+		month: "",
 		day: "All",
 		category: "All",
 		payment_mode: "All",
@@ -35,13 +31,27 @@ const YearWiseExpenseForChart = ({
 	const { month, day, category, chartType, payment_mode } = appliedFilters;
 
 	const { user } = useSelector((state) => state.user);
+	const { currentMonth } = useSelector((state) => state.expense);
+
+	const { classes } = useStyles();
 
 	useEffect(() => {
-		if (user)
+		if (user && yearWiseFilterOpened) {
+			if (currentMonth)
+				setAppliedFilters({
+					...appliedFilters,
+					month: months[currentMonth - 1],
+				});
 			dispatch(
-				getYearWiseExpenseForChart([month, day, category, payment_mode])
+				getYearWiseExpenseForChart([
+					currentMonth,
+					day,
+					category,
+					payment_mode,
+				])
 			);
-	}, []);
+		}
+	}, [currentMonth, yearWiseFilterOpened]);
 
 	const handleAppliedFilters = (value, type) => {
 		setAppliedFilters({ ...appliedFilters, [type]: value });
@@ -62,30 +72,23 @@ const YearWiseExpenseForChart = ({
 	};
 
 	return (
-		<>
-			<YearWiseFilterDrawer
-				handleAppliedFilters={handleAppliedFilters}
+		<Drawer
+			position="right"
+			opened={yearWiseFilterOpened}
+			onClose={() => setYearWiseFilterOpened(false)}
+			title="Year Wise Expense Chart"
+			padding="xl"
+			size={800}
+			className={classes.Drawer}
+		>
+			<YearChartFilters
 				month={month}
 				day={day}
 				category={category}
 				payment_mode={payment_mode}
 				chartType={chartType}
-				yearWiseFilterOpened={yearWiseFilterOpened}
-				setYearWiseFilterOpened={setYearWiseFilterOpened}
-				chartCategories={chartCategories}
-			/>
-
-			<Center style={{ width: "100%" }}>
-				<Title mt={2} order={4}>
-					Year Wise Expense
-				</Title>
-			</Center>
-
-			<FilteredChips
-				appliedFilters={appliedFilters}
 				handleAppliedFilters={handleAppliedFilters}
 			/>
-
 			{gettingYearWiseExpenseForChart ? (
 				<div style={{ height: 250 }}>
 					<LoadingOverlay loader={<CustomLoader />} visible blur={2} />
@@ -107,8 +110,8 @@ const YearWiseExpenseForChart = ({
 					<BarOrAreaChart data={yearWiseExpenseForChart} name="year" />
 				))
 			)}
-		</>
+		</Drawer>
 	);
 };
 
-export default memo(YearWiseExpenseForChart);
+export default memo(YearChart);

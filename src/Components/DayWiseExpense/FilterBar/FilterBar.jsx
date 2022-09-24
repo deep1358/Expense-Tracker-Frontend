@@ -23,11 +23,13 @@ const FilterBar = ({ appliedFilters, handleAppliedFilters }) => {
 				forDrawer={forDrawer}
 				category={category}
 				handleAppliedFilters={handleAppliedFilters}
+				width={forDrawer ? "100%" : "180px"}
 			/>
 			<SelectPaymentMode
 				forDayWiseExpense={!smallerScreen}
 				payment_mode={payment_mode}
 				handleAppliedFilters={handleAppliedFilters}
+				width={forDrawer ? "100%" : "180px"}
 			/>
 		</>
 	);
@@ -82,6 +84,7 @@ const FilterBar = ({ appliedFilters, handleAppliedFilters }) => {
 							leftIcon={<Plus size={14} />}
 							component={Link}
 							to="/addExpense"
+							style={{ height: "35px" }}
 						>
 							ADD EXPENSE
 						</Button>

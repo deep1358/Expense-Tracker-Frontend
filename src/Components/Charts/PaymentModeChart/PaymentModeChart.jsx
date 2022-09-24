@@ -1,20 +1,17 @@
+import { Alert, Drawer, LoadingOverlay } from "@mantine/core";
 import React, { memo, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { LoadingOverlay, Alert, Center, Title } from "@mantine/core";
 import { AlertCircle } from "tabler-icons-react";
-import { useMediaQuery } from "@mantine/hooks";
 import { getPaymentModeWiseExpenseForChart } from "../../../store/expense/ThunkFunctions/getPaymentModeWiseExpenseForChart";
-import BarOrAreaChart from "../BarOrAreaChart/BarOrAreaChart";
-import DonutChart from "../DonutChart/DonutChart";
 import CustomLoader from "../../CustomLoader";
-import PaymentModeWiseFilterDrawer from "./PaymentModeWiseFilterDrawer/PaymentModeWiseFilterDrawer";
-import FilteredChips from "../../FilteredChips/FilteredChips";
+import BarOrAreaChart from "../BarOrAreaChart";
+import { useStyles } from "../Charts.style";
+import DonutChart from "../DonutChart";
+import PaymentModeChartFilters from "./PaymentModeChartFilters";
 
-const PaymentModeWiseExpenseForChart = ({
-	yearWiseExpense,
-	paymentModeWiseFilterOpened,
-	setPaymentModeWiseFilterOpened,
-	chartCategories,
+const PaymentModeChart = ({
+	paymentModeWiseChartOpened,
+	setPaymentModeWiseChartOpened,
 }) => {
 	const dispatch = useDispatch();
 
@@ -36,10 +33,12 @@ const PaymentModeWiseExpenseForChart = ({
 		chartType: "bar",
 	});
 
+	const { classes } = useStyles();
+
 	const { year, month, day, category, chartType } = appliedFilters;
 
 	useEffect(() => {
-		if (user)
+		if (user && paymentModeWiseChartOpened)
 			dispatch(
 				getPaymentModeWiseExpenseForChart([
 					year || "All",
@@ -48,7 +47,7 @@ const PaymentModeWiseExpenseForChart = ({
 					category || "All",
 				])
 			);
-	}, []);
+	}, [paymentModeWiseChartOpened]);
 
 	const handleAppliedFilters = (value, type) => {
 		setAppliedFilters({ ...appliedFilters, [type]: value });
@@ -68,34 +67,24 @@ const PaymentModeWiseExpenseForChart = ({
 		);
 	};
 
-	const smallerScreen = useMediaQuery("(max-width: 400px)");
-
 	return (
-		<>
-			<PaymentModeWiseFilterDrawer
-				paymentModeWiseFilterOpened={paymentModeWiseFilterOpened}
-				setPaymentModeWiseFilterOpened={setPaymentModeWiseFilterOpened}
-				yearWiseExpense={yearWiseExpense}
+		<Drawer
+			position="right"
+			opened={paymentModeWiseChartOpened}
+			onClose={() => setPaymentModeWiseChartOpened(false)}
+			title="PaymentMode Wise Expense Chart"
+			padding="xl"
+			size={800}
+			className={classes.Drawer}
+		>
+			<PaymentModeChartFilters
+				day={day}
 				month={month}
 				year={year}
-				day={day}
+				handleAppliedFilters={handleAppliedFilters}
 				category={category}
 				chartType={chartType}
-				handleAppliedFilters={handleAppliedFilters}
-				chartCategories={chartCategories}
 			/>
-
-			<Center style={{ width: smallerScreen ? "86%" : "100%" }}>
-				<Title mt={4} mb={2} ml={1} order={4}>
-					PaymentMode Wise Expense
-				</Title>
-			</Center>
-
-			<FilteredChips
-				appliedFilters={appliedFilters}
-				handleAppliedFilters={handleAppliedFilters}
-			/>
-
 			{gettingPaymentModeWiseExpenseForChart ? (
 				<div style={{ height: 250 }}>
 					<LoadingOverlay loader={<CustomLoader />} visible blur={2} />
@@ -123,8 +112,8 @@ const PaymentModeWiseExpenseForChart = ({
 					/>
 				))
 			)}
-		</>
+		</Drawer>
 	);
 };
 
-export default memo(PaymentModeWiseExpenseForChart);
+export default memo(PaymentModeChart);

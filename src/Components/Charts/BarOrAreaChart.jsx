@@ -134,7 +134,7 @@ const BarOrAreaChart = ({ data = [], name, chartType = "bar" }) => {
 			options={options}
 			series={series}
 			type={chartType}
-			height={chartType === "bar" ? "250px" : "290px"}
+			height={"400px"}
 		/>
 	);
 };

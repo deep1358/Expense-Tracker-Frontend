@@ -8,6 +8,7 @@ const CategoryFilterButton = ({
 	forDrawer,
 	category,
 	handleAppliedFilters,
+	width,
 }) => {
 	const [categoryOpened, setCategoryOpened] = useState(false);
 
@@ -31,8 +32,13 @@ const CategoryFilterButton = ({
 	));
 
 	return (
-		<Stack mb={forDrawer && 8} mt={forDrawer && 8} spacing={2}>
-			<Text className={classes.placeHolder}>Filter by Category</Text>
+		<Stack
+			style={{ width }}
+			mb={forDrawer && 8}
+			mt={forDrawer && 8}
+			spacing={2}
+		>
+			<Text className={classes.placeHolder}>Category</Text>
 			<Menu
 				onOpen={() => setCategoryOpened(true)}
 				onClose={() => setCategoryOpened(false)}
