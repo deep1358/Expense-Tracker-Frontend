@@ -56,7 +56,7 @@ const BaseLayout = () => {
 				)}
 			</>
 		);
-	else if (fetchingUser) return <FullScreenLoader />;
+	else if (fetchingUser) return <FullScreenLoader size={30} />;
 };
 
 export default BaseLayout;

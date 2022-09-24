@@ -1,20 +1,26 @@
 import {
+	ActionIcon,
 	Button,
 	Container,
 	ScrollArea,
 	Stack,
 	TextInput,
 	Title,
+	Tooltip,
 } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
-import React, { useEffect, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Plus, Search } from "tabler-icons-react";
+import { ChartBar, Plus, Search } from "tabler-icons-react";
+import { getYearWiseExpense } from "../../store/expense/ThunkFunctions/getYearWiseExpense";
 import { toggleLoadingOverlay } from "../../store/utils";
 import { ConvertToTitleCase } from "../../utils/ConvertToTitleCase";
 import AddOrUpdateModal from "../AddOrUpdateModal/AddOrUpdateModal";
+import CategoryChart from "../Charts/CategoryChart/CategoryChart";
 import DeleteConfirmModal from "./DeleteConfirmModal/DeleteConfirmModal";
+import PaymentModeChart from "../Charts/PaymentModeChart/PaymentModeChart";
 import PaymentModeOrCategoryTable from "./PaymentModeOrCategoryTable/PaymentModeOrCategoryTable";
+import { useStyles } from "./PaymentModeOrCategory.style";
 
 const PaymentModeOrCategory = ({ data, type }) => {
 	const [oldValue, setOldValue] = useState("");
@@ -28,6 +34,11 @@ const PaymentModeOrCategory = ({ data, type }) => {
 	const [sortedData, setSortedData] = useState([]);
 	const [sortBy, setSortBy] = useState(null);
 	const [reverseSortDirection, setReverseSortDirection] = useState(false);
+
+	const [categoryWiseChartOpened, setCategoryWiseChartOpened] =
+		useState(false);
+	const [paymentModeWiseChartOpened, setPaymentModeWiseChartOpened] =
+		useState(false);
 
 	const { user, deletingCategory, deletingPaymentMode } = useSelector(
 		(state) => state.user
@@ -49,6 +60,10 @@ const PaymentModeOrCategory = ({ data, type }) => {
 			sortData(data, { sortBy, reversed: reverseSortDirection, search })
 		);
 	}, [user, sortBy, reverseSortDirection, search]);
+
+	useEffect(() => {
+		paymentModeWiseChartOpened && dispatch(getYearWiseExpense());
+	}, [paymentModeWiseChartOpened]);
 
 	function filterData(data) {
 		const query = search.toLowerCase().trim();
@@ -86,8 +101,18 @@ const PaymentModeOrCategory = ({ data, type }) => {
 
 	const smallerScreen = useMediaQuery("(max-width: 530px)");
 
+	const { classes } = useStyles();
+
 	return (
 		<>
+			<CategoryChart
+				categoryWiseChartOpened={categoryWiseChartOpened}
+				setCategoryWiseChartOpened={setCategoryWiseChartOpened}
+			/>
+			<PaymentModeChart
+				paymentModeWiseChartOpened={paymentModeWiseChartOpened}
+				setPaymentModeWiseChartOpened={setPaymentModeWiseChartOpened}
+			/>
 			<DeleteConfirmModal
 				deleteModalOpened={deleteModalOpened}
 				setDeleteModalOpened={setDeleteModalOpened}
@@ -105,7 +130,27 @@ const PaymentModeOrCategory = ({ data, type }) => {
 				type={type}
 			/>
 
-			<Container size={smallerScreen ? "100vw" : "sm"}>
+			<Container
+				className={classes.container}
+				size={smallerScreen ? "100vw" : "sm"}
+			>
+				<Tooltip
+					className={classes.barIcon}
+					label="Insights"
+					withArrow
+					arrowSize={5}
+				>
+					<ActionIcon
+						onClick={() => {
+							if (type === "category")
+								setCategoryWiseChartOpened((pre) => !pre);
+							else setPaymentModeWiseChartOpened((pre) => !pre);
+						}}
+						variant="filled"
+					>
+						<ChartBar size={16} />
+					</ActionIcon>
+				</Tooltip>
 				<Title mb={20} order={2}>
 					{title}
 				</Title>
@@ -153,4 +198,4 @@ const PaymentModeOrCategory = ({ data, type }) => {
 	);
 };
 
-export default PaymentModeOrCategory;
+export default memo(PaymentModeOrCategory);

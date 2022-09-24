@@ -16,6 +16,16 @@ const useStyles = createStyles((theme) => ({
 			justifyContent: "flex-start",
 			paddingRight: "6px",
 		},
+
+		"@media (max-width: 540px)": {
+			marginLeft: "-1vw",
+		},
+		"@media (max-width: 510px)": {
+			marginLeft: "-2vw",
+		},
+		"@media (max-width: 470px)": {
+			marginLeft: "-3vw",
+		},
 	},
 
 	breadcrumbItem: {

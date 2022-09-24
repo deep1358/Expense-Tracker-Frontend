@@ -1,19 +1,17 @@
+import { Alert, Drawer, LoadingOverlay } from "@mantine/core";
 import React, { memo, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { LoadingOverlay, Alert, Center, Title } from "@mantine/core";
 import { AlertCircle } from "tabler-icons-react";
-import { useMediaQuery } from "@mantine/hooks";
 import { getCategoryWiseExpenseForChart } from "../../../store/expense/ThunkFunctions/getCategoryWiseExpenseForChart";
-import BarOrAreaChart from "../BarOrAreaChart/BarOrAreaChart";
-import DonutChart from "../DonutChart/DonutChart";
+import CategoryChartFilters from "./CategoryChartFilters";
+import BarOrAreaChart from "../BarOrAreaChart";
+import DonutChart from "../DonutChart";
 import CustomLoader from "../../CustomLoader";
-import CategoryWiseFilterDrawer from "./CategoryWiseFilterDrawer/CategoryWiseFilterDrawer";
-import FilteredChips from "../../FilteredChips/FilteredChips";
+import { useStyles } from "../Charts.style";
 
-const CategoryWiseExpenseForChart = ({
-	yearWiseExpense,
-	categoryWiseFilterOpened,
-	setCategoryWiseFilterOpened,
+const CategoryChart = ({
+	categoryWiseChartOpened,
+	setCategoryWiseChartOpened,
 }) => {
 	const dispatch = useDispatch();
 
@@ -35,10 +33,12 @@ const CategoryWiseExpenseForChart = ({
 		chartType: "bar",
 	});
 
+	const { classes } = useStyles();
+
 	const { year, month, day, payment_mode, chartType } = appliedFilters;
 
 	useEffect(() => {
-		if (user)
+		if (user && categoryWiseChartOpened)
 			dispatch(
 				getCategoryWiseExpenseForChart([
 					year || "All",
@@ -47,7 +47,7 @@ const CategoryWiseExpenseForChart = ({
 					payment_mode || "All",
 				])
 			);
-	}, []);
+	}, [categoryWiseChartOpened]);
 
 	const handleAppliedFilters = (value, type) => {
 		setAppliedFilters({ ...appliedFilters, [type]: value });
@@ -67,14 +67,17 @@ const CategoryWiseExpenseForChart = ({
 		);
 	};
 
-	const smallerScreen = useMediaQuery("(max-width: 400px)");
-
 	return (
-		<>
-			<CategoryWiseFilterDrawer
-				categoryWiseFilterOpened={categoryWiseFilterOpened}
-				setCategoryWiseFilterOpened={setCategoryWiseFilterOpened}
-				yearWiseExpense={yearWiseExpense}
+		<Drawer
+			position="right"
+			opened={categoryWiseChartOpened}
+			onClose={() => setCategoryWiseChartOpened(false)}
+			title="Category Wise Expense Chart"
+			padding="xl"
+			size={800}
+			className={classes.Drawer}
+		>
+			<CategoryChartFilters
 				month={month}
 				year={year}
 				day={day}
@@ -82,18 +85,6 @@ const CategoryWiseExpenseForChart = ({
 				chartType={chartType}
 				handleAppliedFilters={handleAppliedFilters}
 			/>
-
-			<Center style={{ width: smallerScreen ? "86%" : "100%" }}>
-				<Title mt={4} mb={2} ml={1} order={4}>
-					Category Wise Expense
-				</Title>
-			</Center>
-
-			<FilteredChips
-				appliedFilters={appliedFilters}
-				handleAppliedFilters={handleAppliedFilters}
-			/>
-
 			{gettingCategoryWiseExpenseForChart ? (
 				<div style={{ height: 250 }}>
 					<LoadingOverlay loader={<CustomLoader />} visible blur={2} />
@@ -118,8 +109,8 @@ const CategoryWiseExpenseForChart = ({
 					/>
 				))
 			)}
-		</>
+		</Drawer>
 	);
 };
 
-export default memo(CategoryWiseExpenseForChart);
+export default memo(CategoryChart);

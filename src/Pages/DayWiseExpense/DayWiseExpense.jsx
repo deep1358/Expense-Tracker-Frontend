@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { getExpenses } from "../../store/expense/ThunkFunctions/getExpenses";
@@ -136,7 +136,7 @@ const DayWiseExpense = () => {
 					/>
 					<ScrollArea
 						sx={{
-							height: `calc(${smallerScreen ? 83 : 80}vh - 50px)`,
+							height: `calc(${smallerScreen ? 83 : 78}vh - 50px)`,
 							width: "100%",
 						}}
 					>
