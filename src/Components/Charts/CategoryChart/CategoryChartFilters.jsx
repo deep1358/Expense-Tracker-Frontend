@@ -1,4 +1,4 @@
-import { Group, Select } from "@mantine/core";
+import { Button, Group, Select } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import React, { memo, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -17,7 +17,9 @@ const CategoryChartFilters = ({
 		(state) => state.utils
 	);
 
-	const { yearWiseExpense } = useSelector((state) => state.expense);
+	const { yearWiseExpense, currentYear } = useSelector(
+		(state) => state.expense
+	);
 
 	const [categoryWiseDays, setCategoryWiseDays] = useState([]);
 	const [categoryWiseMonths, setCategoryWiseMonths] = useState(months);
@@ -63,8 +65,22 @@ const CategoryChartFilters = ({
 
 	const smallerScreen = useMediaQuery("(max-width: 500px)");
 
+	const handleReset = () => {
+		if (categoryWiseYears.includes(`${currentYear}`))
+			handleAppliedFilters("All", "All", true);
+		else handleAppliedFilters("All", "All", true, true);
+	};
+
+	useEffect(() => {
+		if (categoryWiseYears.length) {
+			if (categoryWiseYears.includes(`${currentYear}`))
+				handleAppliedFilters("All", "All", true);
+			else handleAppliedFilters("All", "All", true, true);
+		}
+	}, [categoryWiseYears.length]);
+
 	return (
-		<Group>
+		<Group className={classes.Group}>
 			<Select
 				data-autofocus
 				className={classes.Select}
@@ -90,12 +106,6 @@ const CategoryChartFilters = ({
 				value={day}
 				onChange={(value) => handleAppliedFilters(value, "day")}
 			/>
-			<SelectPaymentMode
-				payment_mode={payment_mode}
-				handleAppliedFilters={handleAppliedFilters}
-				placeHolder="Payment Mode"
-				width={smallerScreen ? "45%" : "30%"}
-			/>
 			<Select
 				size="sm"
 				className={classes.Select}
@@ -104,6 +114,19 @@ const CategoryChartFilters = ({
 				value={chartType}
 				onChange={(value) => handleAppliedFilters(value, "chartType")}
 			/>
+			<SelectPaymentMode
+				payment_mode={payment_mode}
+				handleAppliedFilters={handleAppliedFilters}
+				placeHolder="Payment Mode"
+				width={smallerScreen ? "96%" : "30%"}
+			/>
+			<Button
+				onClick={handleReset}
+				className={classes.Resetbutton}
+				variant="light"
+			>
+				Reset
+			</Button>
 		</Group>
 	);
 };

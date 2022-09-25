@@ -78,6 +78,7 @@ const SelectPaymentMode = ({
 			style={{
 				width,
 				flex: forAddOrUpdateExpenseForm && 1,
+				minWidth: "170px",
 			}}
 			spacing={2}
 			mt={mt}

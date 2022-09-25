@@ -1,6 +1,6 @@
-import { Group, Select } from "@mantine/core";
+import { Button, Group, Select } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
-import React, { memo } from "react";
+import React, { memo, useEffect } from "react";
 import { useSelector } from "react-redux";
 import SelectPaymentMode from "../../SelectPaymentMode/SelectPaymentMode";
 import { useStyles } from "../Charts.style";
@@ -21,12 +21,26 @@ const DayChartFilters = ({
 		user: { categories },
 	} = useSelector((state) => state.user);
 
-	const { classes } = useStyles();
+	const { classes } = useStyles({ inline: true });
 
 	const smallerScreen = useMediaQuery("(max-width: 500px)");
 
+	const handleReset = () => {
+		if (Object.keys(yearWiseExpense).includes(`${currentYear}`))
+			handleAppliedFilters("All", "All", true);
+		else handleAppliedFilters("All", "All", true, true);
+	};
+
+	useEffect(() => {
+		if (Object.keys(yearWiseExpense).length) {
+			if (Object.keys(yearWiseExpense).includes(`${currentYear}`))
+				handleAppliedFilters("All", "All", true);
+			else handleAppliedFilters("All", "All", true, true);
+		}
+	}, [Object.keys(yearWiseExpense).length]);
+
 	return (
-		<Group mb={10}>
+		<Group mb={10} className={classes.Group}>
 			<Select
 				data-autofocus
 				size="sm"
@@ -50,6 +64,12 @@ const DayChartFilters = ({
 				value={month}
 				onChange={(value) => handleAppliedFilters(value, "month")}
 			/>
+			<SelectPaymentMode
+				payment_mode={payment_mode}
+				handleAppliedFilters={handleAppliedFilters}
+				placeHolder="Payment Mode"
+				width={smallerScreen ? "96%" : "30%"}
+			/>
 			<Select
 				size="sm"
 				className={classes.Select}
@@ -58,12 +78,13 @@ const DayChartFilters = ({
 				value={category}
 				onChange={(value) => handleAppliedFilters(value, "category")}
 			/>
-			<SelectPaymentMode
-				payment_mode={payment_mode}
-				handleAppliedFilters={handleAppliedFilters}
-				placeHolder="Payment Mode"
-				width={smallerScreen ? "45%" : "30%"}
-			/>
+			<Button
+				onClick={handleReset}
+				className={classes.Resetbutton}
+				variant="light"
+			>
+				Reset
+			</Button>
 		</Group>
 	);
 };

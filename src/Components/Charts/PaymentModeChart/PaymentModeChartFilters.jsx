@@ -1,4 +1,4 @@
-import { Group, Select } from "@mantine/core";
+import { Button, Group, Select } from "@mantine/core";
 import React, { memo, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useStyles } from "../Charts.style";
@@ -22,9 +22,11 @@ const PaymentModeChartFilters = ({
 	const {
 		user: { categories },
 	} = useSelector((state) => state.user);
-	const { yearWiseExpense } = useSelector((state) => state.expense);
+	const { yearWiseExpense, currentYear } = useSelector(
+		(state) => state.expense
+	);
 
-	const { classes } = useStyles();
+	const { classes } = useStyles({ inline: true });
 
 	useEffect(() => {
 		if (year === "All" && month === "All") setPaymentModeWiseDays(fixedDays);
@@ -67,8 +69,22 @@ const PaymentModeChartFilters = ({
 	const leapYear = (year) =>
 		(year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
 
+	const handleReset = () => {
+		if (paymentModeWiseYears.includes(`${currentYear}`))
+			handleAppliedFilters("All", "All", true);
+		else handleAppliedFilters("All", "All", true, true);
+	};
+
+	useEffect(() => {
+		if (paymentModeWiseYears.length) {
+			if (paymentModeWiseYears.includes(`${currentYear}`))
+				handleAppliedFilters("All", "All", true);
+			else handleAppliedFilters("All", "All", true, true);
+		}
+	}, [paymentModeWiseYears.length]);
+
 	return (
-		<Group>
+		<Group className={classes.Group}>
 			<Select
 				data-autofocus
 				size="sm"
@@ -110,6 +126,13 @@ const PaymentModeChartFilters = ({
 				value={chartType}
 				onChange={(value) => handleAppliedFilters(value, "chartType")}
 			/>
+			<Button
+				onClick={handleReset}
+				className={classes.Resetbutton}
+				variant="light"
+			>
+				Reset
+			</Button>
 		</Group>
 	);
 };

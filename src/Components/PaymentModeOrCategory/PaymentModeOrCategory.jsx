@@ -62,8 +62,9 @@ const PaymentModeOrCategory = ({ data, type }) => {
 	}, [user, sortBy, reverseSortDirection, search]);
 
 	useEffect(() => {
-		paymentModeWiseChartOpened && dispatch(getYearWiseExpense());
-	}, [paymentModeWiseChartOpened]);
+		(paymentModeWiseChartOpened || categoryWiseChartOpened) &&
+			dispatch(getYearWiseExpense());
+	}, [paymentModeWiseChartOpened, categoryWiseChartOpened]);
 
 	function filterData(data) {
 		const query = search.toLowerCase().trim();
@@ -141,6 +142,7 @@ const PaymentModeOrCategory = ({ data, type }) => {
 					arrowSize={5}
 				>
 					<ActionIcon
+						color="dark.6"
 						onClick={() => {
 							if (type === "category")
 								setCategoryWiseChartOpened((pre) => !pre);

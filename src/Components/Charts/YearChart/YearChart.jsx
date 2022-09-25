@@ -53,22 +53,35 @@ const YearChart = ({ yearWiseFilterOpened, setYearWiseFilterOpened }) => {
 		}
 	}, [currentMonth, yearWiseFilterOpened]);
 
-	const handleAppliedFilters = (value, type) => {
-		setAppliedFilters({ ...appliedFilters, [type]: value });
-		dispatch(
-			getYearWiseExpenseForChart([
-				type === "month"
-					? months.indexOf(value) === -1
+	const handleAppliedFilters = (value, type, reset = false) => {
+		if (reset) {
+			setAppliedFilters({
+				month: currentMonth ? months[currentMonth - 1] : "All",
+				day: "All",
+				category: "All",
+				payment_mode: "All",
+				chartType: "bar",
+			});
+			dispatch(
+				getYearWiseExpenseForChart([currentMonth, "All", "All", "All"])
+			);
+		} else {
+			setAppliedFilters({ ...appliedFilters, [type]: value });
+			dispatch(
+				getYearWiseExpenseForChart([
+					type === "month"
+						? months.indexOf(value) === -1
+							? "All"
+							: months.indexOf(value) + 1
+						: months.indexOf(month) === -1
 						? "All"
-						: months.indexOf(value) + 1
-					: months.indexOf(month) === -1
-					? "All"
-					: months.indexOf(month) + 1,
-				type === "day" ? value : day,
-				type === "category" ? value : category,
-				type === "payment_mode" ? value : payment_mode,
-			])
-		);
+						: months.indexOf(month) + 1,
+					type === "day" ? value : day,
+					type === "category" ? value : category,
+					type === "payment_mode" ? value : payment_mode,
+				])
+			);
+		}
 	};
 
 	return (

@@ -2,12 +2,14 @@ import { createStyles } from "@mantine/core";
 
 export const useStyles = createStyles(() => ({
 	barIcon: {
-		position: "absolute",
-		right: "2%",
-		top: "8.5%",
+		display: "inline-flex",
+	},
 
-		"@media (max-width: 600px)": {
-			top: "7.5%",
-		},
+	Wrapper: {
+		display: "inline-flex",
+		justifyContent: "space-between",
+		width: "100%",
+		alignItems: "center",
+		margin: "1vh 0 2vh",
 	},
 }));
