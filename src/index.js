@@ -13,7 +13,6 @@ import { styles } from "./index.style";
 
 axios.interceptors.request.use(
 	async function (request) {
-		// Do something before request is sent
 		const user_id = await store.getState().user.user?._id;
 
 		const customRequest = {
@@ -24,7 +23,6 @@ axios.interceptors.request.use(
 		return customRequest;
 	},
 	function (error) {
-		// Do something with request error
 		return Promise.reject(error);
 	}
 );
