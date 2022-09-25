@@ -36,8 +36,7 @@ const MonthChart = ({ monthWiseFilterOpened, setMonthWiseFilterOpened }) => {
 
 	useEffect(() => {
 		if (user && monthWiseFilterOpened) {
-			if (currentYear)
-				setAppliedFilters({ ...appliedFilters, year: currentYear });
+			setAppliedFilters({ ...appliedFilters, year: currentYear });
 			dispatch(
 				getMonthWiseExpenseForChart([
 					currentYear,
@@ -48,7 +47,7 @@ const MonthChart = ({ monthWiseFilterOpened, setMonthWiseFilterOpened }) => {
 			);
 			dispatch(getYearWiseExpense());
 		}
-	}, [currentYear, monthWiseFilterOpened]);
+	}, [monthWiseFilterOpened]);
 
 	const handleAppliedFilters = (
 		value,
@@ -74,14 +73,15 @@ const MonthChart = ({ monthWiseFilterOpened, setMonthWiseFilterOpened }) => {
 			);
 		} else {
 			setAppliedFilters({ ...appliedFilters, [type]: value });
-			dispatch(
-				getMonthWiseExpenseForChart([
-					type === "year" ? value : year,
-					type === "day" ? value : day,
-					type === "category" ? value : category,
-					type === "payment_mode" ? value : payment_mode,
-				])
-			);
+			if (type !== "chartType")
+				dispatch(
+					getMonthWiseExpenseForChart([
+						type === "year" ? value : year,
+						type === "day" ? value : day,
+						type === "category" ? value : category,
+						type === "payment_mode" ? value : payment_mode,
+					])
+				);
 		}
 	};
 

@@ -78,20 +78,21 @@ const CategoryChart = ({
 			);
 		} else {
 			setAppliedFilters({ ...appliedFilters, [type]: value });
-			dispatch(
-				getCategoryWiseExpenseForChart([
-					type === "year" ? value : year,
-					type === "month"
-						? months.indexOf(value) === -1
+			if (type !== "chartType")
+				dispatch(
+					getCategoryWiseExpenseForChart([
+						type === "year" ? value : year,
+						type === "month"
+							? months.indexOf(value) === -1
+								? "All"
+								: months.indexOf(value) + 1
+							: months.indexOf(month) === -1
 							? "All"
-							: months.indexOf(value) + 1
-						: months.indexOf(month) === -1
-						? "All"
-						: months.indexOf(month) + 1,
-					type === "day" ? value : day,
-					type === "payment_mode" ? value : payment_mode,
-				])
-			);
+							: months.indexOf(month) + 1,
+						type === "day" ? value : day,
+						type === "payment_mode" ? value : payment_mode,
+					])
+				);
 		}
 	};
 

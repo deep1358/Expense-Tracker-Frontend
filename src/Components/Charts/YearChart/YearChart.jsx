@@ -37,11 +37,10 @@ const YearChart = ({ yearWiseFilterOpened, setYearWiseFilterOpened }) => {
 
 	useEffect(() => {
 		if (user && yearWiseFilterOpened) {
-			if (currentMonth)
-				setAppliedFilters({
-					...appliedFilters,
-					month: months[currentMonth - 1],
-				});
+			setAppliedFilters({
+				...appliedFilters,
+				month: months[currentMonth - 1],
+			});
 			dispatch(
 				getYearWiseExpenseForChart([
 					currentMonth,
@@ -51,7 +50,7 @@ const YearChart = ({ yearWiseFilterOpened, setYearWiseFilterOpened }) => {
 				])
 			);
 		}
-	}, [currentMonth, yearWiseFilterOpened]);
+	}, [yearWiseFilterOpened]);
 
 	const handleAppliedFilters = (value, type, reset = false) => {
 		if (reset) {
@@ -67,20 +66,21 @@ const YearChart = ({ yearWiseFilterOpened, setYearWiseFilterOpened }) => {
 			);
 		} else {
 			setAppliedFilters({ ...appliedFilters, [type]: value });
-			dispatch(
-				getYearWiseExpenseForChart([
-					type === "month"
-						? months.indexOf(value) === -1
+			if (type !== "chartType")
+				dispatch(
+					getYearWiseExpenseForChart([
+						type === "month"
+							? months.indexOf(value) === -1
+								? "All"
+								: months.indexOf(value) + 1
+							: months.indexOf(month) === -1
 							? "All"
-							: months.indexOf(value) + 1
-						: months.indexOf(month) === -1
-						? "All"
-						: months.indexOf(month) + 1,
-					type === "day" ? value : day,
-					type === "category" ? value : category,
-					type === "payment_mode" ? value : payment_mode,
-				])
-			);
+							: months.indexOf(month) + 1,
+						type === "day" ? value : day,
+						type === "category" ? value : category,
+						type === "payment_mode" ? value : payment_mode,
+					])
+				);
 		}
 	};
 

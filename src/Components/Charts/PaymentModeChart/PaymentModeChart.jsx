@@ -78,20 +78,21 @@ const PaymentModeChart = ({
 			);
 		} else {
 			setAppliedFilters({ ...appliedFilters, [type]: value });
-			dispatch(
-				getPaymentModeWiseExpenseForChart([
-					type === "year" ? value : year,
-					type === "month"
-						? months.indexOf(value) === -1
+			if (type !== "chartType")
+				dispatch(
+					getPaymentModeWiseExpenseForChart([
+						type === "year" ? value : year,
+						type === "month"
+							? months.indexOf(value) === -1
+								? "All"
+								: months.indexOf(value) + 1
+							: months.indexOf(month) === -1
 							? "All"
-							: months.indexOf(value) + 1
-						: months.indexOf(month) === -1
-						? "All"
-						: months.indexOf(month) + 1,
-					type === "day" ? value : day,
-					type === "category" ? value : category,
-				])
-			);
+							: months.indexOf(month) + 1,
+						type === "day" ? value : day,
+						type === "category" ? value : category,
+					])
+				);
 		}
 	};
 
