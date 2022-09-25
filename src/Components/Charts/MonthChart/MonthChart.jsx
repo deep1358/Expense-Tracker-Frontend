@@ -3,6 +3,7 @@ import React, { memo, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AlertCircle } from "tabler-icons-react";
 import { getMonthWiseExpenseForChart } from "../../../store/expense/ThunkFunctions/getMonthWiseExpenseForChart";
+import { getYearWiseExpense } from "../../../store/expense/ThunkFunctions/getYearWiseExpense";
 import CustomLoader from "../../CustomLoader";
 import BarOrAreaChart from "../BarOrAreaChart";
 import { useStyles } from "../Charts.style";
@@ -22,7 +23,7 @@ const MonthChart = ({ monthWiseFilterOpened, setMonthWiseFilterOpened }) => {
 	const { currentYear } = useSelector((state) => state.expense);
 
 	const [appliedFilters, setAppliedFilters] = useState({
-		year: "All",
+		year: "",
 		day: "All",
 		category: "All",
 		payment_mode: "All",
@@ -45,19 +46,43 @@ const MonthChart = ({ monthWiseFilterOpened, setMonthWiseFilterOpened }) => {
 					payment_mode,
 				])
 			);
+			dispatch(getYearWiseExpense());
 		}
 	}, [currentYear, monthWiseFilterOpened]);
 
-	const handleAppliedFilters = (value, type) => {
-		setAppliedFilters({ ...appliedFilters, [type]: value });
-		dispatch(
-			getMonthWiseExpenseForChart([
-				type === "year" ? value : year,
-				type === "day" ? value : day,
-				type === "category" ? value : category,
-				type === "payment_mode" ? value : payment_mode,
-			])
-		);
+	const handleAppliedFilters = (
+		value,
+		type,
+		reset = false,
+		isExpense = false
+	) => {
+		if (reset) {
+			setAppliedFilters({
+				year: isExpense ? "All" : currentYear,
+				day: "All",
+				category: "All",
+				payment_mode: "All",
+				chartType: "bar",
+			});
+			dispatch(
+				getMonthWiseExpenseForChart([
+					isExpense ? "All" : currentYear,
+					"All",
+					"All",
+					"All",
+				])
+			);
+		} else {
+			setAppliedFilters({ ...appliedFilters, [type]: value });
+			dispatch(
+				getMonthWiseExpenseForChart([
+					type === "year" ? value : year,
+					type === "day" ? value : day,
+					type === "category" ? value : category,
+					type === "payment_mode" ? value : payment_mode,
+				])
+			);
+		}
 	};
 
 	return (

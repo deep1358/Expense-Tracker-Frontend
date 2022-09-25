@@ -2,11 +2,10 @@ import { createStyles } from "@mantine/core";
 
 const useStyles = createStyles((theme) => ({
 	breadcrumb: {
-		width: "fit-content",
-		display: "flex",
+		display: "inline-flex",
 		justifyContent: "flex-start",
 		alignItems: "center",
-		margin: "-2vh 0 4vh 2vw",
+		marginLeft: "2vw",
 		position: "relative",
 		overflow: "hidden",
 		paddingRight: "20px",

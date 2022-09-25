@@ -65,20 +65,43 @@ const DayChart = ({ dayWiseFilterOpened, setDayWiseFilterOpened }) => {
 		dayWiseFilterOpened,
 	]);
 
-	const handleAppliedFilters = (value, type) => {
-		setAppliedFilters({ ...appliedFilters, [type]: value });
-		dispatch(
-			getDayWiseExpenseForChart([
-				type === "year" ? value : year || currentYear,
-				type === "month"
-					? months.indexOf(value) === -1
-						? "All"
-						: months.indexOf(value) + 1
-					: months.indexOf(month) + 1,
-				type === "category" ? value : category,
-				type === "payment_mode" ? value : payment_mode,
-			])
-		);
+	const handleAppliedFilters = (
+		value,
+		type,
+		reset = false,
+		isExpense = false
+	) => {
+		if (reset) {
+			setAppliedFilters({
+				...appliedFilters,
+				month: months[currentMonth - 1],
+				year: isExpense ? new Date().getFullYear() : currentYear,
+				category: "All",
+				payment_mode: "All",
+			});
+			dispatch(
+				getDayWiseExpenseForChart([
+					isExpense ? new Date().getFullYear() : currentYear,
+					currentMonth,
+					"All",
+					"All",
+				])
+			);
+		} else {
+			setAppliedFilters({ ...appliedFilters, [type]: value });
+			dispatch(
+				getDayWiseExpenseForChart([
+					type === "year" ? value : year || currentYear,
+					type === "month"
+						? months.indexOf(value) === -1
+							? "All"
+							: months.indexOf(value) + 1
+						: months.indexOf(month) + 1,
+					type === "category" ? value : category,
+					type === "payment_mode" ? value : payment_mode,
+				])
+			);
+		}
 	};
 
 	return (

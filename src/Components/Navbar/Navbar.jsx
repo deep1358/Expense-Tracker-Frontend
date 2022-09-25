@@ -40,7 +40,7 @@ const Navbar = ({ children }) => {
 						opened={opened}
 						setOpened={setOpened}
 					/>
-					<div style={{ marginTop: 20 }}>{children}</div>
+					<>{children}</>
 				</>
 			) : (
 				<Group align="flex-start">

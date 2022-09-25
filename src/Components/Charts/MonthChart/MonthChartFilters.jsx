@@ -1,6 +1,6 @@
-import { Group, Select } from "@mantine/core";
+import { Button, Group, Select } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
-import React, { memo } from "react";
+import React, { memo, useEffect } from "react";
 import { useSelector } from "react-redux";
 import SelectPaymentMode from "../../SelectPaymentMode/SelectPaymentMode";
 import { useStyles } from "../Charts.style";
@@ -19,14 +19,30 @@ const MonthChartFilters = ({
 
 	const { fixedDays } = useSelector((state) => state.utils);
 
-	const { yearWiseExpense } = useSelector((state) => state.expense);
+	const { yearWiseExpense, currentYear } = useSelector(
+		(state) => state.expense
+	);
 
 	const smallerScreen = useMediaQuery("(max-width: 500px)");
 
 	const { classes } = useStyles();
 
+	const handleReset = () => {
+		if (Object.keys(yearWiseExpense).includes(`${currentYear}`))
+			handleAppliedFilters("All", "All", true);
+		else handleAppliedFilters("All", "All", true, true);
+	};
+
+	useEffect(() => {
+		if (Object.keys(yearWiseExpense).length) {
+			if (Object.keys(yearWiseExpense).includes(`${currentYear}`))
+				handleAppliedFilters("All", "All", true);
+			else handleAppliedFilters("All", "All", true, true);
+		}
+	}, [Object.keys(yearWiseExpense).length]);
+
 	return (
-		<Group>
+		<Group className={classes.Group}>
 			<Select
 				data-autofocus
 				size="sm"
@@ -55,12 +71,6 @@ const MonthChartFilters = ({
 				value={category}
 				onChange={(value) => handleAppliedFilters(value, "category")}
 			/>
-			<SelectPaymentMode
-				payment_mode={payment_mode}
-				handleAppliedFilters={handleAppliedFilters}
-				placeHolder="Payment Mode"
-				width={smallerScreen ? "45%" : "30%"}
-			/>
 			<Select
 				size="sm"
 				data={["bar", "donut"]}
@@ -69,6 +79,19 @@ const MonthChartFilters = ({
 				value={chartType}
 				onChange={(value) => handleAppliedFilters(value, "chartType")}
 			/>
+			<SelectPaymentMode
+				payment_mode={payment_mode}
+				handleAppliedFilters={handleAppliedFilters}
+				placeHolder="Payment Mode"
+				width={smallerScreen ? "96%" : "30%"}
+			/>
+			<Button
+				onClick={handleReset}
+				className={classes.Resetbutton}
+				variant="light"
+			>
+				Reset
+			</Button>
 		</Group>
 	);
 };

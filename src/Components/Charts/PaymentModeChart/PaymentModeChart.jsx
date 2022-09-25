@@ -25,9 +25,11 @@ const PaymentModeChart = ({
 
 	const { user } = useSelector((state) => state.user);
 
+	const { currentMonth, currentYear } = useSelector((state) => state.expense);
+
 	const [appliedFilters, setAppliedFilters] = useState({
-		month: "All",
-		year: "All",
+		month: "",
+		year: "",
 		day: "All",
 		category: "All",
 		chartType: "bar",
@@ -38,33 +40,59 @@ const PaymentModeChart = ({
 	const { year, month, day, category, chartType } = appliedFilters;
 
 	useEffect(() => {
-		if (user && paymentModeWiseChartOpened)
+		if (user && paymentModeWiseChartOpened) {
 			dispatch(
 				getPaymentModeWiseExpenseForChart([
-					year || "All",
-					months.indexOf(month) === -1 ? "All" : months.indexOf(month) + 1,
+					year || currentYear,
+					months.indexOf(month) === -1
+						? currentMonth
+						: months.indexOf(month) + 1,
 					day || "All",
 					category || "All",
 				])
 			);
+		}
 	}, [paymentModeWiseChartOpened]);
 
-	const handleAppliedFilters = (value, type) => {
-		setAppliedFilters({ ...appliedFilters, [type]: value });
-		dispatch(
-			getPaymentModeWiseExpenseForChart([
-				type === "year" ? value : year,
-				type === "month"
-					? months.indexOf(value) === -1
+	const handleAppliedFilters = (
+		value,
+		type,
+		reset = false,
+		isExpense = false
+	) => {
+		if (reset) {
+			setAppliedFilters({
+				month: isExpense ? "All" : months[currentMonth - 1],
+				year: isExpense ? "All" : currentYear,
+				day: "All",
+				category: "All",
+				chartType: "bar",
+			});
+			dispatch(
+				getPaymentModeWiseExpenseForChart([
+					isExpense ? "All" : currentYear,
+					isExpense ? "All" : currentMonth,
+					"All",
+					"All",
+				])
+			);
+		} else {
+			setAppliedFilters({ ...appliedFilters, [type]: value });
+			dispatch(
+				getPaymentModeWiseExpenseForChart([
+					type === "year" ? value : year,
+					type === "month"
+						? months.indexOf(value) === -1
+							? "All"
+							: months.indexOf(value) + 1
+						: months.indexOf(month) === -1
 						? "All"
-						: months.indexOf(value) + 1
-					: months.indexOf(month) === -1
-					? "All"
-					: months.indexOf(month) + 1,
-				type === "day" ? value : day,
-				type === "category" ? value : category,
-			])
-		);
+						: months.indexOf(month) + 1,
+					type === "day" ? value : day,
+					type === "category" ? value : category,
+				])
+			);
+		}
 	};
 
 	return (

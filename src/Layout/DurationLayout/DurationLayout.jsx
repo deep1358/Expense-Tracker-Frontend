@@ -86,36 +86,39 @@ const DurationLayout = () => {
 	};
 
 	return (
-		<Container size={1440}>
-			<Breadcrumb
-				crumbItems={crumbItems}
-				activeLinkIndex={activeLinkIndex}
-			/>
+		<>
+			<Container size={1440}>
+				<div className={classes.Wrapper}>
+					<Breadcrumb
+						crumbItems={crumbItems}
+						activeLinkIndex={activeLinkIndex}
+					/>
+					<Tooltip className={classes.barIcon} label="Insights">
+						<ActionIcon
+							color="dark.6"
+							onClick={handleChartOpen}
+							variant="filled"
+						>
+							<ChartBar size={16} />
+						</ActionIcon>
+					</Tooltip>
+				</div>
 
-			<Tooltip
-				className={classes.barIcon}
-				label="Insights"
-				withArrow
-				arrowSize={5}
-			>
-				<ActionIcon onClick={handleChartOpen} variant="filled">
-					<ChartBar size={16} />
-				</ActionIcon>
-			</Tooltip>
-			<DayChart
-				dayWiseFilterOpened={dayWiseFilterOpened}
-				setDayWiseFilterOpened={setDayWiseFilterOpened}
-			/>
-			<MonthChart
-				monthWiseFilterOpened={monthWiseFilterOpened}
-				setMonthWiseFilterOpened={setMonthWiseFilterOpened}
-			/>
-			<YearChart
-				yearWiseFilterOpened={yearWiseFilterOpened}
-				setYearWiseFilterOpened={setYearWiseFilterOpened}
-			/>
-			<Outlet />
-		</Container>
+				<DayChart
+					dayWiseFilterOpened={dayWiseFilterOpened}
+					setDayWiseFilterOpened={setDayWiseFilterOpened}
+				/>
+				<MonthChart
+					monthWiseFilterOpened={monthWiseFilterOpened}
+					setMonthWiseFilterOpened={setMonthWiseFilterOpened}
+				/>
+				<YearChart
+					yearWiseFilterOpened={yearWiseFilterOpened}
+					setYearWiseFilterOpened={setYearWiseFilterOpened}
+				/>
+				<Outlet />
+			</Container>
+		</>
 	);
 };
 

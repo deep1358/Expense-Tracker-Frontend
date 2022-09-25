@@ -1,14 +1,14 @@
 import { createStyles } from "@mantine/core";
 
 export const useStyles = createStyles(
-	(theme, { opened, forDayWiseExpense, forAddOrUpdateExpenseForm }) => ({
+	(theme, { opened, forDayWiseExpense }) => ({
 		control: {
 			width: "100%",
 			display: "flex",
 			justifyContent: "space-between",
 			alignItems: "center",
 			padding: "0 6px 0 12px",
-			height: forDayWiseExpense ? 36 : forAddOrUpdateExpenseForm ? 36 : 40,
+			height: 36,
 			fontSize: ".85rem",
 			borderRadius: theme.radius.sm,
 			border: `1px solid ${theme.colors.dark[4]}`,

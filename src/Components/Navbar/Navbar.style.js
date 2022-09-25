@@ -8,7 +8,6 @@ export const useStyles = createStyles((_theme, _params) => {
 			flex: 1,
 			marginLeft: opened ? 210 : 50,
 			transition: "margin-left 0.3s",
-			marginTop: 20,
 		},
 	};
 });

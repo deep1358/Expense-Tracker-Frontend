@@ -1,4 +1,4 @@
-import { Group, Select } from "@mantine/core";
+import { Button, Group, Select } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import React, { memo, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -56,13 +56,17 @@ const YearChartFilters = ({
 
 	const { classes } = useStyles();
 
+	const handleReset = () => {
+		handleAppliedFilters("All", "All", true);
+	};
+
 	return (
-		<Group>
+		<Group className={classes.Group}>
 			<Select
 				data-autofocus
 				size="sm"
 				data={["All", ...yearWiseMonths]}
-				label="Select a Month"
+				label="Month"
 				className={classes.Select}
 				value={month}
 				onChange={(value) => handleAppliedFilters(value, "month")}
@@ -70,7 +74,7 @@ const YearChartFilters = ({
 			<Select
 				size="sm"
 				data={["All", ...yearWiseDays]}
-				label="Select a Day"
+				label="Day"
 				className={classes.Select}
 				value={day}
 				onChange={(value) => handleAppliedFilters(value, "day")}
@@ -78,25 +82,32 @@ const YearChartFilters = ({
 			<Select
 				size="sm"
 				data={["All", ...(categories || [])]}
-				label="Select a Category"
+				label="Category"
 				className={classes.Select}
 				value={category}
 				onChange={(value) => handleAppliedFilters(value, "category")}
+			/>
+			<Select
+				size="sm"
+				data={["bar", "donut"]}
+				label="Chart Type"
+				className={classes.Select}
+				value={chartType}
+				onChange={(value) => handleAppliedFilters(value, "chartType")}
 			/>
 			<SelectPaymentMode
 				payment_mode={payment_mode}
 				handleAppliedFilters={handleAppliedFilters}
 				placeHolder="Payment Mode"
-				width={smallerScreen ? "45%" : "30%"}
+				width={smallerScreen ? "96%" : "30%"}
 			/>
-			<Select
-				size="sm"
-				data={["bar", "donut"]}
-				label="Select a Chart Type"
-				className={classes.Select}
-				value={chartType}
-				onChange={(value) => handleAppliedFilters(value, "chartType")}
-			/>
+			<Button
+				onClick={handleReset}
+				className={classes.Resetbutton}
+				variant="light"
+			>
+				Reset
+			</Button>
 		</Group>
 	);
 };
