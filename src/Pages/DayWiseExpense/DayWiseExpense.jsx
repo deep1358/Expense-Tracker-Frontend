@@ -128,7 +128,7 @@ const DayWiseExpense = () => {
 				setDeleteModalOpened={setDeleteModalOpened}
 				setDeleteExpenseID={setDeleteExpenseID}
 			/>
-			<Container>
+			<Container p={0}>
 				<Stack align="flex-end">
 					<FilterBar
 						appliedFilters={appliedFilters}
