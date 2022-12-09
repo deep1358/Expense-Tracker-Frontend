@@ -5,7 +5,7 @@ export const useStyles = createStyles((_theme, _params) => {
 
 	return {
 		mainContent: {
-			flex: 1,
+			flex: '1 !important',
 			marginLeft: opened ? 210 : 50,
 			transition: "margin-left 0.3s",
 		},
