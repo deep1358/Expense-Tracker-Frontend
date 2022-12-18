@@ -52,6 +52,10 @@ const Email = () => {
         </Stack>
     );
 
+    const isEmailSubscriptionChanged =
+        monthlyReportChecked === user["email_subscription"].monthly &&
+        yearlyReportChecked === user["email_subscription"].yearly;
+
     return (
         <Paper
             className={classes.paper}
@@ -98,7 +102,11 @@ const Email = () => {
                     />
                 </Group>
                 <Group className={classes.group} mt={20} position="right">
-                    <Button onClick={handleEmailSubscription} variant="filled">
+                    <Button
+                        disabled={isEmailSubscriptionChanged}
+                        onClick={handleEmailSubscription}
+                        variant="filled"
+                    >
                         {updatingEmailSubscription ? "Saving..." : "Save"}
                     </Button>
                 </Group>
