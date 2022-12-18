@@ -154,7 +154,7 @@ const PaymentModeOrCategory = ({ data, type }) => {
                         <ChartBar size={16} />
                     </ActionIcon>
                 </Tooltip>
-                <Title mb={20} order={2}>
+                <Title mb={20} order={2} weight={300}>
                     {title}
                 </Title>
 

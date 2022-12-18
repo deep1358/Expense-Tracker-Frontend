@@ -3,11 +3,16 @@ import { initialState } from "./initialState";
 import { reducers } from "./reducers";
 
 const slice = createSlice({
-	name: "utils",
-	initialState,
-	reducers,
+    name: "utils",
+    initialState,
+    reducers,
 });
 
 export default slice.reducer;
 
-export const { toggleLoadingOverlay, showAlert, removeAlert } = slice.actions;
+export const {
+    toggleLoadingOverlay,
+    showAlert,
+    removeAlert,
+    changeLeftNavWidth,
+} = slice.actions;

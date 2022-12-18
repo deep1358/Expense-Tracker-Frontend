@@ -4,13 +4,13 @@ import { reducers } from "./reducers";
 import { extraReducers } from "./extraReducers";
 
 const slice = createSlice({
-	name: "user",
-	initialState,
-	reducers,
-	extraReducers,
+    name: "user",
+    initialState,
+    reducers,
+    extraReducers,
 });
 
 export default slice.reducer;
 
 export const { MakeUnAuthenticated, loggingOutToggler, toggleFetchingUser } =
-	slice.actions;
+    slice.actions;

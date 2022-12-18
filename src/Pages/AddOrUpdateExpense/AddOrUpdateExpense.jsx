@@ -7,7 +7,7 @@ const AddOrUpdateExpense = () => {
 
     return (
         <Container mt={10} size={420}>
-            <Title align="center">
+            <Title align="center" weight={300}>
                 {!id ? "Add Expense" : "Update Expense"}
             </Title>
             <Paper
