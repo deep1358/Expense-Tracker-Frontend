@@ -45,6 +45,10 @@ const Login = () => {
         dispatch(toggleLoadingOverlay(false));
     }, []);
 
+    useEffect(() => {
+        if (error) dispatch(toggleLoadingOverlay(false));
+    }, [error]);
+
     const smallerScreen = useMediaQuery("(max-width: 370px)");
 
     const handleLogin = () => {
