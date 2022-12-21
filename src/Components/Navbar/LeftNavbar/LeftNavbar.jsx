@@ -7,7 +7,6 @@ import {
     Apps,
     Wallet,
     Coin,
-    CirclePlus,
     Settings,
 } from "tabler-icons-react";
 import { Link, useLocation } from "react-router-dom";
@@ -44,11 +43,6 @@ const LeftNavbar = ({ opened, setOpened, smallerScreen }) => {
             label: "My Expenses",
             link: `/years/${currentYear}/${months[currentMonth - 1]}`,
             icon: Coin,
-        },
-        {
-            label: "Add Expense",
-            link: "/addExpense",
-            icon: CirclePlus,
         },
         {
             label: "My Categories",

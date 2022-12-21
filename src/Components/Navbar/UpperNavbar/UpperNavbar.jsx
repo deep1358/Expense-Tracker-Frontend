@@ -1,9 +1,19 @@
 import React, { memo, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import useStyles from "./UpperNavbar.style";
-import { Header, Container, Group, Burger, Image, Title } from "@mantine/core";
+import {
+    Header,
+    Container,
+    Group,
+    Burger,
+    Image,
+    Title,
+    Button,
+    Tooltip,
+    ActionIcon,
+} from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
-import { Check, X } from "tabler-icons-react";
+import { Check, Plus, X } from "tabler-icons-react";
 import { toggleLoadingOverlay } from "../../../store/utils";
 import DeleteUserConfirmModal from "./DeleteUserConfirmModal/DeleteUserConfirmModal";
 import AvatarMenu from "./AvatarMenu/AvatarMenu";
@@ -11,6 +21,7 @@ import { signOut } from "firebase/auth";
 import { Auth } from "../../../firebase";
 import { MakeUnAuthenticated, loggingOutToggler } from "../../../store/user";
 import { showNotification } from "@mantine/notifications";
+import { Link } from "react-router-dom";
 
 const UpperNavbar = ({ opened, setOpened }) => {
     const dispatch = useDispatch();
@@ -18,6 +29,7 @@ const UpperNavbar = ({ opened, setOpened }) => {
     const { deletingUser, loggingOut } = useSelector((state) => state.user);
 
     const smallScreen = useMediaQuery("(max-width: 775px)");
+    const smallerScreen = useMediaQuery("(max-width: 660px)");
 
     const { classes } = useStyles({ opened });
 
@@ -88,12 +100,39 @@ const UpperNavbar = ({ opened, setOpened }) => {
                             </Title>
                         </Group>
                     </Group>
-                    <AvatarMenu
-                        deleteConfirmBoxToggleOpened={
-                            deleteConfirmBoxToggleOpened
-                        }
-                        handleLogoutUser={handleLogoutUser}
-                    />
+                    <Group
+                        style={{ minWidth: smallerScreen ? "50px" : "180px" }}
+                        position="apart"
+                    >
+                        {!smallerScreen ? (
+                            <Button
+                                size="xs"
+                                leftIcon={<Plus size={14} />}
+                                component={Link}
+                                to="/addExpense"
+                            >
+                                ADD EXPENSE
+                            </Button>
+                        ) : (
+                            <Tooltip label="Add Expense">
+                                <ActionIcon
+                                    color="blue.8"
+                                    size="sm"
+                                    variant="filled"
+                                    component={Link}
+                                    to="/addExpense"
+                                >
+                                    <Plus size={14} />
+                                </ActionIcon>
+                            </Tooltip>
+                        )}
+                        <AvatarMenu
+                            deleteConfirmBoxToggleOpened={
+                                deleteConfirmBoxToggleOpened
+                            }
+                            handleLogoutUser={handleLogoutUser}
+                        />
+                    </Group>
                 </Container>
             </Header>
         </>
