@@ -30,7 +30,11 @@ const useStyles = createStyles((theme, _params, getRef) => {
                 fontSize: "2.2rem",
             },
 
-            "@media (max-width: 380px)": {
+            "@media (max-width: 460px)": {
+                fontSize: "1.2rem",
+            },
+
+            "@media (max-width: 410px)": {
                 fontSize: "1rem",
             },
         },
