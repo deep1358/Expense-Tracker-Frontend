@@ -99,7 +99,7 @@ const Login = () => {
             <Stack>
                 {error && (
                     <Alert
-                        style={{ width: "800px", minWidth: "100%" }}
+                        style={{ width: "90%", margin: "0 auto" }}
                         mt={50}
                         icon={<AlertCircle size={16} />}
                         title="Error!"

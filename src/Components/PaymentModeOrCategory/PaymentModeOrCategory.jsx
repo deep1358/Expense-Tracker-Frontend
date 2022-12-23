@@ -160,11 +160,11 @@ const PaymentModeOrCategory = ({ data, type }) => {
 
                 <Stack align="flex-end">
                     <Button
-                        size={smallerScreen ? "xs" : "sm"}
-                        leftIcon={<Plus />}
+                        size="xs"
+                        leftIcon={<Plus size={14} />}
                         onClick={() => setEditOrUploadModalOpened(true)}
                     >
-                        {`ADD ${title}`}
+                        {title}
                     </Button>
                     {data?.length > 0 && (
                         <TextInput

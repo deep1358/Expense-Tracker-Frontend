@@ -111,7 +111,7 @@ const UpperNavbar = ({ opened, setOpened }) => {
                                 component={Link}
                                 to="/addExpense"
                             >
-                                ADD EXPENSE
+                                Expense
                             </Button>
                         ) : (
                             <Tooltip label="Add Expense">

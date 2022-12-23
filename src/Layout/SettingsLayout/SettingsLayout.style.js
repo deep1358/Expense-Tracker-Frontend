@@ -1,4 +1,4 @@
-import { Tabs } from "@mantine/core";
+import { Tabs, createStyles } from "@mantine/core";
 
 export default function StyledTabs(props) {
     const { leftnavwidth } = props;
@@ -64,3 +64,10 @@ export default function StyledTabs(props) {
         />
     );
 }
+
+export const useStyles = createStyles(() => ({
+    settingsDropdown: {
+        width: "fit-content",
+        minWidth: "280px",
+    },
+}));

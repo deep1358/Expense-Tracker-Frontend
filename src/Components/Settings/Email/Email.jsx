@@ -79,7 +79,6 @@ const Email = () => {
                         onChange={(event) =>
                             setMonthlyReportChecked(event.currentTarget.checked)
                         }
-                        color="teal"
                         size={smallScreen ? "md" : "xl"}
                     />
                 </Group>
@@ -97,7 +96,6 @@ const Email = () => {
                         onChange={(event) =>
                             setYearlyReportChecked(event.currentTarget.checked)
                         }
-                        color="teal"
                         size={smallScreen ? "md" : "xl"}
                     />
                 </Group>
