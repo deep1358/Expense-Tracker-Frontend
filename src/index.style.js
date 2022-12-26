@@ -43,4 +43,8 @@ export const styles = (theme) => ({
         UserSelect: "none" /* Non-prefixed version, currently
                                   supported by Chrome, Edge, Opera and Firefox */,
     },
+    ".mantine-Textarea-input:read-only": {
+        border: "none",
+        paddingLeft: 0,
+    },
 });
