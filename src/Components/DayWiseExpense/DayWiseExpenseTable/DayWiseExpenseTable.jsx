@@ -79,7 +79,7 @@ const DayWiseExpenseTable = ({
                 reversed={reverseSortDirection}
                 onSort={() => setSorting("category")}
             >
-                Category Name
+                Category
             </Th>
             <Th
                 sorted={sortBy === "amount"}
